@@ -11,16 +11,23 @@ import com.google.mlkit.vision.face.FaceContour;
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
+import com.google.mlkit.vision.face.FaceLandmark;
 
 import java.util.List;
 
 /**
- * ML Kit contour-based face tracker. Publishes normalized (display space, uv) geometry:
- * [0..1] = left eye xy, [2..3] right eye xy, [4..5] face center xy, [6] face width
- * (normalized by frame height), [7..8] left cheek, [9..10] right cheek, [11..12] chin.
- * All -1 when no face. Mirrored for front camera so coords match the rendered preview.
+ * ML Kit contour-based face tracker. Publishes normalized (display space, uv)
+ * geometry into a float array (all -1 when no face):
+ *   [0..1]  left eye      [2..3]  right eye   [4..5] face center
+ *   [6]     face width (normalized by frame height)
+ *   [7..8]  left cheek    [9..10] right cheek [11..12] chin
+ *   [13..14] nose base    [15..16] mouth L    [17..18] mouth R
+ *   [19..20] brow middle  [21..22] forehead top
+ * Mirrored for front camera so coords match the rendered preview.
  */
 public class FaceTracker implements ImageAnalysis.Analyzer {
+
+    public static final int FACE_DATA_SIZE = 24;
 
     public interface FrontCameraProvider {
         boolean isFront();
@@ -29,7 +36,7 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
     private final FaceDetector detector;
     private final FrontCameraProvider frontCamera;
     private final CameraRenderer renderer;
-    private final float[] out = new float[14];
+    private final float[] out = new float[FACE_DATA_SIZE];
     private long lastRunMs = 0L;
     private long lastRollLogMs = 0L;
 
@@ -62,7 +69,7 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
         long now2 = System.currentTimeMillis();
         if (now2 - lastRollLogMs > 2000) {
             lastRollLogMs = now2;
-            android.util.Log.d("FaceTracker", "analyze called, size="
+            android.util.Log.d("FaceTracker", "analyze size="
                     + image.getWidth() + "x" + image.getHeight()
                     + " rot=" + image.getImageInfo().getRotationDegrees());
         }
@@ -103,7 +110,9 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
     }
 
     private static float[] noFace() {
-        return new float[]{-1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f};
+        float[] a = new float[FACE_DATA_SIZE];
+        for (int i = 0; i < FACE_DATA_SIZE; i++) a[i] = -1f;
+        return a;
     }
 
     private float[] buildData(Face face, int w, int h) {
@@ -111,8 +120,6 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
         List<PointF> oval = ovalContour != null ? ovalContour.getPoints() : null;
         float[] le = centroid(face.getContour(FaceContour.LEFT_EYE));
         float[] re = centroid(face.getContour(FaceContour.RIGHT_EYE));
-        if (oval == null || oval.isEmpty() || le == null || re == null) return noFace();
-
         if (oval == null || oval.isEmpty() || le == null || re == null) return noFace();
 
         // Geometry sanity check: when the head is tilted / inverted relative to the
@@ -123,15 +130,15 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
         float dy = re[1] - le[1];
         float eyeDist = (float) Math.sqrt(dx * dx + dy * dy);
         if (eyeDist < 0.02f || eyeDist > 0.35f) return noFace();     // implausible eye spacing
-        if (Math.abs(dy) > 0.12f * eyeDist / 0.1f) return noFace();  // heavily rolled head
-        if (le[0] < 0.02f || le[0] > 0.98f || le[1] < 0.02f || le[1] > 0.98f) return noFace();
-        if (re[0] < 0.02f || re[0] > 0.98f || re[1] < 0.02f || re[1] > 0.98f) return noFace();
 
-        float minX = Float.MAX_VALUE, maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
+        float minX = Float.MAX_VALUE, maxX = -Float.MAX_VALUE;
+        float minY = Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
         float sumX = 0f, sumY = 0f;
+        float topX = 0f;
         for (PointF p : oval) {
             if (p.x < minX) minX = p.x;
             if (p.x > maxX) maxX = p.x;
+            if (p.y < minY) { minY = p.y; topX = p.x; }
             if (p.y > maxY) maxY = p.y;
             sumX += p.x;
             sumY += p.y;
@@ -148,6 +155,21 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
         float[] cr = uv(maxX, midY, w, h, mirror);
         float[] ch = uv(sumX / oval.size(), maxY, w, h, mirror);
 
+        FaceLandmark noseLm = face.getLandmark(FaceLandmark.NOSE_BASE);
+        FaceLandmark mouthLm = face.getLandmark(FaceLandmark.MOUTH_LEFT);
+        FaceLandmark mouthRm = face.getLandmark(FaceLandmark.MOUTH_RIGHT);
+        float[] nb = noseLm != null ? uv(noseLm.getPosition().x, noseLm.getPosition().y, w, h, mirror) : null;
+        float[] ml = mouthLm != null ? uv(mouthLm.getPosition().x, mouthLm.getPosition().y, w, h, mirror) : null;
+        float[] mr = mouthRm != null ? uv(mouthRm.getPosition().x, mouthRm.getPosition().y, w, h, mirror) : null;
+
+        float[] lb = centroid(face.getContour(FaceContour.LEFT_EYEBROW_TOP));
+        float[] rb = centroid(face.getContour(FaceContour.RIGHT_EYEBROW_TOP));
+        float[] bm = null;
+        if (lb != null && rb != null) {
+            bm = uv((lb[0] + rb[0]) / 2f, (lb[1] + rb[1]) / 2f, w, h, mirror);
+        }
+        float[] fh = uv(topX, minY, w, h, mirror);
+
         out[0] = leUv[0]; out[1] = leUv[1];
         out[2] = reUv[0]; out[3] = reUv[1];
         out[4] = c[0];    out[5] = c[1];
@@ -155,6 +177,11 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
         out[7] = cl[0];   out[8] = cl[1];
         out[9] = cr[0];   out[10] = cr[1];
         out[11] = ch[0];  out[12] = ch[1];
+        out[13] = nb == null ? -1f : nb[0];  out[14] = nb == null ? -1f : nb[1];
+        out[15] = ml == null ? -1f : ml[0];  out[16] = ml == null ? -1f : ml[1];
+        out[17] = mr == null ? -1f : mr[0];  out[18] = mr == null ? -1f : mr[1];
+        out[19] = bm == null ? -1f : bm[0];  out[20] = bm == null ? -1f : bm[1];
+        out[21] = fh[0];  out[22] = fh[1];
         return out;
     }
 

@@ -10,10 +10,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,14 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
+
+    private interface Getter {
+        float get();
+    }
+
+    private interface Setter {
+        void set(float v);
+    }
 
     private static final class SliderSpec {
         final String label;
@@ -38,26 +50,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private interface Getter {
-        float get();
-    }
-
-    private interface Setter {
-        void set(float v);
-    }
-
     private final BeautyParams params = new BeautyParams();
     private CameraRenderer renderer;
     private CameraController controller;
     private OrientationSensor orientationSensor;
     private android.opengl.GLSurfaceView glSurface;
     private LinearLayout sliderPanel;
+    private ScrollView sliderScroll;
     private View filterRow;
+    private View presetsRow;
+    private LinearLayout presetChips;
+    private View captureRow;
+    private LinearLayout captureChips;
     private TextView tvHint;
+    private TextView tvCount;
     private TextView btnCompare;
-    private volatile boolean manualFlip = false;
-    private volatile int gravityOrientation = 0;
-    private volatile int faceOrientation = 0;
+    private TextView btnFlip;
+    private TextView btnTimer;
+    private TextView btnLight;
+
+    private ScaleGestureDetector scaleDetector;
+    private int countdownSeconds = 0;
+    private boolean lightOn = false;
+    private volatile boolean countingDown = false;
 
     private final SliderSpec[] beautySliders = {
             new SliderSpec("磨皮", new Getter() { public float get() { return params.smooth; } },
@@ -70,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
                     new Setter() { public void set(float v) { params.sharpen = v; } }),
             new SliderSpec("饱和", new Getter() { public float get() { return params.saturate; } },
                     new Setter() { public void set(float v) { params.saturate = v; } }),
+            new SliderSpec("肤色", new Getter() { public float get() { return params.skinTone; } },
+                    new Setter() { public void set(float v) { params.skinTone = v; } }),
+            new SliderSpec("黑眼圈", new Getter() { public float get() { return params.eyeCircle; } },
+                    new Setter() { public void set(float v) { params.eyeCircle = v; } }),
+            new SliderSpec("修容", new Getter() { public float get() { return params.contouring; } },
+                    new Setter() { public void set(float v) { params.contouring = v; } }),
     };
 
     private final SliderSpec[] shapeSliders = {
@@ -79,6 +100,17 @@ public class MainActivity extends AppCompatActivity {
                     new Setter() { public void set(float v) { params.faceSlim = v; } }),
             new SliderSpec("下巴", new Getter() { public float get() { return params.chinSlim; } },
                     new Setter() { public void set(float v) { params.chinSlim = v; } }),
+            new SliderSpec("瘦鼻", new Getter() { public float get() { return params.noseSlim; } },
+                    new Setter() { public void set(float v) { params.noseSlim = v; } }),
+            new SliderSpec("微笑", new Getter() { public float get() { return params.smileLift; } },
+                    new Setter() { public void set(float v) { params.smileLift = v; } }),
+            new SliderSpec("额头", new Getter() { public float get() { return params.forehead; } },
+                    new Setter() { public void set(float v) { params.forehead = v; } }),
+    };
+
+    private final SliderSpec[] blurSliders = {
+            new SliderSpec("背景虚化", new Getter() { public float get() { return params.bgBlur; } },
+                    new Setter() { public void set(float v) { params.bgBlur = v; } }),
     };
 
     @Override
@@ -88,9 +120,16 @@ public class MainActivity extends AppCompatActivity {
 
         glSurface = findViewById(R.id.glSurface);
         sliderPanel = findViewById(R.id.sliderPanel);
+        sliderScroll = findViewById(R.id.sliderScroll);
         filterRow = findViewById(R.id.filterRow);
+        presetsRow = findViewById(R.id.presetsRow);
+        presetChips = findViewById(R.id.presetChips);
+        captureRow = findViewById(R.id.captureRow);
+        captureChips = findViewById(R.id.captureChips);
         tvHint = findViewById(R.id.tvHint);
+        tvCount = findViewById(R.id.tvCount);
         btnCompare = findViewById(R.id.btnCompare);
+        btnFlip = findViewById(R.id.btnFlip);
 
         glSurface.setEGLContextClientVersion(2);
         renderer = new CameraRenderer(params, null);
@@ -100,10 +139,60 @@ public class MainActivity extends AppCompatActivity {
 
         controller = new CameraController(this, this, renderer);
 
-        // Keep the preview upright no matter how the phone is held.
-        // Primary signal: the face's own roll angle (eulerX) - compensating by the
-        // face keeps the head upright even when the phone lies flat on a desk.
-        // The gravity sensor covers portrait/landscape hold changes.
+        // pinch to zoom
+        scaleDetector = new ScaleGestureDetector(this,
+                new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                    @Override
+                    public boolean onScale(ScaleGestureDetector detector) {
+                        controller.zoomBy(detector.getScaleFactor());
+                        return true;
+                    }
+                });
+        glSurface.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, android.view.MotionEvent event) {
+                scaleDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        ImageButton switchBtn = findViewById(R.id.btnSwitch);
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.switchCamera();
+                controller.resetZoom();
+            }
+        });
+
+        btnCompare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                renderer.splitMode = !renderer.splitMode;
+                v.setAlpha(renderer.splitMode ? 1f : 0.6f);
+                tvHint.setText("原图    |    美颜");
+                tvHint.setVisibility(renderer.splitMode ? View.VISIBLE : View.GONE);
+            }
+        });
+        btnCompare.setAlpha(0.6f);
+
+        btnFlip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                renderer.rotationOverride = (renderer.rotationOverride + 180) % 360;
+                v.setAlpha(renderer.rotationOverride == 0 ? 0.7f : 1f);
+            }
+        });
+        btnFlip.setAlpha(0.7f);
+
+        ImageButton captureBtn = findViewById(R.id.btnCapture);
+        captureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                capture();
+            }
+        });
+
         orientationSensor = new OrientationSensor(
                 (android.hardware.SensorManager) getSystemService(android.hardware.SensorManager.class),
                 new OrientationSensor.Listener() {
@@ -114,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 });
         orientationSensor.start();
 
-        // debug overlay refresh + face-roll based orientation compensation
         final TextView tvDebug = findViewById(R.id.tvDebug);
         final android.os.Handler handler = new android.os.Handler();
         final Runnable tick = new Runnable() {
@@ -122,8 +210,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 float euler = FaceTracker.lastEulerX;
                 boolean hasFace = FaceTracker.lastFaces > 0;
-                // display roll = -eulerX on the mirrored front camera; rotate the
-                // frame by the opposite of the observed roll to make it upright.
                 float displayRoll = -euler;
                 if (hasFace) {
                     if (Math.abs(angleDelta(displayRoll, faceOrientation)) > 60) {
@@ -144,45 +230,6 @@ public class MainActivity extends AppCompatActivity {
         };
         handler.post(tick);
 
-        ImageButton switchBtn = findViewById(R.id.btnSwitch);
-        switchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.switchCamera();
-            }
-        });
-
-        btnCompare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                renderer.splitMode = !renderer.splitMode;
-                v.setAlpha(renderer.splitMode ? 1f : 0.6f);
-                tvHint.setText("原图    |    美颜");
-                tvHint.setVisibility(renderer.splitMode ? View.VISIBLE : View.GONE);
-            }
-        });
-        btnCompare.setAlpha(0.6f);
-
-        ImageButton captureBtn = findViewById(R.id.btnCapture);
-        captureBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                capture();
-            }
-        });
-
-        // Manual flip: rotates the preview by 180 (for poses where automatic
-        // face/gravity based orientation cannot help, e.g. phone lying flat).
-        TextView flipBtn = findViewById(R.id.btnFlip);
-        flipBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                manualFlip = !manualFlip;
-                flipBtn.setAlpha(manualFlip ? 1f : 0.7f);
-            }
-        });
-        flipBtn.setAlpha(0.7f);
-
         setupTabs();
         if (hasPermission()) {
             startCamera();
@@ -196,21 +243,12 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(tabs.newTab().setText("美颜"));
         tabs.addTab(tabs.newTab().setText("美型"));
         tabs.addTab(tabs.newTab().setText("滤镜"));
+        tabs.addTab(tabs.newTab().setText("虚化"));
+        tabs.addTab(tabs.newTab().setText("拍摄"));
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
-                    sliderPanel.setVisibility(View.VISIBLE);
-                    filterRow.setVisibility(View.GONE);
-                    buildSliders(beautySliders);
-                } else if (tab.getPosition() == 1) {
-                    sliderPanel.setVisibility(View.VISIBLE);
-                    filterRow.setVisibility(View.GONE);
-                    buildSliders(shapeSliders);
-                } else {
-                    sliderPanel.setVisibility(View.GONE);
-                    filterRow.setVisibility(View.VISIBLE);
-                }
+                showTab(tab.getPosition());
             }
 
             @Override
@@ -221,8 +259,32 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        buildSliders(beautySliders);
+        showTab(0);
+        buildPresetChips();
         buildFilterChips();
+        buildCaptureChips();
+    }
+
+    private void showTab(int pos) {
+        sliderScroll.setVisibility(View.GONE);
+        filterRow.setVisibility(View.GONE);
+        presetsRow.setVisibility(View.GONE);
+        captureRow.setVisibility(View.GONE);
+        if (pos == 0) {
+            sliderScroll.setVisibility(View.VISIBLE);
+            presetsRow.setVisibility(View.VISIBLE);
+            buildSliders(beautySliders);
+        } else if (pos == 1) {
+            sliderScroll.setVisibility(View.VISIBLE);
+            buildSliders(shapeSliders);
+        } else if (pos == 2) {
+            filterRow.setVisibility(View.VISIBLE);
+        } else if (pos == 3) {
+            sliderScroll.setVisibility(View.VISIBLE);
+            buildSliders(blurSliders);
+        } else {
+            captureRow.setVisibility(View.VISIBLE);
+        }
     }
 
     private void buildSliders(SliderSpec[] specs) {
@@ -268,32 +330,86 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void buildPresetChips() {
+        presetChips.removeAllViews();
+        for (int i = 0; i < BeautyParams.PRESET_NAMES.length; i++) {
+            final int index = i;
+            TextView chip = makeChip(BeautyParams.PRESET_NAMES[i]);
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    params.applyPreset(index);
+                    showTab(0);
+                    toast("预设: " + BeautyParams.PRESET_NAMES[index]);
+                }
+            });
+            presetChips.addView(chip);
+        }
+    }
+
     private void buildFilterChips() {
-        final LinearLayout chips = findViewById(R.id.filterChips);
-        chips.removeAllViews();
+        filterChips = findViewById(R.id.filterChips);
+        filterChips.removeAllViews();
         for (int i = 0; i < BeautyParams.FILTER_NAMES.length; i++) {
             final int index = i;
-            TextView chip = new TextView(this);
-            chip.setText(BeautyParams.FILTER_NAMES[i]);
-            chip.setTextSize(14f);
-            chip.setPadding(dp(24), dp(10), dp(24), dp(10));
-            chip.setGravity(Gravity.CENTER);
-            chip.setTextColor(0xFFFFFFFF);
-            chip.setBackgroundResource(R.drawable.chip_bg);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.rightMargin = dp(12);
-            chip.setLayoutParams(lp);
+            TextView chip = makeChip(BeautyParams.FILTER_NAMES[i]);
             chip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     params.filterIndex = index;
-                    refreshChipStates(chips);
+                    refreshChipStates(filterChips);
                 }
             });
-            chips.addView(chip);
+            filterChips.addView(chip);
         }
-        refreshChipStates(chips);
+        refreshChipStates(filterChips);
+    }
+
+    private LinearLayout filterChips;
+
+    private void buildCaptureChips() {
+        captureChips.removeAllViews();
+        btnTimer = makeChip("倒计时:关");
+        btnTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countdownSeconds = countdownSeconds == 0 ? 3 : (countdownSeconds == 3 ? 10 : 0);
+                btnTimer.setText(countdownSeconds == 0 ? "倒计时:关"
+                        : "倒计时:" + countdownSeconds + "s");
+                btnTimer.setAlpha(countdownSeconds == 0 ? 0.7f : 1f);
+            }
+        });
+        captureChips.addView(btnTimer);
+
+        btnLight = makeChip("屏幕补光");
+        btnLight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lightOn = !lightOn;
+                btnLight.setAlpha(lightOn ? 1f : 0.7f);
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.screenBrightness = lightOn ? 1f
+                        : WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                getWindow().setAttributes(lp);
+            }
+        });
+        btnLight.setAlpha(0.7f);
+        captureChips.addView(btnLight);
+    }
+
+    private TextView makeChip(String text) {
+        TextView chip = new TextView(this);
+        chip.setText(text);
+        chip.setTextSize(14f);
+        chip.setPadding(dp(24), dp(10), dp(24), dp(10));
+        chip.setGravity(Gravity.CENTER);
+        chip.setTextColor(0xFFFFFFFF);
+        chip.setBackgroundResource(R.drawable.chip_bg);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.rightMargin = dp(12);
+        chip.setLayoutParams(lp);
+        return chip;
     }
 
     private void refreshChipStates(LinearLayout chips) {
@@ -304,6 +420,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void capture() {
+        if (countingDown) return;
+        if (countdownSeconds > 0) {
+            countingDown = true;
+            final android.os.Handler h = new android.os.Handler();
+            final int[] remain = {countdownSeconds};
+            final Runnable countTick = new Runnable() {
+                @Override
+                public void run() {
+                    if (remain[0] > 0) {
+                        tvCount.setText(String.valueOf(remain[0]));
+                        tvCount.setVisibility(View.VISIBLE);
+                        remain[0]--;
+                        h.postDelayed(this, 1000);
+                    } else {
+                        tvCount.setVisibility(View.GONE);
+                        countingDown = false;
+                        doCapture();
+                    }
+                }
+            };
+            h.post(countTick);
+        } else {
+            doCapture();
+        }
+    }
+
+    private void doCapture() {
         tvHint.setText("处理中…");
         tvHint.setVisibility(View.VISIBLE);
         renderer.capture(new CameraRenderer.BitmapCallback() {
@@ -394,6 +537,10 @@ public class MainActivity extends AppCompatActivity {
         int d = (((int) target - current) % 360 + 360) % 360;
         return d > 180 ? d - 360 : d;
     }
+
+    private volatile boolean manualFlip = false;
+    private volatile int gravityOrientation = 0;
+    private volatile int faceOrientation = 0;
 
     @Override
     protected void onPause() {

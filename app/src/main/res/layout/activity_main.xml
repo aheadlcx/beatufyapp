@@ -21,76 +21,6 @@
         android:tint="#FFFFFF" />
 
     <TextView
-        android:id="@+id/btnCompare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
-        android:layout_margin="20dp"
-        android:background="@drawable/chip_bg"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
-        android:text="对比"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:paddingBottom="24dp">
-
-        <HorizontalScrollView
-            android:id="@+id/filterRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:id="@+id/filterChips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp" />
-        </HorizontalScrollView>
-
-        <LinearLayout
-            android:id="@+id/sliderPanel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:background="#00000000"
-            app:tabTextColor="#99FFFFFF"
-            app:tabSelectedTextColor="#FFFFFF"
-            app:tabIndicatorColor="#FFFFFF"
-            app:tabRippleColor="#33FFFFFF"
-            xmlns:app="http://schemas.android.com/apk/res-auto" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <ImageButton
-                android:id="@+id/btnCapture"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_gravity="center"
-                android:background="@drawable/btn_capture"
-                android:contentDescription="拍照"
-                android:src="@null" />
-        </FrameLayout>
-    </LinearLayout>
-
-    <TextView
         android:id="@+id/btnFlip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,6 +31,19 @@
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
         android:text="翻转"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/btnCompare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="20dp"
+        android:background="@drawable/chip_bg"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:text="对比"
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
 
@@ -118,6 +61,17 @@
         android:fontFamily="monospace" />
 
     <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="96sp"
+        android:shadowColor="#80000000"
+        android:shadowRadius="8"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/tvHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,4 +80,99 @@
         android:textSize="16sp"
         android:shadowColor="#80000000"
         android:shadowRadius="4" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:paddingBottom="18dp">
+
+        <HorizontalScrollView
+            android:id="@+id/presetsRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/presetChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp" />
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/captureRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/captureChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp" />
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/filterRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/filterChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp" />
+        </HorizontalScrollView>
+
+        <ScrollView
+            android:id="@+id/sliderScroll"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/sliderPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp" />
+        </ScrollView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:background="#00000000"
+            app:tabTextColor="#99FFFFFF"
+            app:tabSelectedTextColor="#FFFFFF"
+            app:tabIndicatorColor="#FFFFFF"
+            app:tabRippleColor="#33FFFFFF"
+            xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
+
+            <ImageButton
+                android:id="@+id/btnCapture"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_capture"
+                android:contentDescription="拍照"
+                android:src="@null" />
+        </FrameLayout>
+    </LinearLayout>
 </FrameLayout>

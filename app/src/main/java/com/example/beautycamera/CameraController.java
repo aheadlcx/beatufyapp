@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.Surface;
 
+import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
@@ -28,8 +29,11 @@ public class CameraController {
     private final CameraRenderer renderer;
     private final ExecutorService cameraExecutor = Executors.newSingleThreadExecutor();
     private final ExecutorService analysisExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService segExecutor = Executors.newSingleThreadExecutor();
     private ProcessCameraProvider provider;
+    private Camera camera;
     private boolean front = true;
+    private float zoomLevel = 1f;
 
     public CameraController(Context context, LifecycleOwner lifecycleOwner, CameraRenderer renderer) {
         this.context = context;
@@ -61,7 +65,30 @@ public class CameraController {
     public void switchCamera() {
         front = !front;
         renderer.setFrontCamera(front);
+        zoomLevel = 1f;
         bind();
+    }
+
+    public boolean isFront() {
+        return front;
+    }
+
+    /** Multiply current zoom by the given factor (clamped 1..8). */
+    public void zoomBy(float factor) {
+        androidx.camera.core.Camera c = camera;
+        if (c == null) return;
+        try {
+            androidx.camera.core.CameraControl ctl = c.getCameraControl();
+            zoomLevel = Math.max(1f, Math.min(8f, zoomLevel * factor));
+            ctl.setZoomRatio(zoomLevel);
+        } catch (Exception e) {
+            Log.w(TAG, "zoom failed", e);
+        }
+    }
+
+    public void resetZoom() {
+        zoomLevel = 1f;
+        if (camera != null) camera.getCameraControl().setZoomRatio(1f);
     }
 
     private void bind() {
@@ -74,8 +101,8 @@ public class CameraController {
         Preview preview = new Preview.Builder().setTargetRotation(rotation).build();
         preview.setSurfaceProvider(cameraExecutor, new Preview.SurfaceProvider() {
             @Override
-            public void onSurfaceRequested(SurfaceRequest request) {
-                android.view.Surface surface = renderer.createInputSurface(
+            public void onSurfaceRequested(final SurfaceRequest request) {
+                Surface surface = renderer.createInputSurface(
                         request.getResolution().getWidth(), request.getResolution().getHeight());
                 request.provideSurface(surface, cameraExecutor, new androidx.core.util.Consumer<SurfaceRequest.Result>() {
                     @Override
@@ -85,23 +112,42 @@ public class CameraController {
             }
         });
 
-        ImageAnalysis analysis = new ImageAnalysis.Builder()
+        ImageAnalysis faceAnalysis = new ImageAnalysis.Builder()
                 .setTargetRotation(rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
-        analysis.setAnalyzer(analysisExecutor, new FaceTracker(new FaceTracker.FrontCameraProvider() {
+        faceAnalysis.setAnalyzer(analysisExecutor, new FaceTracker(new FaceTracker.FrontCameraProvider() {
             @Override
             public boolean isFront() {
                 return front;
             }
         }, renderer));
 
+        ImageAnalysis segAnalysis = new ImageAnalysis.Builder()
+                .setTargetRotation(rotation)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build();
+        segAnalysis.setAnalyzer(segExecutor, new SegmentationAnalyzer(new SegmentationAnalyzer.MaskSink() {
+            @Override
+            public void setMask(int w, int h, byte[] data) {
+                renderer.setMask(w, h, data);
+            }
+        }));
+
         try {
-            p.bindToLifecycle(lifecycleOwner,
+            camera = p.bindToLifecycle(lifecycleOwner,
                     front ? CameraSelector.DEFAULT_FRONT_CAMERA : CameraSelector.DEFAULT_BACK_CAMERA,
-                    preview, analysis);
+                    preview, faceAnalysis, segAnalysis);
         } catch (Exception e) {
             Log.e(TAG, "bind failed", e);
+            try {
+                // some devices only support 2 use cases
+                camera = p.bindToLifecycle(lifecycleOwner,
+                        front ? CameraSelector.DEFAULT_FRONT_CAMERA : CameraSelector.DEFAULT_BACK_CAMERA,
+                        preview, faceAnalysis);
+            } catch (Exception e2) {
+                Log.e(TAG, "bind fallback failed", e2);
+            }
         }
     }
 
@@ -121,5 +167,6 @@ public class CameraController {
         if (provider != null) provider.unbindAll();
         cameraExecutor.shutdown();
         analysisExecutor.shutdown();
+        segExecutor.shutdown();
     }
 }
