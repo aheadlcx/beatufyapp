@@ -18,3 +18,6 @@ Thumbs.db
 .DS_Store
 
 # Keep: apk/ directory IS committed intentionally (built APK deliverables)
+
+# APK 不入库：只拷贝到 \192.168.0.104\work\demopk
+apk/
