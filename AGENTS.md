@@ -12,14 +12,15 @@
    ```
    （Gradle 使用 `~/.gradle/wrapper/dists/gradle-8.7-bin` 中的本地 Gradle；Android SDK 位于 `D:\soft\develop\Sdk`）
 
-2. **把新 APK 拷贝到网络共享目录**，文件名带类型与编译时间（月日-时分秒）：
+2. **把新 APK 拷贝到网络共享目录**（APK **不**提交到 GitHub），文件名按项目内容 + 编译时间命名：
    ```
    \\192.168.0.104\work\demo\apk
-   命名格式：BeautyCamera_<说明>_<MMDD-HHMMSS>.apk
+   命名格式：BeautyCamera_<功能或修复说明>_<MMDD-HHMMSS>.apk
+   示例：BeautyCamera_磨皮滤镜美型_0912-233324.apk
    ```
 
-3. **提交并推送到 GitHub**：https://github.com/aheadlcx/beatufyapp
-   - 同时把最新 APK 复制到仓库 `apk/` 目录（覆盖 `BeautyCamera-latest.apk`，并保留一份带时间戳的 `apk/BeautyCamera_<说明>_<MMDD-HHMMSS>.apk`）
+3. **提交并推送到 GitHub**：`git@github.com:aheadlcx/beatufyapp.git`（SSH）
+   - 只提交源码与文档，**APK 永不入库**（apk/ 已在 .gitignore）
    - commit message 用中文简述本次修改
    - `git push` 到 `main` 分支
 
