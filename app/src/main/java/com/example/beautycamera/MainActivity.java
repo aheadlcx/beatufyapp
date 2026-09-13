@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final BeautyParams params = new BeautyParams();
+    private final OrientationBlender orientation = new OrientationBlender();
     private CameraRenderer renderer;
     private CameraController controller;
     private OrientationSensor orientationSensor;
@@ -179,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
         btnFlip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                renderer.rotationOverride = (renderer.rotationOverride + 180) % 360;
-                v.setAlpha(renderer.rotationOverride == 0 ? 0.7f : 1f);
+                orientation.toggleFlip();
+                v.setAlpha(orientation.isFlipped() ? 1f : 0.7f);
             }
         });
         btnFlip.setAlpha(0.7f);
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 new OrientationSensor.Listener() {
                     @Override
                     public void onOrientationChanged(int deg) {
-                        gravityOrientation = deg;
+                        orientation.onGravity(deg);
                     }
                 });
         orientationSensor.start();
@@ -208,21 +209,13 @@ public class MainActivity extends AppCompatActivity {
         final Runnable tick = new Runnable() {
             @Override
             public void run() {
-                float euler = FaceTracker.lastEulerX;
                 boolean hasFace = FaceTracker.lastFaces > 0;
-                float displayRoll = -euler;
-                if (hasFace) {
-                    if (Math.abs(angleDelta(displayRoll, faceOrientation)) > 60) {
-                        int q = (int) Math.round(displayRoll / 90f);
-                        faceOrientation = ((q % 4) + 4) % 4 * 90;
-                    }
-                }
-                int base = hasFace ? faceOrientation : gravityOrientation;
-                renderer.rotationOverride = (base + (manualFlip ? 180 : 0)) % 360;
+                orientation.onFacePresence(hasFace);
+                orientation.onFaceRoll(FaceTracker.lastEulerX, hasFace);
+                renderer.rotationOverride = orientation.compute();
                 tvDebug.setText("an=" + FaceTracker.analyzeCalls
                         + " fc=" + FaceTracker.lastFaces
-                        + " ex=" + (int) euler
-                        + " g=" + gravityOrientation
+                        + " ex=" + (int) FaceTracker.lastEulerX
                         + " c=" + renderer.rotationOverride
                         + (FaceTracker.lastError.isEmpty() ? "" : " e=" + FaceTracker.lastError));
                 handler.postDelayed(this, 500);
@@ -522,8 +515,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startCamera() {
+        if (cameraStarted) return;
+        cameraStarted = true;
         controller.start(null);
     }
+
+    private boolean cameraStarted = false;
 
     private void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
@@ -538,10 +535,6 @@ public class MainActivity extends AppCompatActivity {
         return d > 180 ? d - 360 : d;
     }
 
-    private volatile boolean manualFlip = false;
-    private volatile int gravityOrientation = 0;
-    private volatile int faceOrientation = 0;
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -552,5 +545,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (orientationSensor != null) orientationSensor.start();
+        // Covers the "granted in system settings, then returned" flow, where
+        // onRequestPermissionsResult never fires.
+        if (hasPermission()) startCamera();
     }
 }
