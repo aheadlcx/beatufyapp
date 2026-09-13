@@ -16,7 +16,10 @@ import androidx.lifecycle.LifecycleOwner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CameraController {
+/**
+ * CameraX 的绑定与控制：把 Preview（预览流）、ImageAnalysis（人脸检测流）、
+ * ImageAnalysis（人像分割流）三个用例绑到生命周期上；提供前后切换与变焦。
+ */public class CameraController {
 
     private static final String TAG = "CameraController";
 

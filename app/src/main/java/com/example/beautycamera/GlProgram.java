@@ -7,7 +7,12 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Minimal GLSL program wrapper. */
+/**
+ * 一个 GLSL program 的最小封装（编译好的顶点+片元着色器对）。
+ *
+ * <p>uniform(name) 做了按名字缓存；setXxx 系列是对 GLES20 的薄封装。
+ * 必须在 GL 线程、且 GL 上下文已建立后创建。</p>
+ */
 public class GlProgram {
 
     private int program = 0;

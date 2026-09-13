@@ -13,8 +13,9 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 /**
- * Selfie-segmentation analyzer. Produces an 8-bit person mask (0=bg, 255=person)
- * and uploads it to the renderer as a GL texture. Runs at ~8fps to save power.
+ * 人像分割分析器：把相机帧送入 ML Kit 自拍分割模型，产出 8-bit 人像 mask
+ * （0=背景，255=人），交给渲染器上传为 GL 纹理，用于背景虚化。
+ * 限制在约 8fps 且带 busy 标志防积压——mask 不需要满帧率。
  */
 public class SegmentationAnalyzer implements ImageAnalysis.Analyzer {
 

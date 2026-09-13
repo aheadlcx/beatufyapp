@@ -1,12 +1,26 @@
 package com.example.beautycamera;
 
 /**
- * Guided-filter skin smoothing at half resolution.
+ * 引导滤波（Guided Filter）磨皮，全部在半分辨率下完成。
  *
- * Input: the full-resolution warped frame. Output: q = a*I + b, an edge-aware
- * smoothed version of the frame, plus an optional stronger-blurred copy used as
- * the background-blur source. Encapsulates its own 9 half-res targets and all
- * helper passes so the renderer stays free of FBO juggling.
+ * <p><b>为什么是引导滤波</b>：普通高斯模糊会把眼睛、发丝一起糊掉。引导滤波把画面
+ * 分成 I（亮度引导图）和 P（原图），为每个局部拟合一条线性关系 q = a·I + b——
+ * 平坦皮肤区域 a≈0（输出几乎恒定的 b，即"抹平"），边缘区域 a≈1（输出≈原图，
+ * 即"保留"）。效果类似双边滤波，但只用到若干次可分离的高斯模糊，GPU 友好。</p>
+ *
+ * <p><b>pass 序列</b>（q = a·I + b，均值用高斯模糊近似盒滤波）：
+ * <pre>
+ *   A = P(降采样)   C = luma(A)          → 引导图 I
+ *   D = blur(C)     → meanI
+ *   B = blur(A)     → meanP
+ *   F = blur(C·A)   → meanIP
+ *   G = blur(C·C)   → meanII
+ *   a = (meanIP − meanI·meanP) / (meanII − meanI² + eps)   （eps 防除零，控制平滑强度）
+ *   b = meanP − a·meanI
+ *   blur(a), blur(b)                                       （滤波器自身也要平滑）
+ *   A = a·I + b                                            → 输出 q
+ * </pre>
+ * 背景虚化开启时，对 q 再做两轮强模糊得到 I 槽位的背景图。</p>
  */
 public class GuidedFilter {
 

@@ -1,10 +1,13 @@
 package com.example.beautycamera;
 
 /**
- * Blends the signals that decide preview orientation into a single rotation:
- * the face's own roll angle (primary, works even when the phone lies flat),
- * the gravity-derived device orientation (fallback when no face is visible),
- * and a manual 180 flip for poses no sensor can disambiguate.
+ * 预览方向补偿的决策中心，把三路信号合成一个旋转角：
+ * <ol>
+ *   <li><b>人脸 roll 角</b>（首选）：有人脸时按人脸倾斜方向补偿——即使手机平放
+ *       在桌面俯视，也能让人脸朝上；带 60° 滞回防止在档位边界来回跳动</li>
+ *   <li><b>重力传感器</b>（无人脸时的回退）：竖持/倒持/横持四档</li>
+ *   <li><b>手动翻转</b>：以上都失效时（如平放且检测不到脸），用户点"翻转"转 180°</li>
+ * </ol>
  */
 public class OrientationBlender {
 

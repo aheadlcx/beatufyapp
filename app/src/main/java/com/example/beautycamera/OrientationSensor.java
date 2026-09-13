@@ -7,10 +7,9 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 /**
- * Tracks how the device is physically held (via the gravity sensor) and reports
- * the extra rotation (0/90/180/270) needed so the camera preview stays upright
- * from the user's point of view - e.g. flipping the phone upside down flips the
- * preview by 180. When the phone lies flat the last orientation is kept.
+ * 通过重力传感器判断持机姿势，输出补偿角（0/90/180/270）：
+ * 竖持 y>0 → 0°；倒持 y<0 → 180°；横持按 x 符号 → 90°/270°；
+ * 平放（z 轴分量占主导）时重力无法指示"哪边是上"，保持最近一次的方向。
  */
 public class OrientationSensor implements SensorEventListener {
 

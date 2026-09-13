@@ -13,41 +13,36 @@ import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * ML Kit contour-based face tracker. Publishes normalized (display space, uv)
- * geometry into a float array (all -1 when no face) — slot layout matches the
- * FD_* constants in {@link CameraRenderer}:
- *   0/1 left eye, 2/3 right eye, 4/5 center, 6 face width (by frame height),
- *   7/8 left cheek, 9/10 right cheek, 11/12 chin, 13/14 nose base,
- *   15/16 mouth L, 17/18 mouth R, 19/20 brow middle, 21/22 forehead top.
- * Coordinates are mirrored for the front camera to match the rendered preview.
+ * ML Kit 人脸关键点提取器。
+ *
+ * <p>每帧把相机分析流送入 ML Kit（轮廓模式），把检测结果转成 {@link FaceData}：
+ * 显示空间 uv 坐标（前置摄像头已镜像，与预览画面直接对应），整块数组交给渲染器。
+ * 检测失败/无人脸时发布 NO_FACE，渲染端据此关闭关键点驱动的局部效果。</p>
  */
 public class FaceTracker implements ImageAnalysis.Analyzer {
-
-    public static final int FACE_DATA_SIZE = 24;
 
     private static final float MIN_EYE_DIST = 0.02f;
     private static final float MAX_EYE_DIST = 0.35f;
     private static final float MIN_FACE_SIZE_RATIO = 0.08f;
-    private static final long ANALYZE_INTERVAL_MS = 40;   // ~25fps
+    private static final long ANALYZE_INTERVAL_MS = 40;   // 约 25fps，够用且省电
 
     public interface FrontCameraProvider {
         boolean isFront();
     }
 
-    private static final float[] NO_FACE = new float[FACE_DATA_SIZE];
+    private static final FaceData NO_FACE = new FaceData();
 
     static {
-        Arrays.fill(NO_FACE, -1f);
+        NO_FACE.clear();
     }
 
     private final FaceDetector detector;
     private final FrontCameraProvider frontCamera;
     private final CameraRenderer renderer;
-    private final float[] out = new float[FACE_DATA_SIZE];
+    private final FaceData out = new FaceData();
     private long lastRunMs = 0L;
     private long lastLogMs = 0L;
 
@@ -114,19 +109,20 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
                 });
     }
 
-    private float[] buildData(Face face, int w, int h) {
+    private FaceData buildData(Face face, int w, int h) {
         List<PointF> oval = points(face.getContour(FaceContour.FACE));
         float[] le = centroid(face.getContour(FaceContour.LEFT_EYE));
         float[] re = centroid(face.getContour(FaceContour.RIGHT_EYE));
         if (oval == null || le == null || re == null) return NO_FACE;
 
-        // When the head is tilted/inverted relative to the sensor, warp landmarks
-        // would land on wrong spots; disable reshaping then (global effects stay).
+        // 头部相对传感器倒置/过度倾斜时，关键点驱动的变形会落错位置，
+        // 此时禁用变形（磨皮等全局效果不受影响）。
         float eyeDist = dist(le, re);
         if (eyeDist < MIN_EYE_DIST || eyeDist > MAX_EYE_DIST) return NO_FACE;
 
         boolean mirror = frontCamera.isFront();
 
+        // 遍历脸轮廓：取左右极值（脸颊）、上下极值（下巴/发际）与质心（脸中心）
         float minX = Float.MAX_VALUE, maxX = -Float.MAX_VALUE;
         float minY = Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
         float sumX = 0f, sumY = 0f, topX = 0f;
@@ -151,29 +147,22 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
         float[] brow = browL != null && browR != null
                 ? uv((browL[0] + browR[0]) / 2f, (browL[1] + browR[1]) / 2f, w, h, mirror) : null;
 
-        out[0] = leUv[0];  out[1] = leUv[1];
-        out[2] = reUv[0];  out[3] = reUv[1];
-        out[4] = center[0]; out[5] = center[1];
-        out[6] = (maxX - minX) / (float) h;
-        out[7] = uv(minX, midY, w, h, mirror)[0];
-        out[8] = 1f - midY / (float) h;
-        out[9] = uv(maxX, midY, w, h, mirror)[0];
-        out[10] = 1f - midY / (float) h;
-        out[11] = center[0];
-        out[12] = 1f - maxY / (float) h;
-        out[13] = nose == null ? -1f : nose[0];
-        out[14] = nose == null ? -1f : nose[1];
-        out[15] = mouthL == null ? -1f : mouthL[0];
-        out[16] = mouthL == null ? -1f : mouthL[1];
-        out[17] = mouthR == null ? -1f : mouthR[0];
-        out[18] = mouthR == null ? -1f : mouthR[1];
-        out[19] = brow == null ? -1f : brow[0];
-        out[20] = brow == null ? -1f : brow[1];
-        out[21] = uv(topX, minY, w, h, mirror)[0];
-        out[22] = 1f - minY / (float) h;
+        out.set(FaceData.EYE_L, leUv[0], leUv[1]);
+        out.set(FaceData.EYE_R, reUv[0], reUv[1]);
+        out.set(FaceData.CENTER, center[0], center[1]);
+        out.set(FaceData.FACE_W, (maxX - minX) / (float) h, 0f);
+        out.set(FaceData.CHEEK_L, uv(minX, midY, w, h, mirror)[0], 1f - midY / (float) h);
+        out.set(FaceData.CHEEK_R, uv(maxX, midY, w, h, mirror)[0], 1f - midY / (float) h);
+        out.set(FaceData.CHIN, center[0], 1f - maxY / (float) h);
+        if (nose != null) out.set(FaceData.NOSE, nose[0], nose[1]);
+        if (mouthL != null) out.set(FaceData.MOUTH_L, mouthL[0], mouthL[1]);
+        if (mouthR != null) out.set(FaceData.MOUTH_R, mouthR[0], mouthR[1]);
+        if (brow != null) out.set(FaceData.BROW, brow[0], brow[1]);
+        out.set(FaceData.FOREHEAD, uv(topX, minY, w, h, mirror)[0], 1f - minY / (float) h);
         return out;
     }
 
+    /** 取一个 landmark 并转到显示空间 uv；不存在时返回 null。 */
     private static float[] landmark(Face face, int type, int w, int h, boolean mirror) {
         FaceLandmark lm = face.getLandmark(type);
         return lm == null ? null : uv(lm.getPosition().x, lm.getPosition().y, w, h, mirror);
@@ -182,6 +171,8 @@ public class FaceTracker implements ImageAnalysis.Analyzer {
     private static List<PointF> points(FaceContour contour) {
         return contour == null ? null : contour.getPoints();
     }
+
+    /** 传感器像素坐标 → 显示空间 uv（u 按前摄镜像，v 翻转为向上）。 */
 
     private static float[] uv(float px, float py, int w, int h, boolean mirror) {
         float u = px / (float) w;

@@ -6,10 +6,14 @@ import android.opengl.Matrix;
 import java.nio.FloatBuffer;
 
 /**
- * Owns the fullscreen quad and centralizes pass-draw boilerplate: every draw
- * binds the mesh, sets identity ST / crop=(1,1) / mirror=0 by default (an
- * {@link Extra} callback may override those or add uniforms), binds the listed
- * textures to units 0..n, then draws into the target.
+ * 全屏矩形（两个三角形）+ 统一的一次 pass 绘制入口。
+ *
+ * <p>GPU 渲染一张图到另一个纹理，固定要做：绑定顶点数据 → 使用 program →
+ * 设置公共 uniform → 绑定输入纹理到纹理单元 0..n → 绑定目标帧缓冲 → 设置视口 →
+ * 绘制。本类把这些样板收拢：调用方只需给出 program、目标 FBO、
+ * 纹理名/纹理对，以及一个 {@link Extra} 回调设置本 pass 特有的 uniform。</p>
+ *
+ * <p>默认 uniform：uSTMatrix=单位阵、uCrop=(1,1)、uMirror=0（Extra 可覆盖）。</p>
  */
 public class QuadDrawer {
 

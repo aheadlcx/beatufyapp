@@ -2,7 +2,12 @@ package com.example.beautycamera;
 
 import android.opengl.GLES20;
 
-/** Offscreen RGBA render target (texture + framebuffer). */
+/**
+ * 离屏渲染目标：一张 GPU 纹理 + 一个指向它的帧缓冲（FBO）。
+ *
+ * <p>可以把 FBO 理解为"画布"——渲染时不画到屏幕，而是画到这张纹理上，
+ * 供下一个 pass 当输入继续加工（多 pass 处理的基础）。</p>
+ */
 public class Fbo {
     public final int w;
     public final int h;

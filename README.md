@@ -17,22 +17,31 @@ Android 实时美颜相机 Demo。Java 7 语法编写，CameraX + OpenGL ES + ML
 gradle assembleDebug   # 需要 JDK 17 与 Android SDK 34
 ```
 
-详见 [AGENTS.md](AGENTS.md)（项目规则与调试经验）。
+详见 [AGENTS.md](AGENTS.md)（项目规则与调试经验）、[docs/滤镜实现原理.md](docs/滤镜实现原理.md)（写给 GL 新手的滤镜算法讲解）。
 
 ## 架构
 
 ```
 CameraX Preview ──> SurfaceTexture(OES) ──> OpenGL ES 管线 ──> 屏幕 / 拍照
                                             ├─ pass1: 人脸液态变形 (warp)
-                                            ├─ pass2: 半分辨率高斯模糊 x2
-                                            └─ pass3: 边缘保持磨皮 + 调色 + 滤镜
-ML Kit ImageAnalysis ──> 人脸轮廓/欧拉角 ──> warp 参数 & 方向补偿
+                                            ├─ pass2: GuidedFilter 引导滤波磨皮 (半分辨率)
+                                            └─ pass3: 磨皮混合/祛黑眼圈/修容/肤色/虚化/滤镜
+ML Kit 人脸检测 ──> FaceData 关键点 ──> FaceWarpBuilder 变形参数 + 方向补偿
+ML Kit 自拍分割 ──> 人像 mask ──> GL 纹理 ──> 背景虚化
 ```
 
 | 文件 | 职责 |
 |---|---|
-| `CameraRenderer` | 全部 shader 与多 pass 渲染管线、分屏、拍照 |
-| `FaceTracker` | ML Kit 人脸轮廓提取、几何安全校验 |
-| `CameraController` | CameraX 绑定与切换 |
-| `OrientationSensor` | 重力姿态检测（方向补偿） |
-| `MainActivity` | 滑杆/滤镜/拍照/对比 UI |
+| `CameraRenderer` | GL 管线编排：变形 pass、调用磨皮链、最终合成、拍照 |
+| `Shaders` | 全部 GLSL 源码（滤镜/磨皮/变形的算法本体） |
+| `GuidedFilter` | 引导滤波磨皮链（自持半分辨率 FBO 池） |
+| `QuadDrawer` | 全屏绘制样板（mesh + 纹理绑定 + 视口） |
+| `Fbo` | 离屏渲染目标 |
+| `GlProgram` | GLSL program 最小封装 |
+| `FaceTracker` | ML Kit 人脸关键点提取与几何安全校验 |
+| `FaceData` | 人脸关键点数组的类型化封装（跨线程载体） |
+| `FaceWarpBuilder` | 关键点 + 滑杆参数 → 变形槽位参数 |
+| `SegmentationAnalyzer` | ML Kit 自拍分割 → 8bit 人像 mask |
+| `OrientationSensor` / `OrientationBlender` | 持机姿势检测 / 方向补偿决策 |
+| `CameraController` | CameraX 绑定、切换、变焦 |
+| `MainActivity` | UI 编排（页签/滑杆/拍照/倒计时/补光） |

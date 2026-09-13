@@ -1,6 +1,12 @@
 package com.example.beautycamera;
 
-/** All GLSL sources, kept apart from pipeline logic. */
+/**
+ * 全部 GLSL 着色器源码，与管线逻辑分离。
+ *
+ * <p>着色器分两种：顶点着色器（VS，决定"画在哪里"，本项目固定全屏矩形）
+ * 和片元着色器（FS，决定"每个像素是什么颜色"，所有图像算法都在这里）。
+ * 滤镜/磨皮/美型的算法细节见 docs/滤镜实现原理.md。</p>
+ */
 public final class Shaders {
     private Shaders() {
     }

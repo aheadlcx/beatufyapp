@@ -28,7 +28,10 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * 相机主界面：预览 + 美颜/美型/滤镜/虚化/拍摄五个页签 + 拍照/对比/翻转/切换。
+ * 只做 UI 编排，图像处理全部在 CameraRenderer，方向决策在 OrientationBlender。
+ */public class MainActivity extends AppCompatActivity {
 
     private interface Getter {
         float get();

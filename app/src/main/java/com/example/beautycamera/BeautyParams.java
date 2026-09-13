@@ -1,6 +1,9 @@
 package com.example.beautycamera;
 
-/** User-adjustable beauty parameters. All in 0..1 unless noted. */
+/**
+ * 用户可调的美颜参数集（全部 0..1，volatile 保证跨线程可见）。
+ * UI 线程写，GL 线程在每帧 drawFinal 时读取。
+ */
 public class BeautyParams {
     public volatile float smooth = 0.75f;      // 磨皮（引导滤波强度）
     public volatile float whiten = 0.35f;      // 美白

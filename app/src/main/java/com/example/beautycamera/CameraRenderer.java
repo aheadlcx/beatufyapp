@@ -8,7 +8,6 @@ import android.opengl.GLSurfaceView;
 import android.view.Surface;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -16,39 +15,21 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Camera preview pipeline (GLES2):
- *   camera OES --(face warps)--> full FBO
- *   full --> GuidedFilter (half res) --> q (+ bg blur)
- *   screen/capture: final pass = smoothing mix + dark circles + contouring +
- *   skin tone + sharpen/saturate/filter + background blur mix
+ * 相机预览渲染管线（GLES2）。
+ *
+ * <p>数据流：
+ * <pre>
+ * CameraX Preview → SurfaceTexture(OES 外部纹理)
+ *   ├─ pass1  把相机帧画进 full FBO，同时按人脸关键点做美型变形（瘦脸/大眼…）
+ *   ├─ pass2  GuidedFilter：半分辨率引导滤波磨皮 → q（+ 可选的背景虚化模糊图）
+ *   └─ pass3  最终合成到屏幕/拍照：磨皮混合、祛黑眼圈、修容、肤色、
+ *             锐化、饱和度、背景虚化、滤镜
+ * </pre>
+ * 线程模型：GLSurfaceView 的 GL 线程跑 onDrawFrame；FaceTracker / SegmentationAnalyzer
+ * 在 CameraX 分析线程产出人脸关键点与分割 mask，经 volatile 字段/queueEvent 交接；
+ * 拍照请求从任意线程投递到 GL 线程执行后回调 Bitmap。</p>
  */
 public class CameraRenderer implements GLSurfaceView.Renderer {
-
-    // face data slots, see FaceTracker
-    private static final int FD_EYE_L = 0;
-    private static final int FD_EYE_R = 2;
-    private static final int FD_CENTER = 4;
-    private static final int FD_FACEW = 6;
-    private static final int FD_CHEEK_L = 7;
-    private static final int FD_CHEEK_R = 9;
-    private static final int FD_CHIN = 11;
-    private static final int FD_NOSE = 13;
-    private static final int FD_MOUTH_L = 15;
-    private static final int FD_MOUTH_R = 17;
-    private static final int FD_BROW = 19;
-    private static final int FD_FOREHEAD = 21;
-
-    // warp slots
-    private static final int W_EYE_L = 0;
-    private static final int W_EYE_R = 1;
-    private static final int W_CHEEK_L = 2;
-    private static final int W_CHEEK_R = 3;
-    private static final int W_CHIN = 4;
-    private static final int W_NOSE_L = 5;
-    private static final int W_NOSE_R = 6;
-    private static final int W_MOUTH_L = 7;
-    private static final int W_MOUTH_R = 8;
-    private static final int W_FOREHEAD = 9;
 
     public interface BitmapCallback {
         void onResult(Bitmap bmp);
@@ -65,6 +46,7 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
 
     private final BeautyParams params;
     private final SurfaceTextureReadyListener onSurfaceTextureReady;
+    private final FaceWarpBuilder warpBuilder;
 
     private final QuadDrawer quad = new QuadDrawer();
     private final GuidedFilter guided = new GuidedFilter(quad);
@@ -95,8 +77,8 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
     private int upHeight = 0;
     private boolean frontCamera = true;
 
-    private final float[] face = new float[FaceTracker.FACE_DATA_SIZE];
-    private final float[] faceTarget = new float[FaceTracker.FACE_DATA_SIZE];
+    private final FaceData face = new FaceData();
+    private final FaceData faceTarget = new FaceData();
     private float facePresence = 0f;
 
     public volatile boolean splitMode = false;
@@ -109,13 +91,15 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
     public CameraRenderer(BeautyParams params, SurfaceTextureReadyListener onSurfaceTextureReady) {
         this.params = params;
         this.onSurfaceTextureReady = onSurfaceTextureReady;
-        Arrays.fill(faceTarget, -1f);
-        Arrays.fill(face, -1f);
+        this.warpBuilder = new FaceWarpBuilder(params);
+        faceTarget.clear();
+        face.clear();
     }
 
-    public void setFaceData(float[] data) {
+    /** 由 FaceTracker 在分析线程调用；整块数组拷贝，无锁竞争。 */
+    public void setFaceData(FaceData src) {
         synchronized (faceTarget) {
-            System.arraycopy(data, 0, faceTarget, 0, FaceTracker.FACE_DATA_SIZE);
+            System.arraycopy(src.raw(), 0, faceTarget.raw(), 0, FaceData.SIZE);
         }
     }
 
@@ -286,16 +270,16 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
     }
 
     private void uploadWarps(GlProgram p) {
-        float[] cr = new float[12 * 3];
-        float[] dd = new float[12 * 2];
-        float[] tp = new float[12];
-        buildWarps(cr, dd, tp);
-        p.setVec3Array("uWarpCR", cr, 12);
-        p.setVec2Array("uWarpD", dd, 12);
-        for (int i = 0; i < 12; i++) {
+        float[] cr = new float[FaceWarpBuilder.WARP_COUNT * 3];
+        float[] dd = new float[FaceWarpBuilder.WARP_COUNT * 2];
+        float[] tp = new float[FaceWarpBuilder.WARP_COUNT];
+        warpBuilder.build(face, facePresence, rotationOverride, cr, dd, tp);
+        p.setVec3Array("uWarpCR", cr, FaceWarpBuilder.WARP_COUNT);
+        p.setVec2Array("uWarpD", dd, FaceWarpBuilder.WARP_COUNT);
+        for (int i = 0; i < FaceWarpBuilder.WARP_COUNT; i++) {
             GLES20.glUniform1f(p.uniform("uWarpType[" + i + "]"), tp[i]);
         }
-        p.setInt("uWarpCount", 12);
+        p.setInt("uWarpCount", FaceWarpBuilder.WARP_COUNT);
     }
 
     private void drawFinal(Fbo target, int w, int h, int baseTex, final boolean beauty) {
@@ -325,6 +309,7 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
     }
 
     private void setBeautyUniforms(GlProgram p, boolean beauty) {
+        // k：非美颜（对比模式左半屏）时全部系数置 0；s：叠加人脸渐入系数
         float k = beauty ? 1f : 0f;
         float s = facePresence * k;
         p.setFloat("uSmooth", params.smooth * k);
@@ -337,142 +322,25 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
         p.setFloat("uContour", params.contouring * s);
         p.setFloat("uBgMix", params.bgBlur * k);
 
-        float[] f = face;
-        float edx = (f[FD_EYE_R] - f[FD_EYE_L]) * s;
-        float edy = (f[FD_EYE_R + 1] - f[FD_EYE_L + 1]) * s;
-        p.setFloat("uEyeDist", (float) Math.sqrt(edx * edx + edy * edy));
-        p.setVec2("uEyeL", f[FD_EYE_L], f[FD_EYE_L + 1]);
-        p.setVec2("uEyeR", f[FD_EYE_R], f[FD_EYE_R + 1]);
-        p.setVec2("uNoseBase", f[FD_NOSE], f[FD_NOSE + 1]);
-        p.setVec2("uCheekL", f[FD_CHEEK_L], f[FD_CHEEK_L + 1]);
-        p.setVec2("uCheekR", f[FD_CHEEK_R], f[FD_CHEEK_R + 1]);
+        // 关键点驱动的局部效果：作用半径都由"眼距"推导，随脸大小自适应
+        float eyeDist = face.eyeDist() * s;
+        p.setFloat("uEyeDist", eyeDist);
+        p.setVec2("uEyeL", face.x(FaceData.EYE_L), face.y(FaceData.EYE_L));
+        p.setVec2("uEyeR", face.x(FaceData.EYE_R), face.y(FaceData.EYE_R));
+        p.setVec2("uNoseBase", face.x(FaceData.NOSE), face.y(FaceData.NOSE));
+        p.setVec2("uCheekL", face.x(FaceData.CHEEK_L), face.y(FaceData.CHEEK_L));
+        p.setVec2("uCheekR", face.x(FaceData.CHEEK_R), face.y(FaceData.CHEEK_R));
     }
 
-    // ---- warps ----
+    // ---- 小工具 ----
 
-    private void buildWarps(float[] cr, float[] dd, float[] tp) {
-        for (int i = 0; i < 12; i++) put(cr, dd, tp, i, 0.5f, 0.5f, 0.01f, 0f, 0f, true);
-        float s = facePresence;
-        if (s <= 0.01f) return;
-
-        // Warp landmarks are tracked in the un-compensated display space; rotate
-        // centers and pull directions by the orientation-compensation rotation.
-        int deg = rotationOverride;
-        float[] f = face;
-        float fw = f[FD_FACEW] * s;
-        float[] le = rotUv(f[FD_EYE_L], f[FD_EYE_L + 1], deg);
-        float[] re = rotUv(f[FD_EYE_R], f[FD_EYE_R + 1], deg);
-        float[] c = rotUv(f[FD_CENTER], f[FD_CENTER + 1], deg);
-        float[] cl = rotUv(f[FD_CHEEK_L], f[FD_CHEEK_L + 1], deg);
-        float[] crp = rotUv(f[FD_CHEEK_R], f[FD_CHEEK_R + 1], deg);
-        float[] ch = rotUv(f[FD_CHIN], f[FD_CHIN + 1], deg);
-        float[] up = rotVec(0f, 1f, deg);
-
-        float eyeR = fw * 0.20f;
-        put(cr, dd, tp, W_EYE_L, le[0], le[1], eyeR, params.eyeEnlarge * s, 0f, true);
-        put(cr, dd, tp, W_EYE_R, re[0], re[1], eyeR, params.eyeEnlarge * s, 0f, true);
-
-        float cheekR = fw * 0.55f;
-        float pull = params.faceSlim * fw * 0.32f * s;
-        float[] dl = toward(c, cl, pull);
-        put(cr, dd, tp, W_CHEEK_L, cl[0], cl[1], cheekR, dl[0], dl[1], false);
-        float[] dr = toward(c, crp, pull);
-        put(cr, dd, tp, W_CHEEK_R, crp[0], crp[1], cheekR, dr[0], dr[1], false);
-
-        put(cr, dd, tp, W_CHIN, ch[0], ch[1], fw * 0.35f,
-                up[0] * lift(params.chinSlim, fw * 0.18f, s),
-                up[1] * lift(params.chinSlim, fw * 0.18f, s), false);
-
-        if (f[FD_NOSE] >= 0 && params.noseSlim > 0.001f) {
-            float[] nb = rotUv(f[FD_NOSE], f[FD_NOSE + 1], deg);
-            float[] perp = perpendicular(le, re, nb);
-            float npull = lift(params.noseSlim, fw * 0.16f, s);
-            float nw = fw * 0.13f;
-            put(cr, dd, tp, W_NOSE_L, nb[0] - perp[0] * nw, nb[1] - perp[1] * nw, fw * 0.20f,
-                    perp[0] * npull, perp[1] * npull, false);
-            put(cr, dd, tp, W_NOSE_R, nb[0] + perp[0] * nw, nb[1] + perp[1] * nw, fw * 0.20f,
-                    -perp[0] * npull, -perp[1] * npull, false);
-        }
-
-        if (f[FD_MOUTH_L] >= 0 && f[FD_MOUTH_R] >= 0 && params.smileLift > 0.001f) {
-            float[] ml = rotUv(f[FD_MOUTH_L], f[FD_MOUTH_L + 1], deg);
-            float[] mr = rotUv(f[FD_MOUTH_R], f[FD_MOUTH_R + 1], deg);
-            float lift = lift(params.smileLift, fw * 0.12f, s);
-            put(cr, dd, tp, W_MOUTH_L, ml[0], ml[1], fw * 0.18f, up[0] * lift, up[1] * lift, false);
-            put(cr, dd, tp, W_MOUTH_R, mr[0], mr[1], fw * 0.18f, up[0] * lift, up[1] * lift, false);
-        }
-
-        if (f[FD_BROW] >= 0 && params.forehead > 0.001f) {
-            float[] bm = rotUv(f[FD_BROW], f[FD_BROW + 1], deg);
-            float[] fh = rotUv(f[FD_FOREHEAD], f[FD_FOREHEAD + 1], deg);
-            float lift = lift(params.forehead, fw * 0.10f, s);
-            put(cr, dd, tp, W_FOREHEAD, (bm[0] + fh[0]) * 0.5f, (bm[1] + fh[1]) * 0.5f,
-                    Math.max(dist(bm, fh) * 0.9f, 0.01f), up[0] * lift, up[1] * lift, false);
-        }
-    }
-
-    // ---- small utilities ----
-
-    private static float lift(float strength, float base, float presence) {
-        return strength * base * presence;
-    }
-
-    /** Unit direction from `from` toward `to`, scaled by len. */
-    private static float[] toward(float[] from, float[] to, float len) {
-        float x = to[0] - from[0];
-        float y = to[1] - from[1];
-        float l = Math.max(1e-4f, (float) Math.sqrt(x * x + y * y));
-        return new float[]{x / l * len, y / l * len};
-    }
-
-    /** Unit perpendicular of the eye line, oriented away from the nose axis. */
-    private static float[] perpendicular(float[] le, float[] re, float[] nose) {
-        float ex = (le[0] + re[0]) * 0.5f;
-        float ey = (le[1] + re[1]) * 0.5f;
-        float ax = nose[0] - ex;
-        float ay = nose[1] - ey;
-        float al = Math.max(1e-4f, (float) Math.sqrt(ax * ax + ay * ay));
-        return new float[]{ay / al, -ax / al};
-    }
-
-    private static float dist(float[] a, float[] b) {
-        float dx = a[0] - b[0];
-        float dy = a[1] - b[1];
-        return (float) Math.sqrt(dx * dx + dy * dy);
-    }
-
-    private static void put(float[] cr, float[] dd, float[] tp, int i,
-                            float cx, float cy, float r, float dx, float dy, boolean radial) {
-        cr[i * 3] = cx;
-        cr[i * 3 + 1] = cy;
-        cr[i * 3 + 2] = r;
-        dd[i * 2] = dx;
-        dd[i * 2 + 1] = dy;
-        tp[i] = radial ? 0f : 1f;
-    }
-
-    /** Rotate a uv point around (0.5,0.5) CCW by deg - matches the vertex shader. */
-    private static float[] rotUv(float u, float v, int deg) {
-        double a = Math.toRadians(deg);
-        float c = (float) Math.cos(a);
-        float s = (float) Math.sin(a);
-        return new float[]{c * (u - 0.5f) - s * (v - 0.5f) + 0.5f,
-                s * (u - 0.5f) + c * (v - 0.5f) + 0.5f};
-    }
-
-    private static float[] rotVec(float x, float y, int deg) {
-        double a = Math.toRadians(deg);
-        float c = (float) Math.cos(a);
-        float s = (float) Math.sin(a);
-        return new float[]{c * x - s * y, s * x + c * y};
-    }
-
+    /** 归一化到 0..359。 */
     private static int normDeg(int deg) {
         int d = deg % 360;
         return d < 0 ? d + 360 : d;
     }
 
-    // ---- frame resources ----
+    // ---- 帧资源管理 ----
 
     private void ensureTargets() {
         if (fboFull != null && fboFull.w == upWidth && fboFull.h == upHeight) return;
@@ -490,10 +358,10 @@ public class CameraRenderer implements GLSurfaceView.Renderer {
 
     private void updateFacePresence() {
         synchronized (faceTarget) {
-            boolean hasFace = faceTarget[0] >= 0;
+            boolean hasFace = faceTarget.hasFace();
             float goal = hasFace ? 1f : 0f;
             facePresence += (goal - facePresence) * 0.25f;
-            if (hasFace) System.arraycopy(faceTarget, 0, face, 0, FaceTracker.FACE_DATA_SIZE);
+            if (hasFace) System.arraycopy(faceTarget.raw(), 0, face.raw(), 0, FaceData.SIZE);
             if (facePresence < 0.02f && !hasFace) facePresence = 0f;
         }
     }
