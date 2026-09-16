@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.example.live'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+        consumerProguardFiles 'consumer-rules.pro'
+
+        ndk {
+            // 覆盖主流设备与模拟器；arm64 为主
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
+        }
+
+        externalNativeBuild {
+            cmake {
+                cppFlags '-std=c++17 -O2 -fvisibility=hidden'
+                arguments '-DANDROID_STL=c++_static'
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+            version '3.22.1'
+        }
+    }
+
+    compileOptions {
+        // 与 app 模块一致：源码保持 Java 7 语法，字节码级别 1.8（AndroidX 要求）
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    // 预编译 libwebrtc（含 org.webrtc.* Java API 与各 ABI 的 .so）
+    api 'io.getstream:stream-webrtc-android:1.3.8'
+    // WebSocket 信令
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+}

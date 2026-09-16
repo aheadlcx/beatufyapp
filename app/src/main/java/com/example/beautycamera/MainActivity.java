@@ -189,6 +189,16 @@ import com.google.android.material.tabs.TabLayout;
         });
         btnFlip.setAlpha(0.7f);
 
+        // 直播入口（WebRTC 模块，见 live/ 与 server/）
+        TextView liveBtn = findViewById(R.id.btnLive);
+        liveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new android.content.Intent(
+                        MainActivity.this, com.example.live.ui.LiveActivity.class));
+            }
+        });
+
         ImageButton captureBtn = findViewById(R.id.btnCapture);
         captureBtn.setOnClickListener(new View.OnClickListener() {
             @Override

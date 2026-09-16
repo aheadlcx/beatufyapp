@@ -1,0 +1,9 @@
+{
+  "name": "beautycamera-live-server",
+  "version": "1.0.0",
+  "description": "WebRTC live streaming signaling server (zero-dependency WebSocket)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
