@@ -30,8 +30,16 @@
 
 const http = require('http');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 
 const PORT = Number(process.argv[2]) || 8080;
+
+/** 直写文件日志（绕过 stdout 缓冲）。 */
+function flog(line) {
+  const stamp = new Date().toISOString().slice(11, 23);
+  fs.appendFileSync(__dirname + '/signaling.log', stamp + ' ' + line + '\n');
+}
 const MAGIC = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 
 /** roomId → room 状态 */
@@ -159,6 +167,7 @@ function handleSignal(conn, msg) {
       // 主播 → 指定观众
       if (conn.role !== 'broadcaster') return;
       const v = room.viewers.get(msg.viewerId);
+      flog(`offer for ${msg.viewerId}: ${v ? 'forwarded' : 'VIEWER NOT FOUND'}`);
       console.log(`[room ${conn.room}] offer from broadcaster → ${msg.viewerId}: ${v ? 'forwarded' : 'VIEWER NOT FOUND'}`);
       if (v) sendTo(v, { type: 'offer', sdp: msg.sdp });
       break;
@@ -172,6 +181,7 @@ function handleSignal(conn, msg) {
     }
     case 'candidate': {
       // ICE 候选双向转发
+      conn.lastSeen = Date.now();
       console.log(`[room ${conn.room}] candidate from ${conn.role} (${conn.connId || 'broadcaster'})`);
       if (conn.role === 'broadcaster') {
         const v = room.viewers.get(msg.viewerId);
@@ -185,6 +195,7 @@ function handleSignal(conn, msg) {
       break;
     }
     case 'chat': {
+      conn.lastSeen = Date.now();
       broadcast(room, { type: 'chat', from: conn.role === 'broadcaster' ? '主播' : '观众', text: String(msg.text).slice(0, 200) });
       break;
     }
@@ -200,12 +211,15 @@ function handleJoin(conn, msg) {
   conn.room = roomId;
 
   if (msg.role === 'broadcaster') {
-    if (room.broadcaster) {
-      sendTo(conn, { type: 'error', message: 'room already has a broadcaster' });
-      wsClose(conn, 4000);
-      return;
+    if (room.broadcaster && room.broadcaster !== conn) {
+      // 抢占：旧主播（可能是断电/崩溃残留的半开连接）强制离场
+      sendTo(room.broadcaster, { type: 'error', message: 'broadcaster replaced' });
+      wsClose(room.broadcaster, 4002);
+      room.broadcaster = null;
     }
     room.broadcaster = conn;
+    conn.lastSeen = Date.now();
+    flog(`broadcaster joined room=${roomId} total=${room.viewers.size}`);
     console.log(`[room ${roomId}] broadcaster joined`);
     sendTo(conn, { type: 'joined', viewers: room.viewers.size });
     notifyViewers(room);
@@ -217,6 +231,8 @@ function handleJoin(conn, msg) {
     }
     conn.connId = 'v' + crypto.randomBytes(4).toString('hex');
     conn.isViewerOf = roomId;
+    conn.lastSeen = Date.now();
+    flog(`viewer ${conn.connId} joined room=${roomId} total=${room.viewers.size}`);
     room.viewers.set(conn.connId, conn);
     console.log(`[room ${roomId}] viewer ${conn.connId} joined (${room.viewers.size} total)`);
     sendTo(conn, { type: 'joined', viewerId: conn.connId, viewers: room.viewers.size });
@@ -228,13 +244,36 @@ function handleJoin(conn, msg) {
 // ---------------- HTTP + WS 升级 ----------------
 
 const server = http.createServer((req, res) => {
-  // 提供一个健康检查/状态页，方便确认服务器公网可达
+  const urlPath = (req.url || '/').split('?')[0];
+
+  // Web 端（主播/观众共用一个页面，页面上选角色）
+  if (urlPath === '/' || urlPath.startsWith('/web')) {
+    const file = urlPath === '/' || urlPath === '/web' || urlPath === '/web/'
+        ? 'index.html'
+        : urlPath.replace(/^\/web\//, '');
+    const full = path.join(__dirname, 'web', path.basename(file));
+    fs.readFile(full, (err, data) => {
+      if (err) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('not found');
+        return;
+      }
+      const type = file.endsWith('.html') ? 'text/html; charset=utf-8'
+          : file.endsWith('.js') ? 'application/javascript' : 'application/octet-stream';
+      res.writeHead(200, { 'Content-Type': type });
+      res.end(data);
+    });
+    return;
+  }
+
+  // 健康检查/状态页，方便确认服务器公网可达
   const list = [...rooms.entries()].map(([id, r]) => ({ id, ...roomSnapshot(r) }));
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ ok: true, rooms: list }));
 });
 
 server.on('upgrade', (req, socket) => {
+  flog('upgrade from ' + socket.remoteAddress);
   const key = req.headers['sec-websocket-key'];
   if (!key || (req.headers.upgrade || '').toLowerCase() !== 'websocket') {
     socket.destroy();
@@ -248,7 +287,8 @@ server.on('upgrade', (req, socket) => {
     `Sec-WebSocket-Accept: ${accept}\r\n\r\n`
   );
 
-  const conn = { socket, room: null, role: null, connId: null, buf: Buffer.alloc(0) };
+  const conn = { socket, room: null, role: null, connId: null, buf: Buffer.alloc(0), lastSeen: Date.now() };
+  flog('ws open');
   socket.on('data', (chunk) => {
     conn.buf = Buffer.concat([conn.buf, chunk]);
     while (true) {
@@ -274,9 +314,32 @@ server.on('upgrade', (req, socket) => {
       }
     }
   });
-  socket.on('close', () => leaveRoom(conn));
-  socket.on('error', () => leaveRoom(conn));
+  socket.on('close', () => { flog('ws close (role=' + conn.role + ', id=' + conn.connId + ')'); leaveRoom(conn); });
+  socket.on('error', (e) => { flog('ws error: ' + e.message); leaveRoom(conn); });
 });
+
+// 心跳：每 30s 主动 ping；90s 无任何数据帧的连接视为半开连接，强制清理
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, room] of rooms) {
+    const all = [];
+    if (room.broadcaster) all.push(room.broadcaster);
+    for (const v of room.viewers.values()) all.push(v);
+    for (const c of all) {
+      if (!c.lastSeen) c.lastSeen = now;
+      if (now - c.lastSeen > 90000) {
+        console.log(`[room ${id}] dropping stale connection (${c.role})`);
+        wsClose(c, 1001);
+        leaveRoom(c);
+      } else {
+        try { c.socket.write(encodeFrame(0x9, Buffer.alloc(0))); } catch (e) {}
+      }
+    }
+  }
+  for (const [id, room] of rooms) {
+    if (!room.broadcaster && room.viewers.size === 0) rooms.delete(id);
+  }
+}, 30000).unref();
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`signaling server listening on 0.0.0.0:${PORT}`);

@@ -37,15 +37,25 @@ public class WsSignalClient implements SignalClient {
 
     private WebSocket ws;
     private Listener listener;
+    private String url;
     private String room;
     private String role;
+    private volatile boolean closedByUs = false;
+    private final Handler reconnectHandler = new Handler(Looper.getMainLooper());
+    private static final long RECONNECT_DELAY_MS = 3000;
 
     @Override
     public void connect(String wsUrl, final String room, final String role, final Listener l) {
+        this.url = wsUrl;
         this.room = room;
         this.role = role;
         this.listener = l;
-        Request request = new Request.Builder().url(wsUrl).build();
+        this.closedByUs = false;
+        openSocket(l);
+    }
+
+    private void openSocket(final Listener l) {
+        Request request = new Request.Builder().url(url).build();
         ws = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
@@ -72,7 +82,8 @@ public class WsSignalClient implements SignalClient {
                 main.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (listener != null) listener.onError("连接失败: " + t.getMessage());
+                        if (listener != null) listener.onError("连接失败，重连中: " + t.getMessage());
+                        scheduleReconnect(l);
                     }
                 });
             }
@@ -198,7 +209,8 @@ public class WsSignalClient implements SignalClient {
 
     private static JSONObject fromSdp(SessionDescription sdp) throws JSONException {
         JSONObject o = new JSONObject();
-        o.put("type", sdp.type.canonicalForm().toLowerCase());
+        // 注意：部分 libwebrtc 版本 canonicalForm() 返回 null，显式判断
+        o.put("type", sdp.type == SessionDescription.Type.ANSWER ? "answer" : "offer");
         o.put("sdp", sdp.description);
         return o;
     }
@@ -275,8 +287,20 @@ public class WsSignalClient implements SignalClient {
         sendJson("chat", "text", text);
     }
 
+    private void scheduleReconnect(final Listener l) {
+        if (closedByUs) return;
+        reconnectHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!closedByUs) openSocket(l);
+            }
+        }, RECONNECT_DELAY_MS);
+    }
+
     @Override
     public void close() {
+        closedByUs = true;
+        reconnectHandler.removeCallbacksAndMessages(null);
         listener = null;
         WebSocket w = ws;
         ws = null;

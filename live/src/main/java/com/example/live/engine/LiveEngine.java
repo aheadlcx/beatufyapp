@@ -42,6 +42,15 @@ public class LiveEngine {
         session = s;
     }
 
+    /** 主播开播（图片轮播模式，无摄像头也能跑，便于联调）。 */
+    public void startSlideshowBroadcaster(String wsUrl, String room,
+                                          @Nullable org.webrtc.SurfaceViewRenderer localRenderer) {
+        ensureStopped();
+        BroadcasterSession s = new BroadcasterSession(context, signal, wrap());
+        s.start(wsUrl, room, localRenderer, true);
+        session = s;
+    }
+
     /** 观众观看：remoteRenderer 为远端画面。 */
     public void startAsViewer(String wsUrl, String room,
                               @Nullable org.webrtc.SurfaceViewRenderer remoteRenderer) {

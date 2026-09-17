@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BeautyCamera 直播（Web 端）</title>
+<style>
+  body { margin:0; background:#000; color:#fff; font-family:sans-serif;
+         display:flex; flex-direction:column; height:100vh; }
+  #stage { flex:1; display:flex; align-items:center; justify-content:center; }
+  video, canvas { max-width:100%; max-height:100%; }
+  #setup { padding:16px; background:#111; }
+  input { width:240px; }
+  button { margin-right:8px; }
+  #status { padding:6px 12px; color:#8cf; font-size:14px; }
+  #chatlog { height:90px; overflow-y:auto; padding:4px 12px; font-size:13px; background:#0a0a0a; }
+  #chatbar { display:flex; padding:6px 12px; }
+  #chatText { flex:1; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <video id="remoteVideo" autoplay playsinline muted style="display:none"></video>
+  <canvas id="slideCanvas" width="720" height="1280" style="display:none"></canvas>
+</div>
+<div id="status">选择角色开始。默认信令为本页来源（同源部署，公网同域名即可用）。</div>
+<div id="chatlog"></div>
+<div id="chatbar">
+  <input id="chatText" placeholder="弹幕…">
+  <button onclick="sendChat()">发送</button>
+</div>
+<div id="setup">
+  房间号 <input id="room" value="room1">
+  <button onclick="startBroadcaster()">开播（图片轮播）</button>
+  <button onclick="startViewer()">观看</button>
+</div>
+
+<script>
+'use strict';
+// URL 参数自动开播：?autostart=broadcaster|viewer&room=xxx（供无头浏览器联调）
+window.addEventListener('DOMContentLoaded', () => {
+  const q = new URLSearchParams(location.search);
+  const auto = q.get('autostart');
+  if (auto === 'broadcaster') startBroadcaster();
+  else if (auto === 'viewer') startViewer();
+});
+// ============ 公共：WebSocket 信令（协议见 server/server.js） ============
+let ws = null;
+let role = null;
+let room = 'room1';
+const pcs = new Map();          // viewerId -> RTCPeerConnection（主播模式，每观众一条）
+let viewerPc = null;            // 观众模式唯一一条
+const ICE = [{ urls: 'stun:stun.l.google.com:19302' },
+             { urls: 'stun:stun1.l.google.com:19302' }];
+
+function status(t) { document.getElementById('status').textContent = t; }
+function addChat(from, text) {
+  const log = document.getElementById('chatlog');
+  const div = document.createElement('div');
+  div.textContent = '[' + from + '] ' + text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+function connect(roleIn) {
+  role = roleIn;
+  room = document.getElementById('room').value.trim() || 'room1';
+  // 同源部署：ws(s)://<host>:<port>，公网部署后天然可用
+  const url = (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host;
+  ws = new WebSocket(url);
+  ws.onopen = () => ws.send(JSON.stringify({ type: 'join', room, role }));
+  ws.onmessage = (ev) => {
+    let m;
+    try { m = JSON.parse(ev.data); } catch (e) { return; }
+    switch (m.type) {
+      case 'viewer-joined': if (role === 'broadcaster') onViewerJoined(m.viewerId); break;
+      case 'viewer-left':   onViewerLeft(m.viewerId); break;
+      case 'broadcaster-left': status('主播已下播'); cleanupViewer(); break;
+      case 'offer':         if (role === 'viewer') onOffer(m.sdp); break;
+      case 'answer':        if (role === 'broadcaster' && m.viewerId) onAnswer(m.viewerId, m.sdp); break;
+      case 'candidate': {
+        const c = m.candidate && m.candidate.candidate ? m.candidate : null;
+        if (!c) break;
+        const cand = new RTCIceCandidate(c);
+        if (role === 'broadcaster' && m.viewerId && pcs.get(m.viewerId)) {
+          pcs.get(m.viewerId).addIceCandidate(cand).catch(e => status('ICE 错误: ' + e.message));
+        } else if (role === 'viewer' && viewerPc) {
+          viewerPc.addIceCandidate(cand).catch(e => status('ICE 错误: ' + e.message));
+        }
+        break;
+      }
+      case 'viewers': status('在线观众: ' + m.count); break;
+      case 'chat': addChat(m.from, m.text); break;
+      case 'error': status('服务器错误: ' + m.message); break;
+    }
+  };
+  ws.onclose = () => status('信令连接断开');
+}
+
+// ============ 主播：canvas 图片轮播 → captureStream → 推流 ============
+let slideTimer = null;
+const SLIDES = [
+  { bg: '#1a73e8', text: '图片 1 · 蓝色' },
+  { bg: '#e8710a', text: '图片 2 · 橙色' },
+  { bg: '#188038', text: '图片 3 · 绿色' },
+];
+
+function drawSlide(idx) {
+  const canvas = document.getElementById('slideCanvas');
+  const ctx = canvas.getContext('2d');
+  const s = SLIDES[idx % SLIDES.length];
+  ctx.fillStyle = s.bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 96px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(s.text, canvas.width / 2, canvas.height / 2);
+  ctx.font = '40px sans-serif';
+  ctx.fillText(new Date().toLocaleTimeString(), canvas.width / 2, canvas.height / 2 + 120);
+}
+
+function startBroadcaster() {
+  const canvas = document.getElementById('slideCanvas');
+  const video = document.getElementById('remoteVideo');
+  video.style.display = 'none';
+  canvas.style.display = 'block';
+  let idx = 0;
+  drawSlide(idx);
+  slideTimer = setInterval(() => { idx++; drawSlide(idx); }, 2000); // 每 2 秒轮播一张
+  const stream = canvas.captureStream(30);   // canvas → 视频轨（30fps）
+  connect('broadcaster');
+  window.localStream = stream;
+  status('轮播开播中（' + SLIDES.length + ' 张图片循环），等待观众…');
+}
+
+// 每个观众一条 PeerConnection，把轮播轨加进去并主动 offer
+function onViewerJoined(viewerId) {
+  const pc = new RTCPeerConnection({ iceServers: ICE });
+  pcs.set(viewerId, pc);
+  window.localStream.getTracks().forEach(t => pc.addTrack(t, window.localStream));
+  pc.onicecandidate = (e) => {
+    if (e.candidate) ws.send(JSON.stringify({ type: 'candidate', viewerId, candidate: e.candidate.toJSON() }));
+  };
+  pc.onconnectionstatechange = () => status('观众 ' + viewerId + ' 连接状态: ' + pc.connectionState);
+  pc.createOffer().then(offer => pc.setLocalDescription(offer))
+    .then(() => ws.send(JSON.stringify({ type: 'offer', viewerId, sdp: { type: 'offer', sdp: pc.localDescription.sdp } })))
+    .catch(e => status('offer 失败: ' + e.message));
+}
+
+function onAnswer(viewerId, sdp) {
+  const pc = pcs.get(viewerId);
+  if (pc) pc.setRemoteDescription({ type: 'answer', sdp: sdp.sdp });
+}
+
+function onViewerLeft(viewerId) {
+  const pc = pcs.get(viewerId);
+  if (pc) { pc.close(); pcs.delete(viewerId); }
+}
+
+// ============ 观众：收 offer → answer → video 渲染 ============
+function startViewer() {
+  const canvas = document.getElementById('slideCanvas');
+  canvas.style.display = 'none';
+  const video = document.getElementById('remoteVideo');
+  video.style.display = 'block';
+  connect('viewer');
+  status('连接房间，等待主播画面…');
+}
+
+function onOffer(sdp) {
+  cleanupViewer();
+  viewerPc = new RTCPeerConnection({ iceServers: ICE });
+  viewerPc.ontrack = (e) => {
+    document.getElementById('remoteVideo').srcObject = e.streams[0];
+    status('收到主播音视频');
+    // 硬证据轮询：videoWidth>0 说明解码器已输出视频帧
+    const v = document.getElementById('remoteVideo');
+    const probe = setInterval(() => {
+      status('视频: ' + v.videoWidth + 'x' + v.videoHeight
+          + ' ready=' + v.readyState + ' pc=' + viewerPc.connectionState);
+      if (v.videoWidth > 0) clearInterval(probe);
+    }, 500);
+  };
+  viewerPc.onicecandidate = (e) => {
+    if (e.candidate) ws.send(JSON.stringify({ type: 'candidate', candidate: e.candidate.toJSON() }));
+  };
+  viewerPc.setRemoteDescription({ type: 'offer', sdp: sdp.sdp })
+    .then(() => viewerPc.createAnswer())
+    .then(answer => viewerPc.setLocalDescription(answer))
+    .then(() => ws.send(JSON.stringify({ type: 'answer', sdp: { type: 'answer', sdp: viewerPc.localDescription.sdp } })))
+    .catch(e => status('应答失败: ' + e.message));
+}
+
+function cleanupViewer() {
+  if (viewerPc) { viewerPc.close(); viewerPc = null; }
+  document.getElementById('remoteVideo').srcObject = null;
+}
+
+function sendChat() {
+  const t = document.getElementById('chatText').value.trim();
+  if (t && ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ type: 'chat', text: t }));
+    document.getElementById('chatText').value = '';
+  }
+}
+</script>
+</body>
+</html>

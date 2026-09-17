@@ -31,6 +31,7 @@ public class ViewerSession extends SessionBase {
     }
 
     /** 连接房间（role=viewer）。 */
+    @Override
     public void start(String wsUrl, String room) {
         signal.connect(wsUrl, room, "viewer", this);
     }
@@ -76,7 +77,7 @@ public class ViewerSession extends SessionBase {
     }
 
     @Override
-    public void onOffer(String viewerId, SessionDescription sdp) {
+    protected void onOfferInternal(String viewerId, SessionDescription sdp) {
         PeerConnection pc = createPeerConnection(BROADCASTER);
         if (pc == null) return;
         peers.put(BROADCASTER, pc);

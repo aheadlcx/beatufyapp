@@ -6,6 +6,10 @@ import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
 import org.webrtc.VideoTrack;
 
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,14 +34,52 @@ public abstract class SessionBase implements SignalClient.Listener {
 
     protected final Context context;
     protected final SignalClient signal;
+    /** UI 回调（自动切回主线程）。 */
     protected final Listener listener;
     /** viewerId → PeerConnection（观众会话中 viewerId 固定为 "broadcaster"）。 */
     protected final Map<String, PeerConnection> peers = new HashMap<>();
 
+    /**
+     * libwebrtc 要求 PC 的创建/操作/销毁尽量在同一线程完成，否则可能触发
+     * 信令线程的 CHECK 崩溃。所有信令回调与 PC 操作都 post 到这个专用线程。
+     */
+    protected final HandlerThread webrtcThread;
+    protected final Handler webrtcHandler;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
     protected SessionBase(Context context, SignalClient signal, Listener listener) {
         this.context = context.getApplicationContext();
         this.signal = signal;
-        this.listener = listener;
+        this.listener = new Listener() {
+            private final Listener l = listener;
+
+            @Override public void onStatus(final String message) {
+                mainHandler.post(() -> l.onStatus(message));
+            }
+            @Override public void onStats(final String json) {
+                mainHandler.post(() -> l.onStats(json));
+            }
+            @Override public void onChat(final String from, final String text) {
+                mainHandler.post(() -> l.onChat(from, text));
+            }
+            @Override public void onViewerCount(final int count) {
+                mainHandler.post(() -> l.onViewerCount(count));
+            }
+            @Override public void onRemoteVideo(final VideoTrack track) {
+                mainHandler.post(() -> l.onRemoteVideo(track));
+            }
+            @Override public void onEnded(final String reason) {
+                mainHandler.post(() -> l.onEnded(reason));
+            }
+        };
+        webrtcThread = new HandlerThread("webrtc-session");
+        webrtcThread.start();
+        webrtcHandler = new Handler(webrtcThread.getLooper());
+    }
+
+    /** 在 webrtc 专用线程上执行一段 PC 操作。 */
+    protected void onWebrtc(Runnable r) {
+        webrtcHandler.post(r);
     }
 
     /** 工厂方法：为对端创建一条 PeerConnection（含 STUN 配置）。 */
@@ -53,34 +95,48 @@ public abstract class SessionBase implements SignalClient.Listener {
         listener.onStatus("已连接房间");
     }
 
-    /** 默认空实现：观众会话不会收到 offer。 */
     @Override
-    public void onOffer(String viewerId, org.webrtc.SessionDescription sdp) {
+    public void onOffer(final String viewerId, final org.webrtc.SessionDescription sdp) {
+        onWebrtc(() -> onOfferInternal(viewerId, sdp));
     }
 
-    /** 默认空实现：主播会话不会收到 answer。 */
-    @Override
-    public void onAnswer(String viewerId, org.webrtc.SessionDescription sdp) {
-    }
-
-    /** 默认空实现：观众会话不会收到 viewer-joined。 */
-    @Override
-    public void onViewerJoined(String viewerId) {
-    }
-
-    /** 默认空实现：观众会话不会收到 viewer-left。 */
-    @Override
-    public void onViewerLeft(String viewerId) {
+    protected void onOfferInternal(String viewerId, org.webrtc.SessionDescription sdp) {
     }
 
     @Override
-    public void onCandidate(String viewerId, IceCandidate candidate) {
-        PeerConnection pc = viewerId == null
-                ? (peers.isEmpty() ? null : peers.values().iterator().next())
-                : peers.get(viewerId);
-        if (pc != null) {
-            pc.addIceCandidate(candidate);
-        }
+    public void onAnswer(final String viewerId, final org.webrtc.SessionDescription sdp) {
+        onWebrtc(() -> onAnswerInternal(viewerId, sdp));
+    }
+
+    protected void onAnswerInternal(String viewerId, org.webrtc.SessionDescription sdp) {
+    }
+
+    @Override
+    public void onViewerJoined(final String viewerId) {
+        onWebrtc(() -> onViewerJoinedInternal(viewerId));
+    }
+
+    protected void onViewerJoinedInternal(String viewerId) {
+    }
+
+    @Override
+    public void onViewerLeft(final String viewerId) {
+        onWebrtc(() -> onViewerLeftInternal(viewerId));
+    }
+
+    protected void onViewerLeftInternal(String viewerId) {
+    }
+
+    @Override
+    public void onCandidate(final String viewerId, final IceCandidate candidate) {
+        onWebrtc(() -> {
+            PeerConnection pc = viewerId == null
+                    ? (peers.isEmpty() ? null : peers.values().iterator().next())
+                    : peers.get(viewerId);
+            if (pc != null) {
+                pc.addIceCandidate(candidate);
+            }
+        });
     }
 
     @Override
@@ -105,15 +161,21 @@ public abstract class SessionBase implements SignalClient.Listener {
         listener.onEnded("broadcaster left");
     }
 
-    /** 关闭全部 PeerConnection 与信令。 */
+    /** 关闭全部 PeerConnection 与信令（在 webrtc 线程上执行）。 */
     public void stop() {
-        for (PeerConnection pc : peers.values()) {
-            try {
-                pc.close();
-            } catch (Exception ignored) {
+        webrtcHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                for (PeerConnection pc : peers.values()) {
+                    try {
+                        pc.close();
+                    } catch (Exception ignored) {
+                    }
+                }
+                peers.clear();
+                signal.close();
             }
-        }
-        peers.clear();
-        signal.close();
+        });
+        webrtcThread.quitSafely();
     }
 }

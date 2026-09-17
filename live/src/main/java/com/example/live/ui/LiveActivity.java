@@ -56,7 +56,39 @@ public class LiveActivity extends AppCompatActivity implements LiveEngine.Listen
         renderer.setZOrderMediaOverlay(false);
 
         setContentView(buildUi());
+
+        // 自动开播参数（调试/联调用）：
+        //   adb shell am start -e autostart slideshow|viewer -e url ws://... -e room r1 -n ...LiveActivity
+        final android.content.Intent intent = getIntent();
+        final String auto = intent.getStringExtra("autostart");
+        final String autoUrl = intent.getStringExtra("url");
+        final String autoRoom = intent.getStringExtra("room");
+
         statusView.setText("待开始。默认服务器为本机/局域网信令，公网部署见 server/README.md");
+
+        if (auto != null) {
+            final String url = autoUrl != null ? autoUrl : "ws://10.0.2.2:8080";
+            final String r = autoRoom != null ? autoRoom : "room1";
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    urlEdit.setText(url);
+                    roomEdit.setText(r);
+                    engine = new LiveEngine(LiveActivity.this, LiveActivity.this, null);
+                    if ("slideshow".equals(auto)) {
+                        engine.startSlideshowBroadcaster(url, r, renderer);
+                        statusView.setText("图片轮播开播中…");
+                    } else if ("viewer".equals(auto)) {
+                        engine.startAsViewer(url, r, renderer);
+                        statusView.setText("连接房间…");
+                    } else {
+                        engine.startAsBroadcaster(url, r, renderer);
+                        statusView.setText("开播中…");
+                    }
+                    setupPanel.setVisibility(View.GONE);
+                }
+            }, 1500);
+        }
     }
 
     // ---- UI 构建（纯代码，避免 live 模块引入过多资源依赖）----
@@ -126,6 +158,19 @@ public class LiveActivity extends AppCompatActivity implements LiveEngine.Listen
         buttons.addView(viewerBtn, new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         setupPanel.addView(buttons);
+
+        Button slideBtn = new Button(this);
+        slideBtn.setText("开播(轮播图片)");
+        slideBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ensurePerms()) {
+                    startSlideshow();
+                }
+            }
+        });
+        setupPanel.addView(slideBtn, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         root.addView(setupPanel);
 
         LinearLayout chatBar = new LinearLayout(this);
@@ -169,6 +214,14 @@ public class LiveActivity extends AppCompatActivity implements LiveEngine.Listen
         setupPanel.setVisibility(View.GONE);
     }
 
+    private void startSlideshow() {
+        engine = new LiveEngine(this, this, null);
+        engine.startSlideshowBroadcaster(urlEdit.getText().toString().trim(),
+                roomEdit.getText().toString().trim(), renderer);
+        statusView.setText("图片轮播开播中…");
+        setupPanel.setVisibility(View.GONE);
+    }
+
     private boolean ensurePerms() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED
@@ -197,6 +250,7 @@ public class LiveActivity extends AppCompatActivity implements LiveEngine.Listen
     @Override
     public void onStatus(String message) {
         statusView.setText(message);
+        addChat("sys", message);  // 诊断：状态进弹幕历史，防止被轮播状态覆盖
     }
 
     @Override
@@ -206,6 +260,10 @@ public class LiveActivity extends AppCompatActivity implements LiveEngine.Listen
 
     @Override
     public void onChat(String from, String text) {
+        addChat(from, text);
+    }
+
+    private void addChat(String from, String text) {
         chatLog.append('[').append(from).append("] ").append(text).append('\n');
         chatView.setText(chatLog.toString());
     }

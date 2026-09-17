@@ -52,6 +52,7 @@ public class BroadcasterSession extends SessionBase {
     private AudioTrack audioTrack;
     private CameraVideoCapturer capturer;
     private SurfaceTextureHelper textureHelper;
+    private ImageSlideShowSource slideSource;
     private LiveStats stats;
 
     private final android.os.Handler handler = new android.os.Handler(
@@ -65,24 +66,40 @@ public class BroadcasterSession extends SessionBase {
     /** 开始采集并连上信令（无本地预览）。 */
     @Override
     public void start(String wsUrl, String room) {
-        start(wsUrl, room, null);
+        start(wsUrl, room, null, false);
     }
 
-    /** 带本地预览的开播。 */
+    /** 带本地预览的开播（摄像头采集）。 */
     public void start(String wsUrl, String room,
                       org.webrtc.SurfaceViewRenderer localRenderer) {
+        start(wsUrl, room, localRenderer, false);
+    }
+
+    /**
+     * 开播。slideshow=true 时使用图片轮播作为视频源（无摄像头环境，
+     * 便于在模拟器/桌面环境联调），否则使用摄像头采集。
+     */
+    public void start(String wsUrl, String room,
+                      org.webrtc.SurfaceViewRenderer localRenderer, boolean slideshow) {
         PeerConnectionFactory factory = PeerFactoryProvider.factory(context);
 
         // ---- 采集 ----
-        capturer = createCameraCapturer();
-        EglBase.Context egl = PeerFactoryProvider.eglContext(context);
-        videoSource = factory.createVideoSource(capturer != null && capturer.isScreencast());
-        textureHelper = SurfaceTextureHelper.create("capture", egl);
-        if (capturer != null) {
-            capturer.initialize(textureHelper, context, videoSource.getCapturerObserver());
-            capturer.startCapture(1280, 720, 30);
+        if (slideshow) {
+            slideSource = new ImageSlideShowSource(context, 3,
+                    (index, total) -> listener.onStatus("轮播到第 " + (index + 1) + "/" + total + " 张"));
+            slideSource.start();
+            videoSource = slideSource.videoSource();
         } else {
-            Log.w(TAG, "no camera available");
+            capturer = createCameraCapturer();
+            EglBase.Context egl = PeerFactoryProvider.eglContext(context);
+            videoSource = factory.createVideoSource(capturer != null && capturer.isScreencast());
+            textureHelper = SurfaceTextureHelper.create("capture", egl);
+            if (capturer != null) {
+                capturer.initialize(textureHelper, context, videoSource.getCapturerObserver());
+                capturer.startCapture(1280, 720, 30);
+            } else {
+                Log.w(TAG, "no camera available");
+            }
         }
         videoTrack = factory.createVideoTrack("video0", videoSource);
         if (localRenderer != null) {
@@ -151,31 +168,44 @@ public class BroadcasterSession extends SessionBase {
     }
 
     @Override
-    public void onViewerJoined(final String viewerId) {
+    protected void onViewerJoinedInternal(final String viewerId) {
         Log.d(TAG, "onViewerJoined " + viewerId);
+        listener.onStatus("观众加入: " + viewerId);
         PeerConnection pc = createPeerConnection(viewerId);
         Log.d(TAG, "pc=" + pc);
-        if (pc == null) return;
+        if (pc == null) {
+            listener.onStatus("创建 PeerConnection 失败");
+            return;
+        }
         peers.put(viewerId, pc);
         // 主播是 offerer：拿到观众列表事件后主动推 offer
         pc.createOffer(new SdpObserver() {
             @Override public void onCreateSuccess(final SessionDescription sdp) {
-                Log.d(TAG, "offer created, sending to " + viewerId);
-                pc.setLocalDescription(noop(), sdp);
-                signal.sendOffer(viewerId, sdp);
+                listener.onStatus("offer 已生成，发送中…");
+                pc.setLocalDescription(new SdpObserver() {
+                    @Override public void onCreateSuccess(SessionDescription sdp2) { }
+                    @Override public void onSetSuccess() {
+                        listener.onStatus("本地 SDP 已设置，发送 offer");
+                        signal.sendOffer(viewerId, sdp);
+                    }
+                    @Override public void onCreateFailure(String error) { }
+                    @Override public void onSetFailure(String error) {
+                        listener.onStatus("setLocal 失败: " + error);
+                    }
+                }, sdp);
             }
             @Override public void onSetSuccess() { }
             @Override public void onCreateFailure(String error) {
-                Log.e(TAG, "createOffer failed: " + error);
+                listener.onStatus("createOffer 失败: " + error);
             }
             @Override public void onSetFailure(String error) {
-                Log.e(TAG, "setLocal failed: " + error);
+                listener.onStatus("setLocal 失败: " + error);
             }
         }, new MediaConstraints());
     }
 
     @Override
-    public void onAnswer(final String viewerId, SessionDescription sdp) {
+    protected void onAnswerInternal(final String viewerId, SessionDescription sdp) {
         PeerConnection pc = peers.get(viewerId);
         if (pc == null) return;
         pc.setRemoteDescription(new SdpObserver() {
@@ -189,7 +219,7 @@ public class BroadcasterSession extends SessionBase {
     }
 
     @Override
-    public void onViewerLeft(String viewerId) {
+    protected void onViewerLeftInternal(String viewerId) {
         PeerConnection pc = peers.remove(viewerId);
         if (pc != null) pc.close();
         listener.onStatus("观众离开: " + viewerId);
@@ -309,6 +339,10 @@ public class BroadcasterSession extends SessionBase {
     @Override
     public void stop() {
         handler.removeCallbacksAndMessages(null);
+        if (slideSource != null) {
+            slideSource.stop();
+            slideSource = null;
+        }
         if (stats != null) {
             stats.release();
             stats = null;

@@ -1,0 +1,22 @@
+16:32:47.526 upgrade from 127.0.0.1
+16:32:47.528 ws open
+16:32:47.546 broadcaster joined room=room1 total=0
+16:33:55.851 upgrade from 127.0.0.1
+16:33:55.852 ws open
+16:33:55.864 viewer vbfe99003 joined room=room1 total=0
+16:33:55.878 ws close (role=null, id=vbfe99003)
+16:34:47.559 ws error: write after end
+16:34:47.559 ws close (role=null, id=null)
+16:35:10.568 upgrade from 127.0.0.1
+16:35:10.569 ws open
+16:35:10.571 broadcaster joined room=room1 total=0
+16:35:19.947 upgrade from 127.0.0.1
+16:35:19.948 ws open
+16:35:19.951 viewer v99b0f06b joined room=room1 total=0
+16:35:29.923 ws error: read ECONNRESET
+16:35:29.923 ws close (role=null, id=v99b0f06b)
+16:37:10.582 ws error: write after end
+16:37:10.583 ws close (role=null, id=null)
+16:37:33.599 upgrade from 127.0.0.1
+16:37:33.600 ws open
+16:37:33.603 broadcaster joined room=room1 total=0
