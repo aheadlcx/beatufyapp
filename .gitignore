@@ -21,3 +21,6 @@ Thumbs.db
 
 # APK 不入库：只拷贝到 \192.168.0.104\work\demopk
 apk/
+
+# Node
+node_modules/
