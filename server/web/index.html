@@ -24,6 +24,7 @@
   <canvas id="slideCanvas" width="720" height="1280" style="display:none"></canvas>
 </div>
 <div id="status">选择角色开始。默认信令为本页来源（同源部署，公网同域名即可用）。</div>
+<div id="connState" style="padding:2px 12px;color:#ffb347;font-size:13px"></div>
 <div id="chatlog"></div>
 <div id="chatbar">
   <input id="chatText" placeholder="弹幕…">
@@ -48,12 +49,14 @@ window.addEventListener('DOMContentLoaded', () => {
 let ws = null;
 let role = null;
 let room = 'room1';
+let manualStop = false;
 const pcs = new Map();          // viewerId -> RTCPeerConnection（主播模式，每观众一条）
 let viewerPc = null;            // 观众模式唯一一条
 const ICE = [{ urls: 'stun:stun.l.google.com:19302' },
              { urls: 'stun:stun1.l.google.com:19302' }];
 
 function status(t) { document.getElementById('status').textContent = t; }
+function connState(t) { document.getElementById('connState').textContent = t; }
 function addChat(from, text) {
   const log = document.getElementById('chatlog');
   const div = document.createElement('div');
@@ -62,6 +65,7 @@ function addChat(from, text) {
   log.scrollTop = log.scrollHeight;
 }
 function connect(roleIn) {
+  manualStop = false;
   role = roleIn;
   room = document.getElementById('room').value.trim() || 'room1';
   // 同源部署：ws(s)://<host>:<port>，公网部署后天然可用
@@ -88,12 +92,15 @@ function connect(roleIn) {
         }
         break;
       }
-      case 'viewers': status('在线观众: ' + m.count); break;
+      case 'viewers': document.getElementById('connState').textContent = '在线观众: ' + m.count + ' | ' + document.getElementById('connState').textContent.split('||').pop().trim(); break;
       case 'chat': addChat(m.from, m.text); break;
       case 'error': status('服务器错误: ' + m.message); break;
     }
   };
-  ws.onclose = () => status('信令连接断开');
+  ws.onclose = () => {
+    status('信令断开，3 秒后重连…');
+    if (!manualStop) setTimeout(() => connect(role), 3000);
+  };
 }
 
 // ============ 主播：canvas 图片轮播 → captureStream → 推流 ============
@@ -140,7 +147,7 @@ function onViewerJoined(viewerId) {
   pc.onicecandidate = (e) => {
     if (e.candidate) ws.send(JSON.stringify({ type: 'candidate', viewerId, candidate: e.candidate.toJSON() }));
   };
-  pc.onconnectionstatechange = () => status('观众 ' + viewerId + ' 连接状态: ' + pc.connectionState);
+  pc.onconnectionstatechange = () => connState('观众 ' + viewerId + ': ' + pc.connectionState);
   pc.createOffer().then(offer => pc.setLocalDescription(offer))
     .then(() => ws.send(JSON.stringify({ type: 'offer', viewerId, sdp: { type: 'offer', sdp: pc.localDescription.sdp } })))
     .catch(e => status('offer 失败: ' + e.message));
@@ -171,15 +178,18 @@ function onOffer(sdp) {
   viewerPc = new RTCPeerConnection({ iceServers: ICE });
   viewerPc.ontrack = (e) => {
     document.getElementById('remoteVideo').srcObject = e.streams[0];
-    status('收到主播音视频');
+    connState('已收到轨道: ' + e.track.kind);
     // 硬证据轮询：videoWidth>0 说明解码器已输出视频帧
     const v = document.getElementById('remoteVideo');
     const probe = setInterval(() => {
-      status('视频: ' + v.videoWidth + 'x' + v.videoHeight
+      connState('视频 ' + v.videoWidth + 'x' + v.videoHeight
           + ' ready=' + v.readyState + ' pc=' + viewerPc.connectionState);
       if (v.videoWidth > 0) clearInterval(probe);
     }, 500);
   };
+  viewerPc.onconnectionstatechange = () => connState('WebRTC: ' + viewerPc.connectionState);
+  viewerPc.oniceconnectionstatechange = () => connState('ICE: ' + viewerPc.iceConnectionState
+      + ' / WebRTC: ' + viewerPc.connectionState);
   viewerPc.onicecandidate = (e) => {
     if (e.candidate) ws.send(JSON.stringify({ type: 'candidate', candidate: e.candidate.toJSON() }));
   };

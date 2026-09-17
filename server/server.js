@@ -109,12 +109,15 @@ function encodeFrame(opcode, payload) {
 }
 
 function wsSend(conn, obj) {
-  if (conn.socket.destroyed) return;
+  if (conn.socket.destroyed || !conn.socket.writable) return;
   conn.socket.write(encodeFrame(0x1, Buffer.from(JSON.stringify(obj))));
 }
 
 function wsClose(conn, code) {
-  if (conn.socket.destroyed) return;
+  if (conn.socket.destroyed || !conn.socket.writable) {
+    conn.socket.destroy();
+    return;
+  }
   const body = Buffer.alloc(2);
   body.writeUInt16BE(code || 1000, 0);
   conn.socket.write(encodeFrame(0x8, body));
@@ -129,9 +132,10 @@ function sendTo(conn, obj) {
 
 /** 广播给房间内所有人（可选排除某一个连接）。 */
 function broadcast(room, obj, except) {
-  if (room.broadcaster && room.broadcaster !== except) sendTo(room.broadcaster, obj);
+  if (room.broadcaster && room.broadcaster !== except
+      && room.broadcaster.socket.writable) sendTo(room.broadcaster, obj);
   for (const v of room.viewers.values()) {
-    if (v !== except) sendTo(v, obj);
+    if (v !== except && v.socket.writable) sendTo(v, obj);
   }
 }
 
@@ -159,6 +163,7 @@ function leaveRoom(conn) {
 }
 
 function handleSignal(conn, msg) {
+  flog('msg ' + msg.type + ' from ' + (conn.role || '?') + ' conn=' + conn.connId);
   const room = rooms.get(conn.room);
   if (!room) return;
 
@@ -182,7 +187,8 @@ function handleSignal(conn, msg) {
     case 'candidate': {
       // ICE 候选双向转发
       conn.lastSeen = Date.now();
-      console.log(`[room ${conn.room}] candidate from ${conn.role} (${conn.connId || 'broadcaster'})`);
+      const candStr = msg.candidate && msg.candidate.candidate ? msg.candidate.candidate : '';
+      console.log(`[room ${conn.room}] candidate from ${conn.role} (${conn.connId || 'broadcaster'}): ${candStr.slice(0, 80)}`);
       if (conn.role === 'broadcaster') {
         const v = room.viewers.get(msg.viewerId);
         if (v) sendTo(v, { type: 'candidate', candidate: msg.candidate });
@@ -206,6 +212,7 @@ function handleSignal(conn, msg) {
 
 function handleJoin(conn, msg) {
   if (conn.room) return; // 一个连接只进一个房间
+  conn.role = msg.role === 'broadcaster' ? 'broadcaster' : 'viewer';  // 关键：记录角色
   const roomId = String(msg.room || 'default').slice(0, 64);
   const room = getRoom(roomId);
   conn.room = roomId;
@@ -227,6 +234,7 @@ function handleJoin(conn, msg) {
     if (!room.broadcaster) {
       sendTo(conn, { type: 'error', message: 'no broadcaster in this room yet' });
       wsClose(conn, 4001);
+      conn.room = null;
       return;
     }
     conn.connId = 'v' + crypto.randomBytes(4).toString('hex');
@@ -236,6 +244,7 @@ function handleJoin(conn, msg) {
     room.viewers.set(conn.connId, conn);
     console.log(`[room ${roomId}] viewer ${conn.connId} joined (${room.viewers.size} total)`);
     sendTo(conn, { type: 'joined', viewerId: conn.connId, viewers: room.viewers.size });
+    flog('viewer-joined -> broadcaster');
     sendTo(room.broadcaster, { type: 'viewer-joined', viewerId: conn.connId });
     notifyViewers(room);
   }
