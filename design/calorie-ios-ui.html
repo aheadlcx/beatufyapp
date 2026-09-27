@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>轻卡 · iOS 卡路里记录 · 高保真 UI</title>
+<style>
+:root{
+  --bg:#F7F7F7; --card:#FFFFFF; --ink:#171717; --sub:#8A8A8A; --line:#EEEEEE;
+  --orange:#F28B45; --green:#29B873; --red:#E65D5D; --blue:#5B8DEF;
+  --orange-l:#F6C7A5; --red-l:#F0A8A0; --green-l:#BCE6D2; --blue-l:#A9C4F5;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI","PingFang SC","HarmonyOS Sans SC","MiSans","Source Han Sans SC","Microsoft YaHei",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#E9E9EC;font-family:var(--font);-webkit-font-smoothing:antialiased;color:var(--ink);}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;}
+
+/* ========== 画板 ========== */
+.board{padding:56px 48px 96px;max-width:1960px;margin:0 auto;}
+.board-head h1{font-size:26px;font-weight:700;letter-spacing:.5px;}
+.board-head h1 span{color:var(--sub);font-weight:500;font-size:16px;margin-left:14px;letter-spacing:0;}
+.board-head p{font-size:13px;color:var(--sub);margin-top:10px;line-height:1.8;max-width:860px;}
+.tokens{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;align-items:flex-start;}
+.tk{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #E3E3E6;border-radius:8px;padding:8px 12px;font-size:11px;color:var(--sub);}
+.tk i{width:26px;height:16px;border-radius:4px;display:inline-block;border:1px solid rgba(0,0,0,.06);}
+.tk b{color:var(--ink);font-weight:500;}
+.tk.type{gap:2px;}
+.screens{display:flex;flex-wrap:wrap;gap:64px 48px;margin-top:52px;justify-content:flex-start;align-items:flex-start;}
+.shot{display:flex;flex-direction:column;gap:18px;}
+.shot-label{text-align:center;}
+.shot-label .no{font-size:11px;color:var(--sub);letter-spacing:2px;}
+.shot-label .nm{font-size:14px;font-weight:600;margin-top:3px;}
+.shot-label .ds{font-size:11px;color:var(--sub);margin-top:4px;}
+
+/* ========== 机身 ========== */
+.phone{width:390px;min-height:844px;background:var(--bg);border-radius:42px;overflow:hidden;position:relative;
+  display:flex;flex-direction:column;flex-shrink:0;
+  outline:1px solid rgba(0,0,0,.08);box-shadow:0 2px 6px rgba(0,0,0,.05),0 18px 44px rgba(0,0,0,.10);}
+.content{flex:1;display:flex;flex-direction:column;}
+
+/* 状态栏 */
+.statusbar{height:54px;position:relative;display:flex;justify-content:space-between;align-items:flex-end;padding:0 28px 6px;flex-shrink:0;}
+.island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:33px;border-radius:20px;background:#000;}
+.sb-time{font-size:15.5px;font-weight:600;letter-spacing:.2px;}
+.sb-icons{display:flex;align-items:center;gap:7px;}
+
+/* 导航栏（全站统一 44px） */
+.navbar{height:44px;display:flex;align-items:center;padding:0 14px;position:relative;flex-shrink:0;}
+.nav-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;
+  font-size:17px;font-weight:600;white-space:nowrap;}
+.nav-title .ar{color:#9A9A9A;display:flex;}
+.nav-side{margin-left:auto;display:flex;align-items:center;gap:18px;color:var(--ink);}
+.nav-left{display:flex;align-items:center;color:var(--ink);}
+.nav-plain{font-size:15px;color:var(--sub);}
+.nav-plain.o{color:var(--orange);font-weight:600;}
+/* 搜索导航 */
+.nav-search{flex:1;height:32px;background:#EFEFEF;border-radius:8px;display:flex;align-items:center;gap:6px;padding:0 9px;margin-right:12px;color:var(--sub);}
+.nav-search .q{font-size:14.5px;color:var(--ink);flex:1;line-height:1;}
+
+/* 通用卡片 / 分组 */
+.card{background:var(--card);border-radius:12px;margin:0 16px 12px;}
+.group{background:var(--card);border-radius:12px;margin:0 16px 12px;overflow:hidden;}
+.group-head{display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 16px;font-size:12.5px;color:var(--sub);border-bottom:1px solid var(--line);}
+.group-head b{color:var(--ink);font-weight:600;font-size:13px;}
+.row{display:flex;align-items:center;gap:12px;padding:0 16px;height:54px;background:#fff;}
+.row+.row,.group-head+.row{border-top:1px solid var(--line);}
+.row .ic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.row .mid{flex:1;min-width:0;}
+.row .t1{font-size:15px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.row .t2{font-size:12px;color:var(--sub);margin-top:3px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.row .val{display:flex;align-items:baseline;gap:3px;flex-shrink:0;}
+.row .val b{font-size:15px;font-weight:600;}
+.row .val .u{font-size:10px;color:var(--sub);font-weight:400;}
+.row .chev{color:#C9C9C9;display:flex;flex-shrink:0;}
+
+/* 色值工具类 */
+.c-o{color:var(--orange);} .c-g{color:var(--green);} .c-r{color:var(--red);} .c-b{color:var(--blue);} .c-s{color:var(--sub);}
+svg{display:block;} svg text{font-family:var(--font);}
+.symbol{display:none;}
+
+/* 今日卡片 */
+.todaycard{padding:16px 16px 14px;}
+.tc{display:flex;align-items:center;gap:20px;}
+.ring{position:relative;width:116px;height:116px;flex-shrink:0;}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
+.ring-c .rl{font-size:11px;color:var(--sub);}
+.ring-c .rv{font-size:29px;font-weight:600;letter-spacing:-.5px;line-height:1.1;}
+.ring-c .ru{font-size:10px;color:var(--sub);}
+.tstats{flex:1;display:flex;flex-direction:column;}
+.ts{display:flex;align-items:baseline;justify-content:space-between;padding:7px 0;}
+.ts+.ts{border-top:1px solid var(--line);}
+.ts span{font-size:13px;color:var(--sub);}
+.ts b{font-size:16px;font-weight:600;display:flex;align-items:baseline;gap:3px;}
+.ts b i{font-style:normal;font-size:10px;color:var(--sub);font-weight:400;}
+.macros{display:flex;gap:16px;margin-top:15px;padding-top:13px;border-top:1px solid var(--line);}
+.m{flex:1;}
+.ml{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;margin-bottom:6px;}
+.ml .n{font-weight:500;}
+.ml .v{color:var(--sub);}
+.bar{height:4px;border-radius:2px;background:#F1F1F1;overflow:hidden;}
+.bar i{display:block;height:100%;border-radius:2px;}
+
+/* Tab 栏（全站统一） */
+.tabbar{background:#fff;border-top:1px solid var(--line);display:flex;padding:7px 6px 0;position:relative;flex-shrink:0;height:84px;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:#ADADAD;padding-top:2px;}
+.tab.on{color:var(--ink);font-weight:600;}
+.tab .ti{width:23px;height:23px;display:flex;}
+.tab.on .ti svg{stroke-width:2;}
+.tab-add{width:46px;height:46px;border-radius:50%;background:var(--orange);margin:-21px 10px 0;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 12px rgba(242,139,69,.36);flex-shrink:0;}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#171717;opacity:.9;}
+.foot{height:34px;position:relative;flex-shrink:0;}
+
+/* 分段控制 */
+.seg{margin:2px 16px 12px;background:#ECECEC;border-radius:9px;height:32px;display:flex;padding:2px;}
+.seg div{flex:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:#666;}
+.seg .on{background:#fff;border-radius:7px;box-shadow:0 1px 3px rgba(0,0,0,.09);color:var(--ink);font-weight:500;}
+
+/* 指标行 */
+.mets{display:flex;padding:15px 0;}
+.met{flex:1;text-align:center;}
+.met+.met{border-left:1px solid var(--line);}
+.met .l{font-size:11px;color:var(--sub);}
+.met .v{font-size:18px;font-weight:600;margin-top:5px;display:flex;align-items:baseline;justify-content:center;gap:2px;}
+.met .v i{font-style:normal;font-size:10px;color:var(--sub);font-weight:400;}
+
+/* 图表卡 */
+.cc-head{display:flex;justify-content:space-between;align-items:baseline;padding:14px 16px 4px;}
+.cc-head .t{font-size:14px;font-weight:600;}
+.cc-head .s{font-size:11px;color:var(--sub);}
+.chart{width:100%;height:auto;}
+
+/* 键盘 */
+.pad{display:grid;grid-template-columns:repeat(3,1fr) 78px;gap:6px;padding:12px;}
+.pad .k{height:50px;background:#F5F5F5;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:21px;font-weight:500;color:var(--ink);}
+.pad .k.fn{font-size:14px;color:var(--sub);background:#F5F5F5;}
+.pad .k.done{background:var(--orange);color:#fff;font-size:16px;font-weight:600;grid-row:span 2;height:auto;}
+.pad .k.log{font-size:13.5px;}
+
+/* 筹码 */
+.chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{height:30px;padding:0 13px;border-radius:15px;border:1px solid #E4E4E4;font-size:12.5px;color:#555;display:flex;align-items:center;white-space:nowrap;}
+.chip.on{border-color:var(--orange);color:var(--orange);background:rgba(242,139,69,.07);font-weight:500;}
+
+/* 分类网格 */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);padding:14px 8px;row-gap:16px;}
+.cat{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11.5px;color:#555;}
+.cat .ci{width:26px;height:26px;display:flex;}
+.cat.on{color:var(--orange);font-weight:600;}
+
+/* 单选行 */
+.dot{width:20px;height:20px;border-radius:50%;border:1.5px solid #D9D9D9;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;}
+.dot.on{border-color:var(--orange);background:var(--orange);}
+
+/* 底部按钮 */
+.bottombar{background:var(--bg);padding:10px 16px 0;flex-shrink:0;}
+.btn-main{height:50px;border-radius:12px;background:var(--orange);color:#fff;font-size:16px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-main .u{font-size:12px;font-weight:400;opacity:.85;}
+
+/* 开关 */
+.sw{width:50px;height:30px;border-radius:15px;background:#E9E9E9;position:relative;flex-shrink:0;}
+.sw i{position:absolute;left:2px;top:2px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.16);}
+
+/* 运动库网格 */
+.egrid{display:grid;grid-template-columns:repeat(3,1fr);row-gap:16px;padding:14px 8px 16px;}
+.eitem{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.eitem .n{font-size:12.5px;}
+.eitem .c{font-size:10px;color:var(--sub);}
+
+/* 营养四列 */
+.ngrid{display:grid;grid-template-columns:repeat(4,1fr);padding:14px 0;}
+.ngrid .cell{text-align:center;}
+.ngrid .cell+.cell{border-left:1px solid var(--line);}
+.ngrid .l{font-size:11px;color:var(--sub);}
+.ngrid .v{font-size:16px;font-weight:600;margin-top:6px;display:flex;align-items:baseline;justify-content:center;gap:2px;}
+.ngrid .v i{font-style:normal;font-size:10px;color:var(--sub);font-weight:400;}
+
+/* 头像 */
+.avatar{width:54px;height:54px;border-radius:50%;background:#ECECEC;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--sub);font-weight:500;flex-shrink:0;}
+
+/* 环形图图例 */
+.legend{flex:1;display:flex;flex-direction:column;gap:2px;}
+.lg{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;}
+.lg+.lg{border-top:1px solid var(--line);}
+.lg .d{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.lg .n{flex:1;}
+.lg .g{color:var(--sub);font-size:12px;}
+.lg .p{font-weight:600;width:38px;text-align:right;}
+
+/* 结构排行 */
+.srow{display:flex;align-items:center;gap:10px;padding:0 16px;height:44px;}
+.srow+.srow{border-top:1px solid var(--line);}
+.srow .n{width:44px;font-size:13px;flex-shrink:0;}
+.srow .b{flex:1;height:4px;border-radius:2px;background:#F1F1F1;overflow:hidden;}
+.srow .b i{display:block;height:100%;border-radius:2px;}
+.srow .p{width:34px;text-align:right;font-size:12px;color:var(--sub);flex-shrink:0;}
+.srow .k{width:66px;text-align:right;font-size:13px;font-weight:600;flex-shrink:0;}
+.stack{display:flex;height:10px;border-radius:5px;overflow:hidden;margin:12px 16px 2px;}
+
+/* 标签 */
+.tag{font-size:10px;color:var(--sub);border:1px solid #E5E5E5;border-radius:4px;padding:1px 5px;margin-left:6px;flex-shrink:0;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<!-- ============ SVG 符号库 ============ -->
+<svg class="symbol" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<symbol id="i-rice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5h17"/><path d="M3.5 12.5a8.25 8.25 0 0 0 16.5 0"/><path d="M6.5 12.5a5.5 5.5 0 0 1 11 0"/></symbol>
+<symbol id="i-oat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 13h17"/><path d="M3.5 13a8.25 8.25 0 0 0 16.5 0"/><path d="M9.5 5c-.8 1 .8 2 0 3.2M14.5 5c-.8 1 .8 2 0 3.2"/></symbol>
+<symbol id="i-egg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5c3.3 0 5.8 3.7 5.8 7.5a5.8 5.8 0 0 1-11.6 0C6.2 8.2 8.7 4.5 12 4.5Z"/></symbol>
+<symbol id="i-banana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5c-1 6 2.5 13.5 12.5 14 1 0 2-.1 2.9-.4C16 21 8.5 20.5 5.5 13 4.6 10.7 4.4 7.8 5 4.5Z"/></symbol>
+<symbol id="i-broccoli" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="8.5" r="3"/><circle cx="16.5" cy="8.5" r="3"/><circle cx="12" cy="6.5" r="3.4"/><path d="M12 10v6"/><path d="M12 16c-1.6 0-2.7-1-3.1-2.4M12 16c1.6 0 2.7-1 3.1-2.4"/></symbol>
+<symbol id="i-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.5h11V13a5.5 5.5 0 0 1-11 0V8.5Z"/><path d="M16 9.5h1.5a2.75 2.75 0 0 1 0 5.5H16"/><path d="M8.5 3v2.5M12.5 3v2.5"/></symbol>
+<symbol id="i-meat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="9.5" r="6"/><path d="M13.8 13.8l3.7 3.7"/><circle cx="19" cy="16" r="1.7"/><circle cx="16" cy="19" r="1.7"/></symbol>
+<symbol id="i-grain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 13h17"/><path d="M3.5 13a8.25 8.25 0 0 0 16.5 0"/><circle cx="9" cy="9.5" r=".9" fill="currentColor" stroke="none"/><circle cx="13" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 4.5C10 4.5 4.5 10 4.5 19.5c9.5 0 15-5.5 15-15Z"/><path d="M5 19C9 13 13.5 8.5 19 5"/></symbol>
+<symbol id="i-run" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="4.6" r="1.9"/><path d="M13.7 6.9 11 11.2"/><path d="M12.9 7.9l3.2 1.1 2.3-.6"/><path d="M12.5 9.5l-3.4.4-2.1 2.4"/><path d="M11 11.2l3 1.6 1.4 4.2"/><path d="M11 11.2l-3.6 2.8-.4 3.6"/></symbol>
+<symbol id="i-walk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8.6" cy="8.2" rx="2.5" ry="3.9"/><ellipse cx="15.4" cy="16.6" rx="2.5" ry="3.9"/><circle cx="6.9" cy="3.4" r=".75" fill="currentColor" stroke="none"/><circle cx="9.6" cy="3.9" r=".75" fill="currentColor" stroke="none"/><circle cx="13.7" cy="11.8" r=".75" fill="currentColor" stroke="none"/><circle cx="16.4" cy="12.3" r=".75" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-apple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5c-4.2-.6-7 2-6.5 5.5.5 3.4 3.2 5.8 6.5 5.8s6-2.4 6.5-5.8c.5-3.5-2.3-6.1-6.5-5.5Z"/><path d="M12 7.5c0-1.8.7-2.9 2.2-3.5"/><path d="M14.2 4c1.6-.2 2.8.6 3.3 2-1.5.5-2.8 0-3.3-2Z"/></symbol>
+<symbol id="i-cup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4.5h11L16.2 20H7.8L6.5 4.5Z"/><path d="M13.5 4.5l1.8-2.8"/></symbol>
+<symbol id="i-cookie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><circle cx="9.5" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13.5" r="1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c.7 2.6 2.6 3.9 3.8 5.6 1.1 1.6 1.5 3.2 1 5A5.6 5.6 0 0 1 12 18a5.6 5.6 0 0 1-4.8-3.9c-.5-1.8-.1-3.4 1-5C9.4 7.4 11.3 6.1 12 3.5Z"/><path d="M12 18c-1.5-1-2-2.4-1.4-4"/></symbol>
+<symbol id="t-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.8 12 4l8 6.8"/><path d="M6 9.8V20h12V9.8"/><path d="M10 20v-5.5h4V20"/></symbol>
+<symbol id="t-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M12 20V5.5M19 20v-10"/></symbol>
+<symbol id="t-me" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+<symbol id="i-plusc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.2"/><path d="M15.6 15.6 20 20"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-chev-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+<symbol id="i-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6.5 15 12l-5.5 5.5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2l2.3 4.7 5.2.7-3.8 3.6.9 5.1L12 15.9l-4.6 2.4.9-5.1L4.5 9.6l5.2-.7L12 4.2Z"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10M8.5 6.5 12 3l3.5 3.5"/><path d="M8 10H5.5v9.5h13V10H16"/></symbol>
+<symbol id="i-set" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.6M12 17.9v2.6M3.5 12h2.6M17.9 12h2.6M6 6l1.8 1.8M16.2 16.2 18 18M18 6l-1.8 1.8M7.8 16.2 6 18"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3.2"/><path d="M8.6 14.6a3.9 3.9 0 0 1 6.8 0"/><path d="M12 14.6l2.3-3.1"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a5.3 5.3 0 0 1 5.3 5.3c0 3.8 1.4 5.2 1.7 5.7H5c.3-.5 1.7-1.9 1.7-5.7A5.3 5.3 0 0 1 12 4Z"/><path d="M10.3 18.5a1.8 1.8 0 0 0 3.4 0"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10.5h16M8.5 3.5V7M15.5 3.5V7"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5A8.5 8.5 0 1 1 10.5 4 7 7 0 0 0 20 13.5Z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3.5V8M5.5 3.5V7a2 2 0 0 0 4 0V3.5M7.5 9.5v11"/><path d="M16.5 3.5c2 2.5 2.3 6.5-.4 8.6v8.4"/></symbol>
+<symbol id="i-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.2" cy="16.2" r="3.3"/><circle cx="17.8" cy="16.2" r="3.3"/><path d="M6.2 16.2 10 8.8h4.4M14.4 8.8l3.4 7.4M9 16.2h6"/><path d="M9.6 8.8l.5-1.6M13.2 7.2H15"/></symbol>
+<symbol id="i-dumbbell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7.2 7.8v8.4M16.8 7.8v8.4M4.2 9.8v4.4M19.8 9.8v4.4M7.2 12h9.6M2.8 12h1.4M19.8 12h1.4"/></symbol>
+<symbol id="i-yoga" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.5c-1.8 0-3 .8-4 2l-3.4 2M12 7.5c1.8 0 3 .8 4 2l3.4 2"/><path d="M4.5 16.8c2.3-1.5 4.7-2.3 7.5-2.3s5.2.8 7.5 2.3"/><path d="M9.5 20.5h5"/></symbol>
+<symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M4.6 9.2c4.7 3 10.1 3 14.8 0M4.6 14.8c4.7-3 10.1-3 14.8 0"/></symbol>
+<symbol id="i-height" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M12 14V5"/><path d="M8.5 8.5 12 5l3.5 3.5"/><path d="M4 18v2M8 18v1.4M12 18v2M16 18v1.4M20 18v2"/></symbol>
+<symbol id="i-dots" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="8" cy="8" r="1.4"/><circle cx="16" cy="8" r="1.4"/><circle cx="8" cy="16" r="1.4"/><circle cx="16" cy="16" r="1.4"/></symbol>
+<symbol id="i-delete" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5h8M9 5.5V4a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 4v1.5M6.5 5.5l1 13a1.5 1.5 0 0 0 1.5 1.4h6a1.5 1.5 0 0 0 1.5-1.4l1-13"/></symbol>
+</defs>
+</svg>
+
+<!-- ============ 画板标题 ============ -->
+<div class="board">
+  <div class="board-head">
+    <h1>轻卡 · 卡路里记录 <span>iOS 高保真产品 UI · 浅色模式 · 8 屏</span></h1>
+    <p>设计语言参考「钱迹」式简洁数据工具风格：极简、克制、高信息密度、数据优先、快速记录、弱装饰。页面 390×844（9:19.5），信息较多的页面（今日、统计、我的）按内容适度加长画布，不缩小组件。所有数据在各屏之间保持一致。</p>
+    <div class="tokens">
+      <div class="tk"><i style="background:#F7F7F7"></i>页面 <b>#F7F7F7</b></div>
+      <div class="tk"><i style="background:#FFFFFF"></i>卡片 <b>#FFFFFF</b></div>
+      <div class="tk"><i style="background:#171717"></i>主文字 <b>#171717</b></div>
+      <div class="tk"><i style="background:#8A8A8A"></i>辅文字 <b>#8A8A8A</b></div>
+      <div class="tk"><i style="background:#EEEEEE"></i>分割线 <b>#EEEEEE · 1px</b></div>
+      <div class="tk"><i style="background:#F28B45"></i>热量摄入 <b>#F28B45</b></div>
+      <div class="tk"><i style="background:#29B873"></i>运动 / 健康 <b>#29B873</b></div>
+      <div class="tk"><i style="background:#E65D5D"></i>超标 <b>#E65D5D</b></div>
+      <div class="tk"><i style="background:#5B8DEF"></i>辅助数据 <b>#5B8DEF</b></div>
+      <div class="tk type"><b>规格</b>&nbsp;卡片圆角 12px · 列表行高 54px · 导航 44px · 图标 26px 线性</div>
+    </div>
+  </div>
+
+  <div class="screens">
+
+  <!-- ================================================== 01 今日总览 -->
+  <div class="shot">
+  <div class="phone">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-title"><span class="ar"><svg width="18" height="18"><use href="#i-chev-l"/></svg></span><span class="num">9月22日 今天</span><span class="ar"><svg width="18" height="18"><use href="#i-chev-r"/></svg></span></div>
+      <div class="nav-side"><svg width="21" height="21" color="#444"><use href="#i-cal"/></svg></div>
+    </div>
+
+    <div class="content">
+      <!-- 核心汇总 -->
+      <div class="card todaycard">
+        <div class="tc">
+          <div class="ring">
+            <svg width="116" height="116" viewBox="0 0 116 116">
+              <circle cx="58" cy="58" r="49" stroke="#F1F1F1" stroke-width="9.5" fill="none"/>
+              <circle cx="58" cy="58" r="49" stroke="#F28B45" stroke-width="9.5" fill="none" stroke-linecap="round" stroke-dasharray="228.6 307.9" transform="rotate(-90 58 58)"/>
+            </svg>
+            <div class="ring-c"><div class="rl">剩余可吃</div><div class="rv num">750</div><div class="ru">kcal</div></div>
+          </div>
+          <div class="tstats">
+            <div class="ts"><span>预算</span><b class="num">2,000<i>kcal</i></b></div>
+            <div class="ts"><span>已摄入</span><b class="num c-o">1,486<i>kcal</i></b></div>
+            <div class="ts"><span>运动消耗</span><b class="num c-g">+236<i>kcal</i></b></div>
+          </div>
+        </div>
+        <div class="macros">
+          <div class="m"><div class="ml"><span class="n c-g">蛋白质</span><span class="v num">108/130g</span></div><div class="bar"><i style="width:83%;background:#29B873"></i></div></div>
+          <div class="m"><div class="ml"><span class="n c-o">碳水</span><span class="v num">148/220g</span></div><div class="bar"><i style="width:67%;background:#F28B45"></i></div></div>
+          <div class="m"><div class="ml"><span class="n c-b">脂肪</span><span class="v num">49/70g</span></div><div class="bar"><i style="width:70%;background:#5B8DEF"></i></div></div>
+        </div>
+      </div>
+
+      <!-- 早餐 -->
+      <div class="group">
+        <div class="group-head"><span>早餐 · 07:42</span><span class="num">共 338 kcal</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-oat"/></svg></div><div class="mid"><div class="t1">燕麦牛奶粥</div><div class="t2">1碗 · 约300克</div></div><div class="val"><b class="num">178</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-egg"/></svg></div><div class="mid"><div class="t1">水煮蛋</div><div class="t2">1个 · 约55克</div></div><div class="val"><b class="num">71</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-banana"/></svg></div><div class="mid"><div class="t1">香蕉</div><div class="t2">1根 · 约120克</div></div><div class="val"><b class="num">89</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <!-- 午餐 -->
+      <div class="group">
+        <div class="group-head"><span>午餐 · 12:18</span><span class="num">共 690 kcal</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-rice"/></svg></div><div class="mid"><div class="t1">番茄牛腩盖饭</div><div class="t2">大碗 · 约550克</div></div><div class="val"><b class="num">628</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-broccoli"/></svg></div><div class="mid"><div class="t1">清炒西兰花</div><div class="t2">1份 · 约200克</div></div><div class="val"><b class="num">62</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <!-- 加餐 -->
+      <div class="group">
+        <div class="group-head"><span>加餐 · 15:30</span><span class="num">共 142 kcal</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-coffee"/></svg></div><div class="mid"><div class="t1">拿铁</div><div class="t2">中杯 · 355毫升 · 脱脂奶</div></div><div class="val"><b class="num">142</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <!-- 运动 -->
+      <div class="group">
+        <div class="group-head"><span>运动 · 17:20</span><span class="num c-g">共 +236 kcal</span></div>
+        <div class="row"><div class="ic c-g"><svg width="26" height="26"><use href="#i-run"/></svg></div><div class="mid"><div class="t1">慢跑</div><div class="t2">5.2公里 · 32分钟 · 配速6'09"</div></div><div class="val"><b class="num c-g">+236</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <!-- 晚餐 -->
+      <div class="group">
+        <div class="group-head"><span>晚餐 · 18:36</span><span class="num">共 316 kcal</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">香煎鸡胸肉</div><div class="t2">150克 · 少油</div></div><div class="val"><b class="num">168</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-grain"/></svg></div><div class="mid"><div class="t1">糙米饭</div><div class="t2">半碗 · 约150克</div></div><div class="val"><b class="num">116</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-leaf"/></svg></div><div class="mid"><div class="t1">凉拌黄瓜</div><div class="t2">1份 · 约150克</div></div><div class="val"><b class="num">32</b><span class="u">kcal</span></div></div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <div class="tab on"><div class="ti"><svg width="23" height="23" color="#171717"><use href="#t-home"/></svg></div>今日</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-chart"/></svg></div>统计</div>
+      <div class="tab-add"><svg width="22" height="22" color="#FFFFFF"><use href="#i-plus"/></svg></div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#i-run"/></svg></div>运动</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-me"/></svg></div>我的</div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+  <div class="shot-label"><div class="no">01</div><div class="nm">今日总览</div><div class="ds">日期导航 · 摄入环 · 三大营养素 · 餐次分组</div></div>
+  </div>
+
+  <!-- ================================================== 02 记一笔 -->
+  <div class="shot">
+  <div class="phone">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-left"><span class="nav-plain">取消</span></div>
+      <div class="nav-title">记一笔</div>
+      <div class="nav-side"><span class="nav-plain o">保存</span></div>
+    </div>
+
+    <div class="content">
+      <!-- 名称 -->
+      <div class="group" style="margin-bottom:10px;">
+        <div class="row">
+          <div class="ic c-s"><svg width="22" height="22"><use href="#i-search"/></svg></div>
+          <div class="mid"><div class="t1">番茄牛腩盖饭<span style="display:inline-block;width:1.5px;height:16px;background:#F28B45;margin-left:3px;vertical-align:-3px;"></span></div></div>
+          <span style="font-size:13px;color:var(--sub);flex-shrink:0;">食物库</span>
+          <div class="chev" style="color:#C9C9C9;"><svg width="15" height="15"><use href="#i-chev"/></svg></div>
+        </div>
+      </div>
+
+      <!-- 热量 + 份量 -->
+      <div class="card" style="padding:14px 16px 15px;margin-bottom:10px;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+          <div>
+            <div style="font-size:11px;color:var(--sub);">热量（kcal）</div>
+            <div class="num" style="font-size:42px;font-weight:600;color:var(--orange);line-height:1.15;letter-spacing:-1px;margin-top:2px;">628</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;">
+            <div class="chips"><span class="chip">小碗 350克</span><span class="chip on">大碗 550克</span><span class="chip">自定义</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 餐次 -->
+      <div class="seg" style="margin-bottom:10px;">
+        <div>早餐</div><div class="on">午餐</div><div>晚餐</div><div>加餐</div>
+      </div>
+
+      <!-- 键盘 -->
+      <div class="group" style="margin-bottom:10px;">
+        <div class="pad">
+          <div class="k num">1</div><div class="k num">2</div><div class="k num">3</div><div class="k fn log">再记一笔</div>
+          <div class="k num">4</div><div class="k num">5</div><div class="k num">6</div><div class="k fn"><svg width="21" height="21" color="#8A8A8A"><use href="#i-delete"/></svg></div>
+          <div class="k num">7</div><div class="k num">8</div><div class="k num">9</div><div class="k done">完成</div>
+          <div class="k num">.</div><div class="k num">0</div><div class="k num">00</div>
+        </div>
+      </div>
+
+      <!-- 分类 -->
+      <div class="group">
+        <div class="group-head"><span>分类</span><span>主食</span></div>
+        <div class="cats">
+          <div class="cat on"><div class="ci"><svg width="26" height="26" color="#F28B45"><use href="#i-grain"/></svg></div>主食</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-meat"/></svg></div>肉蛋</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-broccoli"/></svg></div>蔬菜</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-apple"/></svg></div>水果</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-cup"/></svg></div>饮品</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-cookie"/></svg></div>零食</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-dots"/></svg></div>其他</div>
+          <div class="cat"><div class="ci"><svg width="26" height="26" color="#555"><use href="#i-run"/></svg></div>运动</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><div class="homebar"></div></div>
+  </div>
+  <div class="shot-label"><div class="no">02</div><div class="nm">记一笔 · 快速记录</div><div class="ds">数字键盘直录 · 份量筹码 · 分类网格</div></div>
+  </div>
+
+  <!-- ================================================== 03 食物搜索 -->
+  <div class="shot">
+  <div class="phone">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-search">
+        <svg width="15" height="15"><use href="#i-search"/></svg>
+        <span class="q">鸡胸</span>
+        <svg width="14" height="14" color="#B9B9B9"><use href="#i-x"/></svg>
+      </div>
+      <span style="font-size:15px;flex-shrink:0;">取消</span>
+    </div>
+
+    <div class="content">
+      <div class="group">
+        <div class="group-head"><span>食物库 · 5 条结果</span><span>热量 / 100克</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">鸡胸肉 · 生</div><div class="t2">每100克 · 蛋白质 24.2克</div></div><div class="val"><b class="num">133</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">香煎鸡胸肉</div><div class="t2">每100克 · 少油烹饪</div></div><div class="val"><b class="num">165</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">即食鸡胸肉 · 原味</div><div class="t2">每100克 · 开袋即食</div></div><div class="val"><b class="num">118</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-leaf"/></svg></div><div class="mid"><div class="t1">鸡胸肉藜麦沙拉</div><div class="t2">1份 · 约350克</div></div><div class="val"><b class="num">320</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">鸡胸肉肠</div><div class="t2">每100克 · 高蛋白</div></div><div class="val"><b class="num">152</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>我的最近记录</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">香煎鸡胸肉</div><div class="t2">昨天 · 午餐 · 150克</div></div><div class="val"><b class="num">168</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">即食鸡胸肉 · 原味</div><div class="t2">9月20日 · 加餐 · 100克</div></div><div class="val"><b class="num">118</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-coffee"/></svg></div><div class="mid"><div class="t1">拿铁</div><div class="t2">今天 · 加餐 · 中杯</div></div><div class="val"><b class="num">142</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-banana"/></svg></div><div class="mid"><div class="t1">香蕉</div><div class="t2">今天 · 早餐 · 1根</div></div><div class="val"><b class="num">89</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <div style="height:52px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--sub);">
+        没有想要的结果？创建自定义食物 ›
+      </div>
+    </div>
+    <div class="foot"><div class="homebar"></div></div>
+  </div>
+  <div class="shot-label"><div class="no">03</div><div class="nm">食物搜索</div><div class="ds">搜索结果 · 最近记录 · 自定义食物入口</div></div>
+  </div>
+
+  <!-- ================================================== 04 食物详情 -->
+  <div class="shot">
+  <div class="phone">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-left"><svg width="22" height="22"><use href="#i-chev-l"/></svg></div>
+      <div class="nav-title">番茄牛腩盖饭</div>
+      <div class="nav-side"><svg width="21" height="21" color="#444"><use href="#i-star"/></svg></div>
+    </div>
+
+    <div class="content">
+      <div class="group">
+        <div class="group-head"><span>每 100 克</span><span>食物库 · 平台校验</span></div>
+        <div class="ngrid">
+          <div class="cell"><div class="l">热量</div><div class="v c-o num">114<i>kcal</i></div></div>
+          <div class="cell"><div class="l">蛋白质</div><div class="v num">7.2<i>g</i></div></div>
+          <div class="cell"><div class="l">脂肪</div><div class="v num">4.1<i>g</i></div></div>
+          <div class="cell"><div class="l">碳水</div><div class="v num">12.8<i>g</i></div></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>选择份量</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-rice"/></svg></div><div class="mid"><div class="t1">小碗</div><div class="t2">约350克</div></div><div class="val"><b class="num">399</b><span class="u">kcal</span></div><div class="dot"></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-rice"/></svg></div><div class="mid"><div class="t1">大碗</div><div class="t2">约550克 · 常用</div></div><div class="val"><b class="num c-o">628</b><span class="u">kcal</span></div><div class="dot on"><svg width="12" height="12" color="#FFFFFF"><use href="#i-check"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-dots"/></svg></div><div class="mid"><div class="t1">自定义</div><div class="t2">手动输入克数</div></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>营养构成 · 大碗 550克</span></div>
+        <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:13px;">
+          <div><div class="ml"><span class="n c-g">蛋白质</span><span class="v num">39.6g · 供能25%</span></div><div class="bar"><i style="width:25%;background:#29B873"></i></div></div>
+          <div><div class="ml"><span class="n c-o">碳水</span><span class="v num">70.4g · 供能44%</span></div><div class="bar"><i style="width:44%;background:#F28B45"></i></div></div>
+          <div><div class="ml"><span class="n c-b">脂肪</span><span class="v num">22.6g · 供能31%</span></div><div class="bar"><i style="width:31%;background:#5B8DEF"></i></div></div>
+        </div>
+      </div>
+
+      <div class="seg">
+        <div>早餐</div><div class="on">午餐</div><div>晚餐</div><div>加餐</div>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <div class="btn-main">添加到午餐<span class="u num">· 628 kcal</span></div>
+      <div class="foot" style="height:30px;"><div class="homebar"></div></div>
+    </div>
+  </div>
+  <div class="shot-label"><div class="no">04</div><div class="nm">食物详情 · 份量</div><div class="ds">每100克营养 · 份量选择 · 供能占比</div></div>
+  </div>
+
+  <!-- ================================================== 05 统计·热量 -->
+  <div class="shot">
+  <div class="phone" style="min-height:844px;">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-title"><span class="ar"><svg width="18" height="18"><use href="#i-chev-l"/></svg></span><span class="num">9月16日 - 9月22日</span><span class="ar"><svg width="18" height="18"><use href="#i-chev-r"/></svg></span></div>
+      <div class="nav-side"><svg width="20" height="20" color="#444"><use href="#i-share"/></svg></div>
+    </div>
+
+    <div class="content">
+      <div class="seg"><div class="on">热量</div><div>营养</div><div>体重</div></div>
+
+      <div class="card mets">
+        <div class="met"><div class="l">平均摄入</div><div class="v num">1,872<i>kcal</i></div></div>
+        <div class="met"><div class="l">每日预算</div><div class="v num">2,000<i>kcal</i></div></div>
+        <div class="met"><div class="l">超标</div><div class="v num c-r">2<i>天</i></div></div>
+      </div>
+
+      <div class="card" style="padding-bottom:8px;">
+        <div class="cc-head"><span class="t">每日摄入</span><span class="s">kcal · 虚线为预算</span></div>
+        <svg class="chart" viewBox="0 0 326 158">
+          <line x1="0" y1="140" x2="326" y2="140" stroke="#EEEEEE" stroke-width="1"/>
+          <line x1="2" y1="52" x2="324" y2="52" stroke="#171717" opacity=".22" stroke-width="1" stroke-dasharray="3 4"/>
+          <text x="322" y="46" text-anchor="end" font-size="9.5" fill="#8A8A8A">预算 2,000</text>
+          <rect x="16.8" y="64.3" width="13" height="75.7" rx="3" fill="#F6C7A5"/>
+          <rect x="63.4" y="56.2" width="13" height="83.8" rx="3" fill="#F6C7A5"/>
+          <rect x="109.9" y="45.8" width="13" height="94.2" rx="3" fill="#F0A8A0"/>
+          <rect x="156.5" y="67.2" width="13" height="72.8" rx="3" fill="#F6C7A5"/>
+          <rect x="203.1" y="57.3" width="13" height="82.7" rx="3" fill="#F6C7A5"/>
+          <rect x="249.6" y="37.9" width="13" height="102.1" rx="3" fill="#F0A8A0"/>
+          <rect x="296.2" y="74.6" width="13" height="65.4" rx="3" fill="#F28B45"/>
+          <text x="23.3" y="57.3" text-anchor="middle" font-size="10" fill="#8A8A8A">1,720</text>
+          <text x="69.9" y="49.2" text-anchor="middle" font-size="10" fill="#8A8A8A">1,905</text>
+          <text x="116.4" y="38.8" text-anchor="middle" font-size="10" fill="#E65D5D" font-weight="500">2,140</text>
+          <text x="163" y="60.2" text-anchor="middle" font-size="10" fill="#8A8A8A">1,655</text>
+          <text x="209.6" y="50.3" text-anchor="middle" font-size="10" fill="#8A8A8A">1,880</text>
+          <text x="256.1" y="30.9" text-anchor="middle" font-size="10" fill="#E65D5D" font-weight="500">2,320</text>
+          <text x="302.7" y="67.6" text-anchor="middle" font-size="10" fill="#F28B45" font-weight="600">1,486</text>
+          <text x="23.3" y="154" text-anchor="middle" font-size="10" fill="#8A8A8A">一</text>
+          <text x="69.9" y="154" text-anchor="middle" font-size="10" fill="#8A8A8A">二</text>
+          <text x="116.4" y="154" text-anchor="middle" font-size="10" fill="#8A8A8A">三</text>
+          <text x="163" y="154" text-anchor="middle" font-size="10" fill="#8A8A8A">四</text>
+          <text x="209.6" y="154" text-anchor="middle" font-size="10" fill="#8A8A8A">五</text>
+          <text x="256.1" y="154" text-anchor="middle" font-size="10" fill="#8A8A8A">六</text>
+          <text x="302.7" y="154" text-anchor="middle" font-size="10" fill="#171717" font-weight="600">日</text>
+        </svg>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>热量平衡 · 本周</span></div>
+        <div class="row"><div class="mid"><div class="t1">摄入合计</div></div><div class="val"><b class="num">13,106</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic c-g"><svg width="26" height="26"><use href="#i-flame"/></svg></div><div class="mid"><div class="t1">运动消耗</div></div><div class="val"><b class="num c-g">−1,248</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic c-g"><svg width="26" height="26"><use href="#i-target"/></svg></div><div class="mid"><div class="t1">相对预算缺口<div class="t2">≈ 0.28 千克脂肪当量</div></div></div><div class="val"><b class="num c-g">−2,142</b><span class="u">kcal</span></div></div>
+      </div>
+
+      <div class="card" style="padding-bottom:8px;">
+        <div class="cc-head"><span class="t">本周体重</span><span class="s num c-g">62.4 kg · −0.4</span></div>
+        <svg class="chart" viewBox="0 0 326 92">
+          <polyline points="23.3,18 69.9,30 116.4,30 163,42 209.6,54 256.1,54 302.7,66" fill="none" stroke="#5B8DEF" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="23.3" cy="18" r="2.6" fill="#fff" stroke="#5B8DEF" stroke-width="1.6"/>
+          <circle cx="69.9" cy="30" r="2.6" fill="#fff" stroke="#5B8DEF" stroke-width="1.6"/>
+          <circle cx="116.4" cy="30" r="2.6" fill="#fff" stroke="#5B8DEF" stroke-width="1.6"/>
+          <circle cx="163" cy="42" r="2.6" fill="#fff" stroke="#5B8DEF" stroke-width="1.6"/>
+          <circle cx="209.6" cy="54" r="2.6" fill="#fff" stroke="#5B8DEF" stroke-width="1.6"/>
+          <circle cx="256.1" cy="54" r="2.6" fill="#fff" stroke="#5B8DEF" stroke-width="1.6"/>
+          <circle cx="302.7" cy="66" r="3.4" fill="#5B8DEF"/>
+          <text x="322" y="58" text-anchor="end" font-size="10" fill="#5B8DEF" font-weight="600">62.4</text>
+          <text x="23.3" y="88" text-anchor="middle" font-size="10" fill="#8A8A8A">一</text>
+          <text x="69.9" y="88" text-anchor="middle" font-size="10" fill="#8A8A8A">二</text>
+          <text x="116.4" y="88" text-anchor="middle" font-size="10" fill="#8A8A8A">三</text>
+          <text x="163" y="88" text-anchor="middle" font-size="10" fill="#8A8A8A">四</text>
+          <text x="209.6" y="88" text-anchor="middle" font-size="10" fill="#8A8A8A">五</text>
+          <text x="256.1" y="88" text-anchor="middle" font-size="10" fill="#8A8A8A">六</text>
+          <text x="302.7" y="88" text-anchor="middle" font-size="10" fill="#171717" font-weight="600">日</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-home"/></svg></div>今日</div>
+      <div class="tab on"><div class="ti"><svg width="23" height="23" color="#171717"><use href="#t-chart"/></svg></div>统计</div>
+      <div class="tab-add"><svg width="22" height="22" color="#FFFFFF"><use href="#i-plus"/></svg></div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#i-run"/></svg></div>运动</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-me"/></svg></div>我的</div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+  <div class="shot-label"><div class="no">05</div><div class="nm">统计 · 热量（周）</div><div class="ds">细柱状图 + 预算虚线 · 热量平衡 · 体重趋势</div></div>
+  </div>
+
+  <!-- ================================================== 06 统计·营养 -->
+  <div class="shot">
+  <div class="phone" style="min-height:844px;">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-title"><span class="ar"><svg width="18" height="18"><use href="#i-chev-l"/></svg></span><span class="num">9月16日 - 9月22日</span><span class="ar"><svg width="18" height="18"><use href="#i-chev-r"/></svg></span></div>
+      <div class="nav-side"><svg width="20" height="20" color="#444"><use href="#i-share"/></svg></div>
+    </div>
+
+    <div class="content">
+      <div class="seg"><div>热量</div><div class="on">营养</div><div>体重</div></div>
+
+      <div class="card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:18px;">
+          <div style="position:relative;width:132px;height:132px;flex-shrink:0;">
+            <svg width="132" height="132" viewBox="0 0 132 132">
+              <g transform="rotate(-90 66 66)" fill="none" stroke-width="15.5">
+                <circle cx="66" cy="66" r="54" stroke="#F28B45" stroke-dasharray="183.6 339.3"/>
+                <circle cx="66" cy="66" r="54" stroke="#29B873" stroke-dasharray="71.6 339.3" stroke-dashoffset="-186.6"/>
+                <circle cx="66" cy="66" r="54" stroke="#5B8DEF" stroke-dasharray="75 339.3" stroke-dashoffset="-261.2"/>
+              </g>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <div class="num" style="font-size:19px;font-weight:600;">1,872</div>
+              <div style="font-size:9px;color:var(--sub);margin-top:2px;">kcal · 日均</div>
+            </div>
+          </div>
+          <div class="legend">
+            <div class="lg"><span class="d" style="background:#F28B45"></span><span class="n">碳水化合物</span><span class="g num">1,802g</span><span class="p num">55%</span></div>
+            <div class="lg"><span class="d" style="background:#29B873"></span><span class="n">蛋白质</span><span class="g num">723g</span><span class="p num">22%</span></div>
+            <div class="lg"><span class="d" style="background:#5B8DEF"></span><span class="n">脂肪</span><span class="g num">336g</span><span class="p num">23%</span></div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--sub);margin-top:12px;">宏量营养素供能占比 · 近 7 天 · 参考比例 5 : 2 : 3</div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>蛋白质目标 · 日均</span><span class="c-g num" style="font-size:12.5px;">6/7 天达标</span></div>
+        <div style="padding:14px 16px 16px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px;">
+            <div><span class="num" style="font-size:24px;font-weight:600;">103</span><span style="font-size:11px;color:var(--sub);">g / 目标 100g</span></div>
+            <span class="c-g" style="font-size:12px;">平均达标率 103%</span>
+          </div>
+          <div class="bar"><i style="width:100%;background:#29B873"></i></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>饮食结构 · 热量占比</span><span class="num">13,106 kcal</span></div>
+        <div class="stack">
+          <i style="width:32%;background:#F28B45"></i><i style="width:24%;background:#F6C7A5"></i><i style="width:18%;background:#8ED0A9"></i><i style="width:12%;background:#A9C4F5"></i><i style="width:8%;background:#C9C9C9"></i><i style="width:6%;background:#E4E4E4"></i>
+        </div>
+        <div style="height:6px;"></div>
+        <div class="srow"><span class="n">主食</span><div class="b"><i style="width:32%;background:#F28B45"></i></div><span class="p num">32%</span><span class="k num">4,200</span></div>
+        <div class="srow"><span class="n">肉蛋</span><div class="b"><i style="width:24%;background:#F6C7A5"></i></div><span class="p num">24%</span><span class="k num">3,140</span></div>
+        <div class="srow"><span class="n">蔬果</span><div class="b"><i style="width:18%;background:#8ED0A9"></i></div><span class="p num">18%</span><span class="k num">2,360</span></div>
+        <div class="srow"><span class="n">饮品</span><div class="b"><i style="width:12%;background:#A9C4F5"></i></div><span class="p num">12%</span><span class="k num">1,572</span></div>
+        <div class="srow"><span class="n">零食</span><div class="b"><i style="width:8%;background:#C9C9C9"></i></div><span class="p num">8%</span><span class="k num">1,048</span></div>
+        <div class="srow"><span class="n">其他</span><div class="b"><i style="width:6%;background:#E4E4E4"></i></div><span class="p num">6%</span><span class="k num">786</span></div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>最常记录</span><span>近 7 天</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-coffee"/></svg></div><div class="mid"><div class="t1">拿铁</div><div class="t2">6次 · 平均 142 kcal</div></div><div class="val"><b class="num">852</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-rice"/></svg></div><div class="mid"><div class="t1">番茄牛腩盖饭</div><div class="t2">4次 · 平均 572 kcal</div></div><div class="val"><b class="num">2,288</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-oat"/></svg></div><div class="mid"><div class="t1">燕麦牛奶粥</div><div class="t2">5次 · 平均 178 kcal</div></div><div class="val"><b class="num">890</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-meat"/></svg></div><div class="mid"><div class="t1">香煎鸡胸肉</div><div class="t2">4次 · 平均 168 kcal</div></div><div class="val"><b class="num">672</b><span class="u">kcal</span></div></div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-home"/></svg></div>今日</div>
+      <div class="tab on"><div class="ti"><svg width="23" height="23" color="#171717"><use href="#t-chart"/></svg></div>统计</div>
+      <div class="tab-add"><svg width="22" height="22" color="#FFFFFF"><use href="#i-plus"/></svg></div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#i-run"/></svg></div>运动</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-me"/></svg></div>我的</div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+  <div class="shot-label"><div class="no">06</div><div class="nm">统计 · 营养（周）</div><div class="ds">供能环形图 · 蛋白质达标 · 饮食结构排行</div></div>
+  </div>
+
+  <!-- ================================================== 07 运动 -->
+  <div class="shot">
+  <div class="phone">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-title"><span class="ar"><svg width="18" height="18"><use href="#i-chev-l"/></svg></span><span class="num">9月22日 今天</span><span class="ar"><svg width="18" height="18"><use href="#i-chev-r"/></svg></span></div>
+      <div class="nav-side"><svg width="21" height="21" color="#444"><use href="#i-plusc"/></svg></div>
+    </div>
+
+    <div class="content">
+      <div class="card" style="padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:12px;color:var(--sub);">今日运动消耗</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-top:5px;">
+              <span class="num c-g" style="font-size:36px;font-weight:600;letter-spacing:-1px;line-height:1.05;">236</span>
+              <span style="font-size:12px;color:var(--sub);">kcal</span>
+            </div>
+          </div>
+          <div style="text-align:right;display:flex;flex-direction:column;gap:10px;">
+            <div><div style="font-size:10.5px;color:var(--sub);">时长</div><div class="num" style="font-size:14px;font-weight:600;margin-top:2px;">32 分钟</div></div>
+            <div><div style="font-size:10.5px;color:var(--sub);">步数</div><div class="num c-b" style="font-size:14px;font-weight:600;margin-top:2px;">8,432 步</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding-bottom:8px;">
+        <div class="cc-head"><span class="t">本周运动消耗</span><span class="s num c-g">合计 +1,248 kcal</span></div>
+        <svg class="chart" viewBox="0 0 326 86">
+          <line x1="0" y1="70" x2="326" y2="70" stroke="#EEEEEE" stroke-width="1"/>
+          <rect x="63.9" y="25.6" width="12" height="44.4" rx="3" fill="rgba(41,184,115,.26)"/>
+          <rect x="157" y="37" width="12" height="33" rx="3" fill="rgba(41,184,115,.26)"/>
+          <rect x="250.1" y="6.6" width="12" height="63.4" rx="3" fill="rgba(41,184,115,.26)"/>
+          <rect x="296.7" y="37" width="12" height="33" rx="3" fill="#29B873"/>
+          <text x="23.3" y="83" text-anchor="middle" font-size="10" fill="#8A8A8A">一</text>
+          <text x="69.9" y="83" text-anchor="middle" font-size="10" fill="#8A8A8A">二</text>
+          <text x="116.4" y="83" text-anchor="middle" font-size="10" fill="#8A8A8A">三</text>
+          <text x="163" y="83" text-anchor="middle" font-size="10" fill="#8A8A8A">四</text>
+          <text x="209.6" y="83" text-anchor="middle" font-size="10" fill="#8A8A8A">五</text>
+          <text x="256.1" y="83" text-anchor="middle" font-size="10" fill="#8A8A8A">六</text>
+          <text x="302.7" y="83" text-anchor="middle" font-size="10" fill="#171717" font-weight="600">日</text>
+        </svg>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>今日记录</span></div>
+        <div class="row"><div class="ic c-g"><svg width="26" height="26"><use href="#i-run"/></svg></div><div class="mid"><div class="t1">慢跑</div><div class="t2">5.2公里 · 32分钟 · 17:20</div></div><div class="val"><b class="num c-g">+236</b><span class="u">kcal</span></div></div>
+        <div class="row"><div class="ic c-b"><svg width="26" height="26"><use href="#i-walk"/></svg></div><div class="mid"><div class="t1">步行<span class="tag">健康 App 同步</span></div><div class="t2">8,432步 · 自动记录</div></div><div class="val"><b class="num c-b">8,432</b><span class="u">步</span></div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>运动库</span><span>本月共 35 次</span></div>
+        <div class="egrid">
+          <div class="eitem"><svg width="26" height="26" color="#171717"><use href="#i-run"/></svg><span class="n">跑步</span><span class="c">本月 6 次</span></div>
+          <div class="eitem"><svg width="26" height="26" color="#171717"><use href="#i-walk"/></svg><span class="n">走路</span><span class="c">本月 18 次</span></div>
+          <div class="eitem"><svg width="26" height="26" color="#171717"><use href="#i-bike"/></svg><span class="n">骑行</span><span class="c">本月 3 次</span></div>
+          <div class="eitem"><svg width="26" height="26" color="#171717"><use href="#i-dumbbell"/></svg><span class="n">力量训练</span><span class="c">本月 5 次</span></div>
+          <div class="eitem"><svg width="26" height="26" color="#171717"><use href="#i-yoga"/></svg><span class="n">瑜伽</span><span class="c">本月 2 次</span></div>
+          <div class="eitem"><svg width="26" height="26" color="#171717"><use href="#i-ball"/></svg><span class="n">球类</span><span class="c">本月 1 次</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-home"/></svg></div>今日</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-chart"/></svg></div>统计</div>
+      <div class="tab-add"><svg width="22" height="22" color="#FFFFFF"><use href="#i-plus"/></svg></div>
+      <div class="tab on"><div class="ti"><svg width="23" height="23" color="#171717"><use href="#i-run"/></svg></div>运动</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-me"/></svg></div>我的</div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+  <div class="shot-label"><div class="no">07</div><div class="nm">运动</div><div class="ds">消耗汇总 · 周柱状图 · 运动库</div></div>
+  </div>
+
+  <!-- ================================================== 08 我的 -->
+  <div class="shot">
+  <div class="phone">
+    <div class="statusbar"><span class="sb-time num">9:41</span><div class="island"></div>
+      <div class="sb-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="#171717"><rect y="6.5" width="3" height="4.5" rx="1"/><rect x="4.6" y="4.5" width="3" height="6.5" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" width="3" height="11" rx="1"/></svg>
+        <svg width="16" height="11.5" viewBox="0 0 16 11.5" fill="none" stroke="#171717" stroke-width="1.6" stroke-linecap="round"><path d="M1.2 4.1a9.8 9.8 0 0 1 13.6 0"/><path d="M3.8 7a6.2 6.2 0 0 1 8.4 0"/><circle cx="8" cy="10" r="1.15" fill="#171717" stroke="none"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="#171717" opacity=".35"/><rect x="2" y="2" width="14" height="8" rx="1.8" fill="#171717"/><rect x="22.8" y="3.6" width="1.8" height="4.8" rx=".9" fill="#171717" opacity=".35"/></svg>
+      </div>
+    </div>
+    <div class="navbar">
+      <div class="nav-title">我的</div>
+      <div class="nav-side"><svg width="21" height="21" color="#444"><use href="#i-set"/></svg></div>
+    </div>
+
+    <div class="content">
+      <div class="group" style="margin-bottom:12px;">
+        <div class="row" style="height:78px;">
+          <div class="avatar">林</div>
+          <div class="mid"><div class="t1" style="font-size:17px;font-weight:600;">林晓</div><div class="t2" style="margin-top:4px;">已坚持记录 128 天 · 连续 12 天</div></div>
+          <div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>目标</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-target"/></svg></div><div class="mid"><div class="t1">每日热量预算</div></div><div class="val"><b class="num c-o">2,000</b><span class="u">kcal</span></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-scale"/></svg></div><div class="mid"><div class="t1">目标体重</div></div><div class="val"><b class="num">62.0</b><span class="u">kg</span></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic c-g"><svg width="26" height="26"><use href="#i-run"/></svg></div><div class="mid"><div class="t1">每周运动目标</div></div><div class="val"><b class="num c-g">3</b><span class="u">次</span></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>身体数据</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-scale"/></svg></div><div class="mid"><div class="t1">当前体重</div><div class="t2">今天 07:30 记录</div></div><div class="val"><b class="num">62.4</b><span class="u">kg</span></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-height"/></svg></div><div class="mid"><div class="t1">身高</div></div><div class="val"><b class="num">172</b><span class="u">cm</span></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#t-chart"/></svg></div><div class="mid"><div class="t1">BMI</div></div><div class="val"><b class="num">21.1</b><span class="c-g" style="font-size:11px;">正常</span></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+      </div>
+
+      <div class="group">
+        <div class="group-head"><span>偏好</span></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-cal"/></svg></div><div class="mid"><div class="t1">每周报告</div><div class="t2">每周日 20:00 生成</div></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-bell"/></svg></div><div class="mid"><div class="t1">记录提醒</div></div><span style="font-size:13px;color:var(--sub);flex-shrink:0;">每日 20:30</span><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-book"/></svg></div><div class="mid"><div class="t1">食物库与常用食物</div></div><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-moon"/></svg></div><div class="mid"><div class="t1">深色模式</div></div><div class="sw"><i></i></div></div>
+        <div class="row"><div class="ic"><svg width="26" height="26"><use href="#i-dots"/></svg></div><div class="mid"><div class="t1">关于轻卡</div></div><span style="font-size:13px;color:var(--sub);flex-shrink:0;">v1.2.0</span><div class="chev"><svg width="15" height="15"><use href="#i-chev"/></svg></div></div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-home"/></svg></div>今日</div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#t-chart"/></svg></div>统计</div>
+      <div class="tab-add"><svg width="22" height="22" color="#FFFFFF"><use href="#i-plus"/></svg></div>
+      <div class="tab"><div class="ti"><svg width="23" height="23" color="#ADADAD"><use href="#i-run"/></svg></div>运动</div>
+      <div class="tab on"><div class="ti"><svg width="23" height="23" color="#171717"><use href="#t-me"/></svg></div>我的</div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+  <div class="shot-label"><div class="no">08</div><div class="nm">我的</div><div class="ds">目标管理 · 身体数据 · 偏好设置</div></div>
+  </div>
+
+  </div><!-- /screens -->
+</div><!-- /board -->
+</body>
+</html>

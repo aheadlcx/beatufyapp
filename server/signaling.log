@@ -169,3 +169,2467 @@
 17:04:24.325 msg candidate from viewer conn=va8303406
 17:04:24.326 msg candidate from viewer conn=va8303406
 17:04:24.333 msg candidate from broadcaster conn=null
+17:05:54.059 ws close (role=viewer, id=vd648aaff)
+17:05:57.063 upgrade from 127.0.0.1
+17:05:57.063 ws open
+17:05:57.064 viewer vd7276f8e joined room=room1 total=1
+17:05:57.065 viewer-joined -> broadcaster
+17:05:57.077 msg offer from broadcaster conn=null
+17:05:57.078 offer for vd7276f8e: forwarded
+17:05:57.080 msg candidate from broadcaster conn=null
+17:05:57.081 msg candidate from broadcaster conn=null
+17:05:57.088 msg answer from viewer conn=vd7276f8e
+17:05:57.092 msg candidate from viewer conn=vd7276f8e
+17:05:57.094 msg candidate from viewer conn=vd7276f8e
+17:06:24.267 ws error: write after end
+17:06:24.268 ws close (role=viewer, id=va8303406)
+17:06:47.277 upgrade from 127.0.0.1
+17:06:47.277 ws open
+17:06:47.280 viewer v818a78e0 joined room=room1 total=1
+17:06:47.280 viewer-joined -> broadcaster
+17:06:47.298 msg offer from broadcaster conn=null
+17:06:47.298 offer for v818a78e0: forwarded
+17:06:47.299 msg candidate from broadcaster conn=null
+17:06:47.300 msg candidate from broadcaster conn=null
+17:06:47.332 msg candidate from broadcaster conn=null
+17:06:47.345 msg answer from viewer conn=v818a78e0
+17:06:47.346 msg candidate from viewer conn=v818a78e0
+17:06:47.349 msg candidate from viewer conn=v818a78e0
+17:06:47.362 msg candidate from broadcaster conn=null
+17:07:54.092 ws close (role=viewer, id=vd7276f8e)
+17:07:57.095 upgrade from 127.0.0.1
+17:07:57.095 ws open
+17:07:57.096 viewer v601c88e4 joined room=room1 total=1
+17:07:57.097 viewer-joined -> broadcaster
+17:07:57.124 msg offer from broadcaster conn=null
+17:07:57.126 offer for v601c88e4: forwarded
+17:07:57.129 msg candidate from broadcaster conn=null
+17:07:57.132 msg candidate from broadcaster conn=null
+17:07:57.152 msg answer from viewer conn=v601c88e4
+17:07:57.153 msg candidate from viewer conn=v601c88e4
+17:07:57.154 msg candidate from viewer conn=v601c88e4
+17:08:27.293 ws error: write after end
+17:08:27.293 ws close (role=viewer, id=v818a78e0)
+17:08:50.310 upgrade from 127.0.0.1
+17:08:50.311 ws open
+17:08:50.313 viewer v3540831a joined room=room1 total=1
+17:08:50.313 viewer-joined -> broadcaster
+17:08:50.325 msg offer from broadcaster conn=null
+17:08:50.326 offer for v3540831a: forwarded
+17:08:50.329 msg candidate from broadcaster conn=null
+17:08:50.329 msg candidate from broadcaster conn=null
+17:08:50.371 msg answer from viewer conn=v3540831a
+17:08:50.373 msg candidate from viewer conn=v3540831a
+17:08:50.374 msg candidate from viewer conn=v3540831a
+17:08:50.379 msg candidate from broadcaster conn=null
+17:08:50.381 msg candidate from broadcaster conn=null
+17:09:54.139 ws close (role=viewer, id=v601c88e4)
+17:09:57.150 upgrade from 127.0.0.1
+17:09:57.151 ws open
+17:09:57.152 viewer vb66ab4b9 joined room=room1 total=1
+17:09:57.152 viewer-joined -> broadcaster
+17:09:57.164 msg offer from broadcaster conn=null
+17:09:57.164 offer for vb66ab4b9: forwarded
+17:09:57.166 msg candidate from broadcaster conn=null
+17:09:57.170 msg candidate from broadcaster conn=null
+17:09:57.179 msg answer from viewer conn=vb66ab4b9
+17:09:57.182 msg candidate from viewer conn=vb66ab4b9
+17:09:57.183 msg candidate from viewer conn=vb66ab4b9
+17:10:30.322 ws error: write after end
+17:10:30.322 ws close (role=viewer, id=v3540831a)
+17:10:53.338 upgrade from 127.0.0.1
+17:10:53.339 ws open
+17:10:53.341 viewer v7ad134ce joined room=room1 total=1
+17:10:53.342 viewer-joined -> broadcaster
+17:10:53.352 msg offer from broadcaster conn=null
+17:10:53.352 offer for v7ad134ce: forwarded
+17:10:53.354 msg candidate from broadcaster conn=null
+17:10:53.354 msg candidate from broadcaster conn=null
+17:10:53.392 msg candidate from broadcaster conn=null
+17:10:53.413 msg candidate from broadcaster conn=null
+17:10:53.417 msg answer from viewer conn=v7ad134ce
+17:10:53.427 msg candidate from viewer conn=v7ad134ce
+17:10:53.428 msg candidate from viewer conn=v7ad134ce
+17:11:54.174 ws close (role=viewer, id=vb66ab4b9)
+17:11:57.177 upgrade from 127.0.0.1
+17:11:57.178 ws open
+17:11:57.178 viewer vc7ed4623 joined room=room1 total=1
+17:11:57.181 viewer-joined -> broadcaster
+17:11:57.195 msg offer from broadcaster conn=null
+17:11:57.195 offer for vc7ed4623: forwarded
+17:11:57.198 msg candidate from broadcaster conn=null
+17:11:57.200 msg candidate from broadcaster conn=null
+17:11:57.212 msg answer from viewer conn=vc7ed4623
+17:11:57.217 msg candidate from viewer conn=vc7ed4623
+17:11:57.220 msg candidate from viewer conn=vc7ed4623
+17:12:33.351 ws error: write after end
+17:12:33.351 ws close (role=viewer, id=v7ad134ce)
+17:12:56.360 upgrade from 127.0.0.1
+17:12:56.360 ws open
+17:12:56.363 viewer v2125e533 joined room=room1 total=1
+17:12:56.367 viewer-joined -> broadcaster
+17:12:56.380 msg offer from broadcaster conn=null
+17:12:56.380 offer for v2125e533: forwarded
+17:12:56.381 msg candidate from broadcaster conn=null
+17:12:56.383 msg candidate from broadcaster conn=null
+17:12:56.415 msg candidate from broadcaster conn=null
+17:12:56.421 msg answer from viewer conn=v2125e533
+17:12:56.423 msg candidate from viewer conn=v2125e533
+17:12:56.425 msg candidate from viewer conn=v2125e533
+17:12:56.433 msg candidate from broadcaster conn=null
+17:13:54.211 ws close (role=viewer, id=vc7ed4623)
+17:13:57.213 upgrade from 127.0.0.1
+17:13:57.214 ws open
+17:13:57.215 viewer vfbb5ed24 joined room=room1 total=1
+17:13:57.215 viewer-joined -> broadcaster
+17:13:57.248 msg offer from broadcaster conn=null
+17:13:57.248 offer for vfbb5ed24: forwarded
+17:13:57.250 msg candidate from broadcaster conn=null
+17:13:57.253 msg candidate from broadcaster conn=null
+17:13:57.260 msg answer from viewer conn=vfbb5ed24
+17:13:57.264 msg candidate from viewer conn=vfbb5ed24
+17:13:57.265 msg candidate from viewer conn=vfbb5ed24
+17:14:56.375 ws error: write after end
+17:14:56.375 ws close (role=viewer, id=v2125e533)
+17:15:19.386 upgrade from 127.0.0.1
+17:15:19.386 ws open
+17:15:19.388 viewer v3674390f joined room=room1 total=1
+17:15:19.388 viewer-joined -> broadcaster
+17:15:19.403 msg offer from broadcaster conn=null
+17:15:19.403 offer for v3674390f: forwarded
+17:15:19.406 msg candidate from broadcaster conn=null
+17:15:19.407 msg candidate from broadcaster conn=null
+17:15:19.445 msg candidate from broadcaster conn=null
+17:15:19.460 msg answer from viewer conn=v3674390f
+17:15:19.463 msg candidate from viewer conn=v3674390f
+17:15:19.467 msg candidate from viewer conn=v3674390f
+17:15:54.236 ws close (role=viewer, id=vfbb5ed24)
+17:15:57.238 upgrade from 127.0.0.1
+17:15:57.238 ws open
+17:15:57.239 viewer v9a973c43 joined room=room1 total=1
+17:15:57.239 viewer-joined -> broadcaster
+17:15:57.248 msg offer from broadcaster conn=null
+17:15:57.249 offer for v9a973c43: forwarded
+17:15:57.252 msg candidate from broadcaster conn=null
+17:15:57.253 msg candidate from broadcaster conn=null
+17:15:57.280 msg answer from viewer conn=v9a973c43
+17:15:57.283 msg candidate from viewer conn=v9a973c43
+17:15:57.284 msg candidate from viewer conn=v9a973c43
+17:16:59.399 ws error: write after end
+17:16:59.400 ws close (role=viewer, id=v3674390f)
+17:17:22.410 upgrade from 127.0.0.1
+17:17:22.410 ws open
+17:17:22.413 viewer ve0b7d81c joined room=room1 total=1
+17:17:22.413 viewer-joined -> broadcaster
+17:17:22.430 msg offer from broadcaster conn=null
+17:17:22.431 offer for ve0b7d81c: forwarded
+17:17:22.433 msg candidate from broadcaster conn=null
+17:17:22.434 msg candidate from broadcaster conn=null
+17:17:22.483 msg answer from viewer conn=ve0b7d81c
+17:17:22.484 msg candidate from viewer conn=ve0b7d81c
+17:17:22.487 msg candidate from broadcaster conn=null
+17:17:22.487 msg candidate from viewer conn=ve0b7d81c
+17:17:22.497 msg candidate from broadcaster conn=null
+17:17:54.244 ws close (role=viewer, id=v9a973c43)
+17:17:57.248 upgrade from 127.0.0.1
+17:17:57.249 ws open
+17:17:57.250 viewer v3a0d8a88 joined room=room1 total=1
+17:17:57.250 viewer-joined -> broadcaster
+17:17:57.264 msg offer from broadcaster conn=null
+17:17:57.265 offer for v3a0d8a88: forwarded
+17:17:57.265 msg candidate from broadcaster conn=null
+17:17:57.268 msg candidate from broadcaster conn=null
+17:17:57.281 msg answer from viewer conn=v3a0d8a88
+17:17:57.284 msg candidate from viewer conn=v3a0d8a88
+17:17:57.285 msg candidate from viewer conn=v3a0d8a88
+17:19:02.423 ws error: write after end
+17:19:02.423 ws close (role=viewer, id=ve0b7d81c)
+17:19:25.438 upgrade from 127.0.0.1
+17:19:25.439 ws open
+17:19:25.444 viewer v9689662e joined room=room1 total=1
+17:19:25.445 viewer-joined -> broadcaster
+17:19:25.539 msg offer from broadcaster conn=null
+17:19:25.539 offer for v9689662e: forwarded
+17:19:25.540 msg candidate from broadcaster conn=null
+17:19:25.541 msg candidate from broadcaster conn=null
+17:19:25.566 msg answer from viewer conn=v9689662e
+17:19:25.567 msg candidate from viewer conn=v9689662e
+17:19:25.581 msg candidate from viewer conn=v9689662e
+17:19:25.704 msg candidate from broadcaster conn=null
+17:19:25.742 msg candidate from broadcaster conn=null
+17:19:54.259 ws close (role=viewer, id=v3a0d8a88)
+17:19:57.273 upgrade from 127.0.0.1
+17:19:57.273 ws open
+17:19:57.274 viewer v368863d9 joined room=room1 total=1
+17:19:57.275 viewer-joined -> broadcaster
+17:19:57.294 msg offer from broadcaster conn=null
+17:19:57.295 offer for v368863d9: forwarded
+17:19:57.296 msg candidate from broadcaster conn=null
+17:19:57.296 msg candidate from broadcaster conn=null
+17:19:57.312 msg answer from viewer conn=v368863d9
+17:19:57.313 msg candidate from viewer conn=v368863d9
+17:19:57.314 msg candidate from viewer conn=v368863d9
+17:21:25.456 ws error: write after end
+17:21:25.457 ws close (role=viewer, id=v9689662e)
+17:21:48.468 upgrade from 127.0.0.1
+17:21:48.469 ws open
+17:21:48.471 viewer v1aedd166 joined room=room1 total=1
+17:21:48.472 viewer-joined -> broadcaster
+17:21:48.488 msg offer from broadcaster conn=null
+17:21:48.488 offer for v1aedd166: forwarded
+17:21:48.491 msg candidate from broadcaster conn=null
+17:21:48.493 msg candidate from broadcaster conn=null
+17:21:48.528 msg answer from viewer conn=v1aedd166
+17:21:48.529 msg candidate from viewer conn=v1aedd166
+17:21:48.532 msg candidate from viewer conn=v1aedd166
+17:21:48.545 msg candidate from broadcaster conn=null
+17:21:48.584 msg candidate from viewer conn=v1aedd166
+17:21:48.602 msg candidate from viewer conn=v1aedd166
+17:21:48.661 msg candidate from broadcaster conn=null
+17:21:54.277 ws close (role=viewer, id=v368863d9)
+17:21:57.280 upgrade from 127.0.0.1
+17:21:57.280 ws open
+17:21:57.281 viewer v73d7a4d5 joined room=room1 total=1
+17:21:57.281 viewer-joined -> broadcaster
+17:21:57.293 msg offer from broadcaster conn=null
+17:21:57.293 offer for v73d7a4d5: forwarded
+17:21:57.294 msg candidate from broadcaster conn=null
+17:21:57.294 msg candidate from broadcaster conn=null
+17:21:57.306 msg answer from viewer conn=v73d7a4d5
+17:21:57.308 msg candidate from viewer conn=v73d7a4d5
+17:21:57.309 msg candidate from viewer conn=v73d7a4d5
+17:23:28.481 ws error: write after end
+17:23:28.482 ws close (role=viewer, id=v1aedd166)
+17:23:51.495 upgrade from 127.0.0.1
+17:23:51.495 ws open
+17:23:51.498 viewer v48fc769c joined room=room1 total=1
+17:23:51.499 viewer-joined -> broadcaster
+17:23:51.568 msg offer from broadcaster conn=null
+17:23:51.569 offer for v48fc769c: forwarded
+17:23:51.577 msg candidate from broadcaster conn=null
+17:23:51.578 msg candidate from broadcaster conn=null
+17:23:51.614 msg answer from viewer conn=v48fc769c
+17:23:51.614 msg candidate from viewer conn=v48fc769c
+17:23:51.616 msg candidate from viewer conn=v48fc769c
+17:23:51.620 msg candidate from broadcaster conn=null
+17:23:51.630 msg candidate from broadcaster conn=null
+17:23:54.304 ws close (role=viewer, id=v73d7a4d5)
+17:23:57.307 upgrade from 127.0.0.1
+17:23:57.308 ws open
+17:23:57.309 viewer v176fbc02 joined room=room1 total=1
+17:23:57.311 viewer-joined -> broadcaster
+17:23:57.335 msg offer from broadcaster conn=null
+17:23:57.336 offer for v176fbc02: forwarded
+17:23:57.345 msg candidate from broadcaster conn=null
+17:23:57.350 msg candidate from broadcaster conn=null
+17:23:57.359 msg answer from viewer conn=v176fbc02
+17:23:57.363 msg candidate from viewer conn=v176fbc02
+17:23:57.371 msg candidate from viewer conn=v176fbc02
+17:25:31.512 ws error: write after end
+17:25:31.513 ws close (role=viewer, id=v48fc769c)
+17:25:54.332 ws close (role=viewer, id=v176fbc02)
+17:25:54.333 ws close (role=broadcaster, id=null)
+17:25:54.526 upgrade from 127.0.0.1
+17:25:54.526 ws open
+17:25:57.339 upgrade from 127.0.0.1
+17:25:57.340 ws open
+17:25:57.342 ws close (role=viewer, id=null)
+17:25:58.211 upgrade from 127.0.0.1
+17:25:58.211 ws open
+17:25:58.212 broadcaster joined room=room1 total=0
+17:26:00.344 upgrade from 127.0.0.1
+17:26:00.345 ws open
+17:26:00.346 viewer v75b974a6 joined room=room1 total=0
+17:26:00.347 viewer-joined -> broadcaster
+17:26:00.426 msg offer from broadcaster conn=null
+17:26:00.427 offer for v75b974a6: forwarded
+17:26:00.428 msg candidate from broadcaster conn=null
+17:26:00.429 msg candidate from broadcaster conn=null
+17:26:00.441 msg answer from viewer conn=v75b974a6
+17:26:00.443 msg candidate from viewer conn=v75b974a6
+17:26:00.443 msg candidate from viewer conn=v75b974a6
+17:26:14.529 ws error: write after end
+17:26:14.532 ws close (role=viewer, id=null)
+17:26:37.544 upgrade from 127.0.0.1
+17:26:37.544 ws open
+17:26:37.550 viewer vae8a926e joined room=room1 total=1
+17:26:37.552 viewer-joined -> broadcaster
+17:26:37.565 msg offer from broadcaster conn=null
+17:26:37.565 offer for vae8a926e: forwarded
+17:26:37.566 msg candidate from broadcaster conn=null
+17:26:37.567 msg candidate from broadcaster conn=null
+17:26:37.601 msg candidate from broadcaster conn=null
+17:26:37.607 msg answer from viewer conn=vae8a926e
+17:26:37.611 msg candidate from viewer conn=vae8a926e
+17:26:37.612 msg candidate from viewer conn=vae8a926e
+17:26:37.631 msg candidate from broadcaster conn=null
+17:27:54.359 ws close (role=viewer, id=v75b974a6)
+17:27:57.362 upgrade from 127.0.0.1
+17:27:57.362 ws open
+17:27:57.364 viewer vc56c20d6 joined room=room1 total=1
+17:27:57.365 viewer-joined -> broadcaster
+17:27:57.391 msg offer from broadcaster conn=null
+17:27:57.392 offer for vc56c20d6: forwarded
+17:27:57.395 msg candidate from broadcaster conn=null
+17:27:57.398 msg candidate from broadcaster conn=null
+17:27:57.405 msg answer from viewer conn=vc56c20d6
+17:27:57.408 msg candidate from viewer conn=vc56c20d6
+17:27:57.409 msg candidate from viewer conn=vc56c20d6
+17:28:37.563 ws error: write after end
+17:28:37.564 ws close (role=viewer, id=vae8a926e)
+17:29:00.583 upgrade from 127.0.0.1
+17:29:00.583 ws open
+17:29:00.588 viewer v65630525 joined room=room1 total=1
+17:29:00.588 viewer-joined -> broadcaster
+17:29:00.600 msg offer from broadcaster conn=null
+17:29:00.601 offer for v65630525: forwarded
+17:29:00.602 msg candidate from broadcaster conn=null
+17:29:00.602 msg candidate from broadcaster conn=null
+17:29:00.645 msg answer from viewer conn=v65630525
+17:29:00.645 msg candidate from viewer conn=v65630525
+17:29:00.647 msg candidate from viewer conn=v65630525
+17:29:00.650 msg candidate from broadcaster conn=null
+17:29:00.671 msg candidate from broadcaster conn=null
+17:29:54.395 ws close (role=viewer, id=vc56c20d6)
+17:29:57.402 upgrade from 127.0.0.1
+17:29:57.403 ws open
+17:29:57.404 viewer vd8e8ada9 joined room=room1 total=1
+17:29:57.404 viewer-joined -> broadcaster
+17:29:57.423 msg offer from broadcaster conn=null
+17:29:57.423 offer for vd8e8ada9: forwarded
+17:29:57.425 msg candidate from broadcaster conn=null
+17:29:57.427 msg candidate from broadcaster conn=null
+17:29:57.444 msg answer from viewer conn=vd8e8ada9
+17:29:57.447 msg candidate from viewer conn=vd8e8ada9
+17:29:57.448 msg candidate from viewer conn=vd8e8ada9
+17:31:00.602 ws error: write after end
+17:31:00.602 ws close (role=viewer, id=v65630525)
+17:31:23.615 upgrade from 127.0.0.1
+17:31:23.616 ws open
+17:31:23.618 viewer v2134d2f2 joined room=room1 total=1
+17:31:23.619 viewer-joined -> broadcaster
+17:31:23.636 msg offer from broadcaster conn=null
+17:31:23.637 offer for v2134d2f2: forwarded
+17:31:23.640 msg candidate from broadcaster conn=null
+17:31:23.645 msg candidate from broadcaster conn=null
+17:31:23.685 msg candidate from broadcaster conn=null
+17:31:23.709 msg candidate from broadcaster conn=null
+17:31:23.723 msg answer from viewer conn=v2134d2f2
+17:31:23.725 msg candidate from viewer conn=v2134d2f2
+17:31:23.727 msg candidate from viewer conn=v2134d2f2
+17:31:54.423 ws close (role=viewer, id=vd8e8ada9)
+17:31:57.432 upgrade from 127.0.0.1
+17:31:57.433 ws open
+17:31:57.435 viewer va1f60fc0 joined room=room1 total=1
+17:31:57.436 viewer-joined -> broadcaster
+17:31:57.457 msg offer from broadcaster conn=null
+17:31:57.458 offer for va1f60fc0: forwarded
+17:31:57.459 msg candidate from broadcaster conn=null
+17:31:57.460 msg candidate from broadcaster conn=null
+17:31:57.473 msg answer from viewer conn=va1f60fc0
+17:31:57.477 msg candidate from viewer conn=va1f60fc0
+17:31:57.478 msg candidate from viewer conn=va1f60fc0
+17:33:03.629 ws error: write after end
+17:33:03.629 ws close (role=viewer, id=v2134d2f2)
+17:33:26.640 upgrade from 127.0.0.1
+17:33:26.640 ws open
+17:33:26.643 viewer v21233484 joined room=room1 total=1
+17:33:26.644 viewer-joined -> broadcaster
+17:33:26.671 msg offer from broadcaster conn=null
+17:33:26.672 offer for v21233484: forwarded
+17:33:26.678 msg candidate from broadcaster conn=null
+17:33:26.679 msg candidate from broadcaster conn=null
+17:33:26.721 msg candidate from broadcaster conn=null
+17:33:26.736 msg answer from viewer conn=v21233484
+17:33:26.737 msg candidate from viewer conn=v21233484
+17:33:26.748 msg candidate from viewer conn=v21233484
+17:33:26.750 msg candidate from broadcaster conn=null
+17:33:54.458 ws close (role=viewer, id=va1f60fc0)
+17:33:57.462 upgrade from 127.0.0.1
+17:33:57.462 ws open
+17:33:57.464 viewer vcf5122c9 joined room=room1 total=1
+17:33:57.466 viewer-joined -> broadcaster
+17:33:57.482 msg offer from broadcaster conn=null
+17:33:57.483 offer for vcf5122c9: forwarded
+17:33:57.487 msg candidate from broadcaster conn=null
+17:33:57.492 msg candidate from broadcaster conn=null
+17:33:57.504 msg answer from viewer conn=vcf5122c9
+17:33:57.508 msg candidate from viewer conn=vcf5122c9
+17:33:57.509 msg candidate from viewer conn=vcf5122c9
+17:35:26.657 ws error: write after end
+17:35:26.658 ws close (role=viewer, id=v21233484)
+17:35:49.673 upgrade from 127.0.0.1
+17:35:49.674 ws open
+17:35:49.676 viewer v43f7d1a4 joined room=room1 total=1
+17:35:49.677 viewer-joined -> broadcaster
+17:35:49.694 msg offer from broadcaster conn=null
+17:35:49.694 offer for v43f7d1a4: forwarded
+17:35:49.696 msg candidate from broadcaster conn=null
+17:35:49.696 msg candidate from broadcaster conn=null
+17:35:49.728 msg answer from viewer conn=v43f7d1a4
+17:35:49.729 msg candidate from viewer conn=v43f7d1a4
+17:35:49.730 msg candidate from viewer conn=v43f7d1a4
+17:35:49.736 msg candidate from broadcaster conn=null
+17:35:49.760 msg candidate from broadcaster conn=null
+17:35:54.489 ws close (role=viewer, id=vcf5122c9)
+17:35:57.491 upgrade from 127.0.0.1
+17:35:57.492 ws open
+17:35:57.492 viewer v9da17b24 joined room=room1 total=1
+17:35:57.493 viewer-joined -> broadcaster
+17:35:57.513 msg offer from broadcaster conn=null
+17:35:57.514 offer for v9da17b24: forwarded
+17:35:57.515 msg candidate from broadcaster conn=null
+17:35:57.515 msg candidate from broadcaster conn=null
+17:35:57.527 msg answer from viewer conn=v9da17b24
+17:35:57.530 msg candidate from viewer conn=v9da17b24
+17:35:57.531 msg candidate from viewer conn=v9da17b24
+17:37:29.689 ws error: write after end
+17:37:29.690 ws close (role=viewer, id=v43f7d1a4)
+17:37:52.704 upgrade from 127.0.0.1
+17:37:52.705 ws open
+17:37:52.708 viewer v0e7daff8 joined room=room1 total=1
+17:37:52.708 viewer-joined -> broadcaster
+17:37:52.878 msg offer from broadcaster conn=null
+17:37:52.878 offer for v0e7daff8: forwarded
+17:37:52.884 msg candidate from broadcaster conn=null
+17:37:52.885 msg candidate from broadcaster conn=null
+17:37:52.916 msg answer from viewer conn=v0e7daff8
+17:37:52.922 msg candidate from broadcaster conn=null
+17:37:52.924 msg candidate from viewer conn=v0e7daff8
+17:37:52.928 msg candidate from viewer conn=v0e7daff8
+17:37:52.945 msg candidate from broadcaster conn=null
+17:37:54.509 ws close (role=viewer, id=v9da17b24)
+17:37:57.512 upgrade from 127.0.0.1
+17:37:57.513 ws open
+17:37:57.514 viewer vcd648b25 joined room=room1 total=1
+17:37:57.514 viewer-joined -> broadcaster
+17:37:57.562 msg offer from broadcaster conn=null
+17:37:57.562 offer for vcd648b25: forwarded
+17:37:57.567 msg candidate from broadcaster conn=null
+17:37:57.568 msg candidate from broadcaster conn=null
+17:37:57.575 msg answer from viewer conn=vcd648b25
+17:37:57.579 msg candidate from viewer conn=vcd648b25
+17:37:57.580 msg candidate from viewer conn=vcd648b25
+17:39:32.718 ws error: write after end
+17:39:32.719 ws close (role=viewer, id=v0e7daff8)
+17:39:54.540 ws close (role=viewer, id=vcd648b25)
+17:39:54.541 ws close (role=broadcaster, id=null)
+17:39:55.728 upgrade from 127.0.0.1
+17:39:55.729 ws open
+17:39:55.740 ws close (role=viewer, id=null)
+17:39:57.548 upgrade from 127.0.0.1
+17:39:57.549 ws open
+17:39:57.551 ws close (role=viewer, id=null)
+17:39:58.224 upgrade from 127.0.0.1
+17:39:58.226 ws open
+17:39:58.228 broadcaster joined room=room1 total=0
+17:39:58.767 upgrade from 127.0.0.1
+17:39:58.768 ws open
+17:39:58.772 viewer v417772ee joined room=room1 total=0
+17:39:58.772 viewer-joined -> broadcaster
+17:39:58.825 msg offer from broadcaster conn=null
+17:39:58.826 offer for v417772ee: forwarded
+17:39:58.826 msg candidate from broadcaster conn=null
+17:39:58.827 msg candidate from broadcaster conn=null
+17:39:58.851 msg answer from viewer conn=v417772ee
+17:39:58.854 msg candidate from viewer conn=v417772ee
+17:39:58.861 msg candidate from viewer conn=v417772ee
+17:39:58.888 msg candidate from broadcaster conn=null
+17:39:58.897 msg candidate from viewer conn=v417772ee
+17:39:58.916 msg candidate from viewer conn=v417772ee
+17:40:00.562 upgrade from 127.0.0.1
+17:40:00.563 ws open
+17:40:00.565 viewer v07155321 joined room=room1 total=1
+17:40:00.567 viewer-joined -> broadcaster
+17:40:00.605 msg offer from broadcaster conn=null
+17:40:00.606 offer for v07155321: forwarded
+17:40:00.611 msg candidate from broadcaster conn=null
+17:40:00.612 msg candidate from broadcaster conn=null
+17:40:00.616 msg answer from viewer conn=v07155321
+17:40:00.622 msg candidate from viewer conn=v07155321
+17:40:00.623 msg candidate from viewer conn=v07155321
+17:41:54.571 ws close (role=viewer, id=v07155321)
+17:41:54.573 ws close (role=broadcaster, id=null)
+17:41:57.578 upgrade from 127.0.0.1
+17:41:57.579 ws open
+17:41:57.580 ws close (role=viewer, id=null)
+17:41:58.221 upgrade from 127.0.0.1
+17:41:58.222 ws open
+17:41:58.222 broadcaster joined room=room1 total=0
+17:41:58.788 ws error: write after end
+17:41:58.789 ws close (role=viewer, id=v417772ee)
+17:42:00.594 upgrade from 127.0.0.1
+17:42:00.594 ws open
+17:42:00.596 viewer vd9cb069d joined room=room1 total=0
+17:42:00.597 viewer-joined -> broadcaster
+17:42:00.656 msg offer from broadcaster conn=null
+17:42:00.656 offer for vd9cb069d: forwarded
+17:42:00.658 msg candidate from broadcaster conn=null
+17:42:00.658 msg candidate from broadcaster conn=null
+17:42:00.665 msg answer from viewer conn=vd9cb069d
+17:42:00.667 msg candidate from viewer conn=vd9cb069d
+17:42:00.668 msg candidate from viewer conn=vd9cb069d
+17:42:21.796 upgrade from 127.0.0.1
+17:42:21.797 ws open
+17:42:21.800 viewer v936b1c5d joined room=room1 total=1
+17:42:21.801 viewer-joined -> broadcaster
+17:42:21.877 msg offer from broadcaster conn=null
+17:42:21.880 offer for v936b1c5d: forwarded
+17:42:21.881 msg candidate from broadcaster conn=null
+17:42:21.882 msg candidate from broadcaster conn=null
+17:42:21.910 msg answer from viewer conn=v936b1c5d
+17:42:21.914 msg candidate from broadcaster conn=null
+17:42:21.915 msg candidate from viewer conn=v936b1c5d
+17:42:21.917 msg candidate from viewer conn=v936b1c5d
+17:42:21.934 msg candidate from broadcaster conn=null
+17:43:54.599 ws close (role=viewer, id=vd9cb069d)
+17:43:54.601 ws close (role=broadcaster, id=null)
+17:43:57.607 upgrade from 127.0.0.1
+17:43:57.608 ws open
+17:43:57.608 ws close (role=viewer, id=null)
+17:43:58.216 upgrade from 127.0.0.1
+17:43:58.217 ws open
+17:43:58.217 broadcaster joined room=room1 total=0
+17:44:00.624 upgrade from 127.0.0.1
+17:44:00.625 ws open
+17:44:00.626 viewer v8a371095 joined room=room1 total=0
+17:44:00.627 viewer-joined -> broadcaster
+17:44:00.755 msg offer from broadcaster conn=null
+17:44:00.756 offer for v8a371095: forwarded
+17:44:00.756 msg candidate from broadcaster conn=null
+17:44:00.757 msg candidate from broadcaster conn=null
+17:44:00.769 msg answer from viewer conn=v8a371095
+17:44:00.771 msg candidate from viewer conn=v8a371095
+17:44:00.772 msg candidate from viewer conn=v8a371095
+17:44:01.808 ws error: write after end
+17:44:01.809 ws close (role=viewer, id=v936b1c5d)
+17:44:24.818 upgrade from 127.0.0.1
+17:44:24.818 ws open
+17:44:24.820 viewer v06862875 joined room=room1 total=1
+17:44:24.821 viewer-joined -> broadcaster
+17:44:24.866 msg offer from broadcaster conn=null
+17:44:24.867 offer for v06862875: forwarded
+17:44:24.868 msg candidate from broadcaster conn=null
+17:44:24.868 msg candidate from broadcaster conn=null
+17:44:24.904 msg answer from viewer conn=v06862875
+17:44:24.905 msg candidate from broadcaster conn=null
+17:44:24.905 msg candidate from viewer conn=v06862875
+17:44:24.907 msg candidate from viewer conn=v06862875
+17:45:54.644 ws close (role=viewer, id=v8a371095)
+17:45:57.656 upgrade from 127.0.0.1
+17:45:57.657 ws open
+17:45:57.658 viewer vbf43128f joined room=room1 total=1
+17:45:57.659 viewer-joined -> broadcaster
+17:45:57.769 msg offer from broadcaster conn=null
+17:45:57.770 offer for vbf43128f: forwarded
+17:45:57.772 msg candidate from broadcaster conn=null
+17:45:57.776 msg candidate from broadcaster conn=null
+17:45:57.782 msg answer from viewer conn=vbf43128f
+17:45:57.783 msg candidate from viewer conn=vbf43128f
+17:45:57.784 msg candidate from viewer conn=vbf43128f
+17:46:24.833 ws error: write after end
+17:46:24.834 ws close (role=viewer, id=v06862875)
+17:46:47.841 upgrade from 127.0.0.1
+17:46:47.841 ws open
+17:46:47.848 viewer vb968f24e joined room=room1 total=1
+17:46:47.849 viewer-joined -> broadcaster
+17:46:47.958 msg offer from broadcaster conn=null
+17:46:47.958 offer for vb968f24e: forwarded
+17:46:47.959 msg candidate from broadcaster conn=null
+17:46:47.960 msg candidate from broadcaster conn=null
+17:46:48.005 msg answer from viewer conn=vb968f24e
+17:46:48.007 msg candidate from viewer conn=vb968f24e
+17:46:48.009 msg candidate from viewer conn=vb968f24e
+17:46:48.015 msg candidate from broadcaster conn=null
+17:46:48.066 msg candidate from viewer conn=vb968f24e
+17:46:48.088 msg candidate from viewer conn=vb968f24e
+17:47:54.699 ws close (role=viewer, id=vbf43128f)
+17:47:57.701 upgrade from 127.0.0.1
+17:47:57.702 ws open
+17:47:57.702 viewer va45e01b4 joined room=room1 total=1
+17:47:57.703 viewer-joined -> broadcaster
+17:48:24.710 ws close (role=broadcaster, id=null)
+17:48:27.861 ws error: write after end
+17:48:27.862 ws close (role=viewer, id=vb968f24e)
+17:48:50.874 upgrade from 127.0.0.1
+17:48:50.875 ws open
+17:49:00.223 upgrade from 127.0.0.1
+17:49:00.224 ws open
+17:49:00.225 broadcaster joined room=room1 total=1
+17:49:10.879 ws error: write after end
+17:49:10.879 ws close (role=viewer, id=null)
+17:49:33.885 upgrade from 127.0.0.1
+17:49:33.886 ws open
+17:49:33.889 viewer v3db29f72 joined room=room1 total=1
+17:49:33.890 viewer-joined -> broadcaster
+17:49:33.923 msg offer from broadcaster conn=null
+17:49:33.924 offer for v3db29f72: forwarded
+17:49:33.926 msg candidate from broadcaster conn=null
+17:49:33.926 msg candidate from broadcaster conn=null
+17:49:33.999 msg answer from viewer conn=v3db29f72
+17:49:33.999 msg candidate from viewer conn=v3db29f72
+17:49:34.008 msg candidate from viewer conn=v3db29f72
+17:49:34.048 msg candidate from viewer conn=v3db29f72
+17:49:34.066 msg candidate from viewer conn=v3db29f72
+17:49:34.092 msg candidate from broadcaster conn=null
+17:49:34.097 msg candidate from broadcaster conn=null
+17:49:54.748 ws close (role=viewer, id=va45e01b4)
+17:49:57.751 upgrade from 127.0.0.1
+17:49:57.752 ws open
+17:49:57.752 viewer v84765b92 joined room=room1 total=1
+17:49:57.753 viewer-joined -> broadcaster
+17:49:57.782 msg offer from broadcaster conn=null
+17:49:57.782 offer for v84765b92: forwarded
+17:49:57.784 msg candidate from broadcaster conn=null
+17:49:57.784 msg candidate from broadcaster conn=null
+17:49:57.798 msg answer from viewer conn=v84765b92
+17:49:57.800 msg candidate from viewer conn=v84765b92
+17:49:57.801 msg candidate from viewer conn=v84765b92
+17:51:33.899 ws error: write after end
+17:51:33.900 ws close (role=viewer, id=v3db29f72)
+17:51:54.782 ws close (role=viewer, id=v84765b92)
+17:51:54.783 ws close (role=broadcaster, id=null)
+17:51:56.909 upgrade from 127.0.0.1
+17:51:56.910 ws open
+17:51:57.798 upgrade from 127.0.0.1
+17:51:57.799 ws open
+17:51:57.802 ws close (role=viewer, id=null)
+17:51:58.221 upgrade from 127.0.0.1
+17:51:58.222 ws open
+17:51:58.223 broadcaster joined room=room1 total=0
+17:52:00.809 upgrade from 127.0.0.1
+17:52:00.810 ws open
+17:52:00.811 viewer vbd7979d1 joined room=room1 total=0
+17:52:00.812 viewer-joined -> broadcaster
+17:52:00.898 msg offer from broadcaster conn=null
+17:52:00.898 offer for vbd7979d1: forwarded
+17:52:00.899 msg candidate from broadcaster conn=null
+17:52:00.900 msg candidate from broadcaster conn=null
+17:52:00.914 msg answer from viewer conn=vbd7979d1
+17:52:00.917 msg candidate from viewer conn=vbd7979d1
+17:52:00.918 msg candidate from viewer conn=vbd7979d1
+17:52:16.918 ws error: write after end
+17:52:16.919 ws close (role=viewer, id=null)
+17:52:39.926 upgrade from 127.0.0.1
+17:52:39.926 ws open
+17:52:39.927 viewer v77fb6e13 joined room=room1 total=1
+17:52:39.928 viewer-joined -> broadcaster
+17:52:39.966 msg offer from broadcaster conn=null
+17:52:39.967 offer for v77fb6e13: forwarded
+17:52:39.969 msg candidate from broadcaster conn=null
+17:52:39.970 msg candidate from broadcaster conn=null
+17:52:40.007 msg candidate from broadcaster conn=null
+17:52:40.030 msg candidate from broadcaster conn=null
+17:52:40.030 msg answer from viewer conn=v77fb6e13
+17:52:40.037 msg candidate from viewer conn=v77fb6e13
+17:52:40.041 msg candidate from viewer conn=v77fb6e13
+17:53:54.823 ws close (role=viewer, id=vbd7979d1)
+17:53:57.826 upgrade from 127.0.0.1
+17:53:57.826 ws open
+17:53:57.827 viewer v2370fc04 joined room=room1 total=1
+17:53:57.828 viewer-joined -> broadcaster
+17:53:57.914 msg offer from broadcaster conn=null
+17:53:57.914 offer for v2370fc04: forwarded
+17:53:57.916 msg candidate from broadcaster conn=null
+17:53:57.916 msg candidate from broadcaster conn=null
+17:53:57.929 msg answer from viewer conn=v2370fc04
+17:53:57.934 msg candidate from viewer conn=v2370fc04
+17:53:57.935 msg candidate from viewer conn=v2370fc04
+17:54:39.939 ws error: write after end
+17:54:39.940 ws close (role=viewer, id=v77fb6e13)
+17:55:02.950 upgrade from 127.0.0.1
+17:55:02.951 ws open
+17:55:02.953 viewer v350a21e0 joined room=room1 total=1
+17:55:02.954 viewer-joined -> broadcaster
+17:55:02.999 msg offer from broadcaster conn=null
+17:55:02.999 offer for v350a21e0: forwarded
+17:55:03.002 msg candidate from broadcaster conn=null
+17:55:03.003 msg candidate from broadcaster conn=null
+17:55:03.040 msg candidate from broadcaster conn=null
+17:55:03.047 msg answer from viewer conn=v350a21e0
+17:55:03.048 msg candidate from viewer conn=v350a21e0
+17:55:03.050 msg candidate from viewer conn=v350a21e0
+17:55:03.055 msg candidate from broadcaster conn=null
+17:55:54.831 ws close (role=viewer, id=v2370fc04)
+17:55:57.837 upgrade from 127.0.0.1
+17:55:57.837 ws open
+17:55:57.838 viewer v8f8a0d03 joined room=room1 total=1
+17:55:57.838 viewer-joined -> broadcaster
+17:56:16.583 msg offer from broadcaster conn=null
+17:56:16.584 offer for v8f8a0d03: forwarded
+17:56:16.584 msg candidate from broadcaster conn=null
+17:56:16.585 msg candidate from broadcaster conn=null
+17:56:16.598 msg answer from viewer conn=v8f8a0d03
+17:56:16.599 msg candidate from viewer conn=v8f8a0d03
+17:56:16.600 msg candidate from viewer conn=v8f8a0d03
+17:57:02.968 ws error: write after end
+17:57:02.968 ws close (role=viewer, id=v350a21e0)
+17:57:25.973 upgrade from 127.0.0.1
+17:57:25.974 ws open
+17:57:25.975 viewer v2dbf6138 joined room=room1 total=1
+17:57:25.979 viewer-joined -> broadcaster
+17:57:26.037 msg offer from broadcaster conn=null
+17:57:26.038 offer for v2dbf6138: forwarded
+17:57:26.067 msg candidate from broadcaster conn=null
+17:57:26.069 msg candidate from broadcaster conn=null
+17:57:26.069 msg answer from viewer conn=v2dbf6138
+17:57:26.071 msg candidate from viewer conn=v2dbf6138
+17:57:26.077 msg candidate from viewer conn=v2dbf6138
+17:57:26.121 msg candidate from viewer conn=v2dbf6138
+17:57:26.126 msg candidate from broadcaster conn=null
+17:57:26.129 msg candidate from viewer conn=v2dbf6138
+17:57:54.864 ws close (role=viewer, id=v8f8a0d03)
+17:57:57.866 upgrade from 127.0.0.1
+17:57:57.866 ws open
+17:57:57.867 viewer v9dd7155a joined room=room1 total=1
+17:57:57.868 viewer-joined -> broadcaster
+17:57:57.897 msg offer from broadcaster conn=null
+17:57:57.897 offer for v9dd7155a: forwarded
+17:57:57.898 msg candidate from broadcaster conn=null
+17:57:57.899 msg candidate from broadcaster conn=null
+17:57:57.908 msg answer from viewer conn=v9dd7155a
+17:57:57.912 msg candidate from viewer conn=v9dd7155a
+17:57:57.912 msg candidate from viewer conn=v9dd7155a
+17:59:25.987 ws error: write after end
+17:59:25.988 ws close (role=viewer, id=v2dbf6138)
+17:59:48.997 upgrade from 127.0.0.1
+17:59:48.997 ws open
+17:59:49.000 viewer v3ff4d175 joined room=room1 total=1
+17:59:49.000 viewer-joined -> broadcaster
+17:59:49.034 msg offer from broadcaster conn=null
+17:59:49.034 offer for v3ff4d175: forwarded
+17:59:49.036 msg candidate from broadcaster conn=null
+17:59:49.037 msg candidate from broadcaster conn=null
+17:59:49.122 msg answer from viewer conn=v3ff4d175
+17:59:49.123 msg candidate from viewer conn=v3ff4d175
+17:59:49.127 msg candidate from viewer conn=v3ff4d175
+17:59:49.166 msg candidate from viewer conn=v3ff4d175
+17:59:49.247 msg candidate from broadcaster conn=null
+17:59:54.903 ws close (role=viewer, id=v9dd7155a)
+17:59:57.916 upgrade from 127.0.0.1
+17:59:57.916 ws open
+17:59:57.917 viewer v33f3ac99 joined room=room1 total=1
+17:59:57.917 viewer-joined -> broadcaster
+17:59:57.951 msg offer from broadcaster conn=null
+17:59:57.951 offer for v33f3ac99: forwarded
+17:59:57.952 msg candidate from broadcaster conn=null
+17:59:57.953 msg candidate from broadcaster conn=null
+17:59:57.964 msg answer from viewer conn=v33f3ac99
+17:59:57.966 msg candidate from viewer conn=v33f3ac99
+17:59:57.966 msg candidate from viewer conn=v33f3ac99
+18:01:29.010 ws error: write after end
+18:01:29.011 ws close (role=viewer, id=v3ff4d175)
+18:01:52.020 upgrade from 127.0.0.1
+18:01:52.021 ws open
+18:01:52.024 viewer v660ca5f8 joined room=room1 total=1
+18:01:52.024 viewer-joined -> broadcaster
+18:01:52.093 msg offer from broadcaster conn=null
+18:01:52.094 offer for v660ca5f8: forwarded
+18:01:52.095 msg candidate from broadcaster conn=null
+18:01:52.096 msg candidate from broadcaster conn=null
+18:01:52.131 msg candidate from broadcaster conn=null
+18:01:52.160 msg answer from viewer conn=v660ca5f8
+18:01:52.175 msg candidate from viewer conn=v660ca5f8
+18:01:52.176 msg candidate from viewer conn=v660ca5f8
+18:01:54.934 ws close (role=viewer, id=v33f3ac99)
+18:01:57.939 upgrade from 127.0.0.1
+18:01:57.939 ws open
+18:01:57.940 viewer v2959c1b6 joined room=room1 total=1
+18:01:57.941 viewer-joined -> broadcaster
+18:01:58.469 msg offer from broadcaster conn=null
+18:01:58.469 offer for v2959c1b6: forwarded
+18:01:58.471 msg candidate from broadcaster conn=null
+18:01:58.474 msg candidate from broadcaster conn=null
+18:01:58.481 msg answer from viewer conn=v2959c1b6
+18:01:58.482 msg candidate from viewer conn=v2959c1b6
+18:01:58.483 msg candidate from viewer conn=v2959c1b6
+18:03:32.034 ws error: write after end
+18:03:32.034 ws close (role=viewer, id=v660ca5f8)
+18:03:54.960 ws close (role=viewer, id=v2959c1b6)
+18:03:54.961 ws close (role=broadcaster, id=null)
+18:03:55.045 upgrade from 127.0.0.1
+18:03:55.046 ws open
+18:03:57.965 upgrade from 127.0.0.1
+18:03:57.966 ws open
+18:03:57.967 ws close (role=viewer, id=null)
+18:03:59.603 upgrade from 127.0.0.1
+18:03:59.604 ws open
+18:03:59.605 broadcaster joined room=room1 total=0
+18:04:00.970 upgrade from 127.0.0.1
+18:04:00.970 ws open
+18:04:00.971 viewer vbd50859b joined room=room1 total=0
+18:04:00.972 viewer-joined -> broadcaster
+18:04:01.004 msg offer from broadcaster conn=null
+18:04:01.004 offer for vbd50859b: forwarded
+18:04:01.010 msg candidate from broadcaster conn=null
+18:04:01.011 msg candidate from broadcaster conn=null
+18:04:01.016 msg answer from viewer conn=vbd50859b
+18:04:01.021 msg candidate from viewer conn=vbd50859b
+18:04:01.022 msg candidate from viewer conn=vbd50859b
+18:04:15.053 ws error: write after end
+18:04:15.054 ws close (role=viewer, id=null)
+18:04:38.061 upgrade from 127.0.0.1
+18:04:38.062 ws open
+18:04:38.063 viewer vff9f05ea joined room=room1 total=1
+18:04:38.064 viewer-joined -> broadcaster
+18:04:38.101 msg offer from broadcaster conn=null
+18:04:38.102 offer for vff9f05ea: forwarded
+18:04:38.105 msg candidate from broadcaster conn=null
+18:04:38.105 msg candidate from broadcaster conn=null
+18:04:38.144 msg candidate from broadcaster conn=null
+18:04:38.158 msg candidate from broadcaster conn=null
+18:04:38.169 msg answer from viewer conn=vff9f05ea
+18:04:38.170 msg candidate from viewer conn=vff9f05ea
+18:04:38.172 msg candidate from viewer conn=vff9f05ea
+18:05:54.985 ws close (role=viewer, id=vbd50859b)
+18:05:57.988 upgrade from 127.0.0.1
+18:05:57.988 ws open
+18:05:57.989 viewer v51bcecee joined room=room1 total=1
+18:05:57.989 viewer-joined -> broadcaster
+18:05:58.021 msg offer from broadcaster conn=null
+18:05:58.022 offer for v51bcecee: forwarded
+18:05:58.023 msg candidate from broadcaster conn=null
+18:05:58.024 msg candidate from broadcaster conn=null
+18:05:58.035 msg answer from viewer conn=v51bcecee
+18:05:58.039 msg candidate from viewer conn=v51bcecee
+18:05:58.039 msg candidate from viewer conn=v51bcecee
+18:06:38.076 ws error: write after end
+18:06:38.076 ws close (role=viewer, id=vff9f05ea)
+18:07:01.085 upgrade from 127.0.0.1
+18:07:01.086 ws open
+18:07:01.090 viewer v9d85cdbe joined room=room1 total=1
+18:07:01.090 viewer-joined -> broadcaster
+18:07:01.120 msg offer from broadcaster conn=null
+18:07:01.121 offer for v9d85cdbe: forwarded
+18:07:01.130 msg candidate from broadcaster conn=null
+18:07:01.130 msg candidate from broadcaster conn=null
+18:07:01.193 msg candidate from broadcaster conn=null
+18:07:01.228 msg answer from viewer conn=v9d85cdbe
+18:07:01.232 msg candidate from viewer conn=v9d85cdbe
+18:07:01.238 msg candidate from viewer conn=v9d85cdbe
+18:07:01.292 msg candidate from viewer conn=v9d85cdbe
+18:07:01.312 msg candidate from broadcaster conn=null
+18:07:55.018 ws close (role=viewer, id=v51bcecee)
+18:07:58.020 upgrade from 127.0.0.1
+18:07:58.021 ws open
+18:07:58.023 viewer v5e45c70f joined room=room1 total=1
+18:07:58.024 viewer-joined -> broadcaster
+18:07:58.075 msg offer from broadcaster conn=null
+18:07:58.075 offer for v5e45c70f: forwarded
+18:07:58.078 msg candidate from broadcaster conn=null
+18:07:58.078 msg candidate from broadcaster conn=null
+18:07:58.091 msg answer from viewer conn=v5e45c70f
+18:07:58.093 msg candidate from viewer conn=v5e45c70f
+18:07:58.093 msg candidate from viewer conn=v5e45c70f
+18:09:01.104 ws error: write after end
+18:09:01.105 ws close (role=viewer, id=v9d85cdbe)
+18:09:24.114 upgrade from 127.0.0.1
+18:09:24.115 ws open
+18:09:24.118 viewer vb2e9b5f5 joined room=room1 total=1
+18:09:24.118 viewer-joined -> broadcaster
+18:09:24.177 msg offer from broadcaster conn=null
+18:09:24.177 offer for vb2e9b5f5: forwarded
+18:09:24.180 msg candidate from broadcaster conn=null
+18:09:24.182 msg candidate from broadcaster conn=null
+18:09:24.234 msg answer from viewer conn=vb2e9b5f5
+18:09:24.236 msg candidate from viewer conn=vb2e9b5f5
+18:09:24.241 msg candidate from viewer conn=vb2e9b5f5
+18:09:24.249 msg candidate from broadcaster conn=null
+18:09:24.298 msg candidate from viewer conn=vb2e9b5f5
+18:09:55.059 ws close (role=viewer, id=v5e45c70f)
+18:09:58.069 upgrade from 127.0.0.1
+18:09:58.070 ws open
+18:09:58.071 viewer v5ac6d497 joined room=room1 total=1
+18:09:58.071 viewer-joined -> broadcaster
+18:09:58.101 msg offer from broadcaster conn=null
+18:09:58.102 offer for v5ac6d497: forwarded
+18:09:58.102 msg candidate from broadcaster conn=null
+18:09:58.104 msg candidate from broadcaster conn=null
+18:09:58.115 msg answer from viewer conn=v5ac6d497
+18:09:58.116 msg candidate from viewer conn=v5ac6d497
+18:09:58.116 msg candidate from viewer conn=v5ac6d497
+18:11:04.122 ws error: write after end
+18:11:04.123 ws close (role=viewer, id=vb2e9b5f5)
+18:11:27.129 upgrade from 127.0.0.1
+18:11:27.130 ws open
+18:11:27.134 viewer v67252764 joined room=room1 total=1
+18:11:27.135 viewer-joined -> broadcaster
+18:11:27.163 msg offer from broadcaster conn=null
+18:11:27.164 offer for v67252764: forwarded
+18:11:27.166 msg candidate from broadcaster conn=null
+18:11:27.167 msg candidate from broadcaster conn=null
+18:11:27.273 msg answer from viewer conn=v67252764
+18:11:27.280 msg candidate from viewer conn=v67252764
+18:11:27.288 msg candidate from viewer conn=v67252764
+18:11:27.340 msg candidate from broadcaster conn=null
+18:11:55.089 ws close (role=viewer, id=v5ac6d497)
+18:11:58.093 upgrade from 127.0.0.1
+18:11:58.094 ws open
+18:11:58.094 viewer va793ec9b joined room=room1 total=1
+18:11:58.095 viewer-joined -> broadcaster
+18:11:58.123 msg offer from broadcaster conn=null
+18:11:58.127 offer for va793ec9b: forwarded
+18:11:58.128 msg candidate from broadcaster conn=null
+18:11:58.129 msg candidate from broadcaster conn=null
+18:11:58.140 msg answer from viewer conn=va793ec9b
+18:11:58.144 msg candidate from viewer conn=va793ec9b
+18:11:58.144 msg candidate from viewer conn=va793ec9b
+18:13:27.144 ws error: write after end
+18:13:27.145 ws close (role=viewer, id=v67252764)
+18:13:50.155 upgrade from 127.0.0.1
+18:13:50.155 ws open
+18:13:50.157 viewer v7da114ff joined room=room1 total=1
+18:13:50.157 viewer-joined -> broadcaster
+18:13:50.191 msg offer from broadcaster conn=null
+18:13:50.192 offer for v7da114ff: forwarded
+18:13:50.195 msg candidate from broadcaster conn=null
+18:13:50.196 msg candidate from broadcaster conn=null
+18:13:50.241 msg candidate from broadcaster conn=null
+18:13:50.293 msg answer from viewer conn=v7da114ff
+18:13:50.308 msg candidate from viewer conn=v7da114ff
+18:13:50.308 msg candidate from viewer conn=v7da114ff
+18:13:55.124 ws close (role=viewer, id=va793ec9b)
+18:13:58.126 upgrade from 127.0.0.1
+18:13:58.127 ws open
+18:13:58.127 viewer v5412ebd6 joined room=room1 total=1
+18:13:58.128 viewer-joined -> broadcaster
+18:13:58.179 msg offer from broadcaster conn=null
+18:13:58.179 offer for v5412ebd6: forwarded
+18:13:58.181 msg candidate from broadcaster conn=null
+18:13:58.181 msg candidate from broadcaster conn=null
+18:13:58.196 msg answer from viewer conn=v5412ebd6
+18:13:58.197 msg candidate from viewer conn=v5412ebd6
+18:13:58.198 msg candidate from viewer conn=v5412ebd6
+18:15:30.166 ws error: write after end
+18:15:30.167 ws close (role=viewer, id=v7da114ff)
+18:15:53.175 upgrade from 127.0.0.1
+18:15:53.176 ws open
+18:15:53.180 viewer v8ba02719 joined room=room1 total=1
+18:15:53.181 viewer-joined -> broadcaster
+18:15:55.150 ws close (role=viewer, id=v5412ebd6)
+18:15:55.150 ws close (role=broadcaster, id=null)
+18:15:58.167 upgrade from 127.0.0.1
+18:15:58.168 ws open
+18:15:58.169 ws close (role=viewer, id=null)
+18:15:59.216 upgrade from 127.0.0.1
+18:15:59.217 ws open
+18:15:59.236 broadcaster joined room=room1 total=1
+18:16:01.172 upgrade from 127.0.0.1
+18:16:01.173 ws open
+18:16:01.174 viewer veda26c87 joined room=room1 total=1
+18:16:01.174 viewer-joined -> broadcaster
+18:16:01.204 msg offer from broadcaster conn=null
+18:16:01.205 offer for veda26c87: forwarded
+18:16:01.213 msg answer from viewer conn=veda26c87
+18:16:01.215 msg candidate from viewer conn=veda26c87
+18:16:01.215 msg candidate from viewer conn=veda26c87
+18:16:01.253 msg candidate from viewer conn=veda26c87
+18:16:01.319 msg candidate from broadcaster conn=null
+18:16:01.327 msg candidate from broadcaster conn=null
+18:17:33.192 ws error: write after end
+18:17:33.193 ws close (role=viewer, id=v8ba02719)
+18:17:55.183 ws close (role=broadcaster, id=null)
+18:17:55.183 ws close (role=viewer, id=veda26c87)
+18:17:56.206 upgrade from 127.0.0.1
+18:17:56.207 ws open
+18:17:58.197 upgrade from 127.0.0.1
+18:17:58.198 ws open
+18:17:58.199 ws close (role=viewer, id=null)
+18:17:59.636 upgrade from 127.0.0.1
+18:17:59.637 ws open
+18:17:59.646 broadcaster joined room=room1 total=0
+18:18:01.206 upgrade from 127.0.0.1
+18:18:01.206 ws open
+18:18:01.207 viewer vcc1392ad joined room=room1 total=0
+18:18:01.208 viewer-joined -> broadcaster
+18:18:03.905 msg offer from broadcaster conn=null
+18:18:03.905 offer for vcc1392ad: forwarded
+18:18:03.906 msg candidate from broadcaster conn=null
+18:18:03.907 msg candidate from broadcaster conn=null
+18:18:03.917 msg answer from viewer conn=vcc1392ad
+18:18:03.919 msg candidate from viewer conn=vcc1392ad
+18:18:03.919 msg candidate from viewer conn=vcc1392ad
+18:18:16.213 ws error: write after end
+18:18:16.213 ws close (role=viewer, id=null)
+18:18:39.226 upgrade from 127.0.0.1
+18:18:39.227 ws open
+18:18:39.229 viewer v5ca90e66 joined room=room1 total=1
+18:18:39.230 viewer-joined -> broadcaster
+18:18:49.148 msg offer from broadcaster conn=null
+18:18:49.148 offer for v5ca90e66: forwarded
+18:18:49.149 msg candidate from broadcaster conn=null
+18:18:49.149 msg candidate from broadcaster conn=null
+18:18:49.199 msg candidate from broadcaster conn=null
+18:18:49.243 msg answer from viewer conn=v5ca90e66
+18:18:49.244 msg candidate from viewer conn=v5ca90e66
+18:18:49.246 msg candidate from viewer conn=v5ca90e66
+18:18:49.323 msg candidate from broadcaster conn=null
+18:19:55.215 ws close (role=viewer, id=vcc1392ad)
+18:19:58.218 upgrade from 127.0.0.1
+18:19:58.219 ws open
+18:19:58.219 viewer v1f0a77e0 joined room=room1 total=1
+18:19:58.220 viewer-joined -> broadcaster
+18:20:06.859 msg offer from broadcaster conn=null
+18:20:06.860 offer for v1f0a77e0: forwarded
+18:20:06.864 msg candidate from broadcaster conn=null
+18:20:06.865 msg candidate from broadcaster conn=null
+18:20:06.876 msg answer from viewer conn=v1f0a77e0
+18:20:06.878 msg candidate from viewer conn=v1f0a77e0
+18:20:06.879 msg candidate from viewer conn=v1f0a77e0
+18:20:39.242 ws error: write after end
+18:20:39.243 ws close (role=viewer, id=v5ca90e66)
+18:21:02.253 upgrade from 127.0.0.1
+18:21:02.253 ws open
+18:21:02.255 viewer v492821ab joined room=room1 total=1
+18:21:02.256 viewer-joined -> broadcaster
+18:21:04.398 msg offer from broadcaster conn=null
+18:21:04.398 offer for v492821ab: forwarded
+18:21:04.400 msg candidate from broadcaster conn=null
+18:21:04.400 msg candidate from broadcaster conn=null
+18:21:04.435 msg candidate from broadcaster conn=null
+18:21:04.462 msg candidate from broadcaster conn=null
+18:21:04.509 msg answer from viewer conn=v492821ab
+18:21:04.509 msg candidate from viewer conn=v492821ab
+18:21:04.510 msg candidate from viewer conn=v492821ab
+18:21:55.259 ws close (role=viewer, id=v1f0a77e0)
+18:21:58.268 upgrade from 127.0.0.1
+18:21:58.268 ws open
+18:21:58.269 viewer v613da1fa joined room=room1 total=1
+18:21:58.269 viewer-joined -> broadcaster
+18:22:15.642 msg offer from broadcaster conn=null
+18:22:15.643 offer for v613da1fa: forwarded
+18:22:15.644 msg candidate from broadcaster conn=null
+18:22:15.644 msg candidate from broadcaster conn=null
+18:22:15.656 msg answer from viewer conn=v613da1fa
+18:22:15.657 msg candidate from viewer conn=v613da1fa
+18:22:15.658 msg candidate from viewer conn=v613da1fa
+18:23:02.267 ws error: write after end
+18:23:02.268 ws close (role=viewer, id=v492821ab)
+18:23:25.276 upgrade from 127.0.0.1
+18:23:25.277 ws open
+18:23:25.280 viewer v5cd55a2c joined room=room1 total=1
+18:23:25.280 viewer-joined -> broadcaster
+18:23:26.818 msg offer from broadcaster conn=null
+18:23:26.819 offer for v5cd55a2c: forwarded
+18:23:26.820 msg candidate from broadcaster conn=null
+18:23:26.820 msg candidate from broadcaster conn=null
+18:23:26.864 msg candidate from broadcaster conn=null
+18:23:26.879 msg candidate from broadcaster conn=null
+18:23:26.884 msg answer from viewer conn=v5cd55a2c
+18:23:26.886 msg candidate from viewer conn=v5cd55a2c
+18:23:26.888 msg candidate from viewer conn=v5cd55a2c
+18:23:55.288 ws close (role=viewer, id=v613da1fa)
+18:23:58.290 upgrade from 127.0.0.1
+18:23:58.291 ws open
+18:23:58.291 viewer v23ebf000 joined room=room1 total=1
+18:23:58.292 viewer-joined -> broadcaster
+18:24:11.429 msg offer from broadcaster conn=null
+18:24:11.429 offer for v23ebf000: forwarded
+18:24:11.437 msg answer from viewer conn=v23ebf000
+18:24:11.438 msg candidate from viewer conn=v23ebf000
+18:24:11.438 msg candidate from viewer conn=v23ebf000
+18:24:11.476 msg candidate from viewer conn=v23ebf000
+18:24:11.497 msg candidate from viewer conn=v23ebf000
+18:24:18.121 msg candidate from broadcaster conn=null
+18:24:25.568 msg candidate from broadcaster conn=null
+18:24:25.568 msg candidate from broadcaster conn=null
+18:24:32.662 msg candidate from broadcaster conn=null
+18:25:45.294 ws error: write after end
+18:25:45.294 ws close (role=viewer, id=v5cd55a2c)
+18:25:55.327 ws close (role=viewer, id=v23ebf000)
+18:25:58.335 upgrade from 127.0.0.1
+18:25:58.335 ws open
+18:25:58.336 viewer vff548908 joined room=room1 total=0
+18:25:58.336 viewer-joined -> broadcaster
+18:26:08.311 upgrade from 127.0.0.1
+18:26:08.311 ws open
+18:26:08.313 viewer v28b36de9 joined room=room1 total=1
+18:26:08.313 viewer-joined -> broadcaster
+18:26:20.113 msg offer from broadcaster conn=null
+18:26:20.114 offer for vff548908: forwarded
+18:26:20.123 msg answer from viewer conn=vff548908
+18:26:20.126 msg candidate from viewer conn=vff548908
+18:26:20.127 msg candidate from viewer conn=vff548908
+18:26:20.168 msg candidate from viewer conn=vff548908
+18:26:20.185 msg candidate from viewer conn=vff548908
+18:26:20.940 msg offer from broadcaster conn=null
+18:26:20.941 offer for v28b36de9: forwarded
+18:26:20.961 msg answer from viewer conn=v28b36de9
+18:26:20.963 msg candidate from viewer conn=v28b36de9
+18:26:20.963 msg candidate from viewer conn=v28b36de9
+18:26:21.020 msg candidate from viewer conn=v28b36de9
+18:26:21.142 msg candidate from viewer conn=v28b36de9
+18:26:25.338 ws close (role=broadcaster, id=null)
+18:26:37.247 upgrade from 127.0.0.1
+18:26:37.247 ws open
+18:26:41.092 broadcaster joined room=room1 total=2
+18:26:48.756 msg candidate from broadcaster conn=null
+18:26:57.509 msg candidate from broadcaster conn=null
+18:26:57.514 msg candidate from broadcaster conn=null
+18:27:55.356 ws close (role=viewer, id=vff548908)
+18:27:58.365 upgrade from 127.0.0.1
+18:27:58.366 ws open
+18:27:58.367 viewer v5ff4533f joined room=room1 total=0
+18:27:58.368 viewer-joined -> broadcaster
+18:28:08.327 ws error: write after end
+18:28:08.328 ws close (role=viewer, id=v28b36de9)
+18:28:31.369 upgrade from 127.0.0.1
+18:28:31.370 ws open
+18:28:31.385 viewer v11588db7 joined room=room1 total=1
+18:28:31.385 viewer-joined -> broadcaster
+18:28:55.373 ws close (role=broadcaster, id=null)
+18:29:55.393 ws close (role=viewer, id=v5ff4533f)
+18:29:58.406 upgrade from 127.0.0.1
+18:29:58.407 ws open
+18:29:58.408 ws close (role=viewer, id=null)
+18:30:01.416 upgrade from 127.0.0.1
+18:30:01.416 ws open
+18:30:01.417 ws close (role=viewer, id=null)
+18:30:04.431 upgrade from 127.0.0.1
+18:30:04.431 ws open
+18:30:04.432 ws close (role=viewer, id=null)
+18:30:07.440 upgrade from 127.0.0.1
+18:30:07.441 ws open
+18:30:07.442 ws close (role=viewer, id=null)
+18:30:10.451 upgrade from 127.0.0.1
+18:30:10.451 ws open
+18:30:10.454 ws close (role=viewer, id=null)
+18:30:13.460 upgrade from 127.0.0.1
+18:30:13.461 ws open
+18:30:13.461 ws close (role=viewer, id=null)
+18:30:16.471 upgrade from 127.0.0.1
+18:30:16.472 ws open
+18:30:16.473 ws close (role=viewer, id=null)
+18:30:19.489 upgrade from 127.0.0.1
+18:30:19.490 ws open
+18:30:19.491 ws close (role=viewer, id=null)
+18:30:22.495 upgrade from 127.0.0.1
+18:30:22.496 ws open
+18:30:22.497 ws close (role=viewer, id=null)
+18:30:25.500 upgrade from 127.0.0.1
+18:30:25.501 ws open
+18:30:25.501 ws close (role=viewer, id=null)
+18:30:28.508 upgrade from 127.0.0.1
+18:30:28.508 ws open
+18:30:28.509 ws close (role=viewer, id=null)
+18:30:31.397 ws error: write after end
+18:30:31.398 ws close (role=viewer, id=v11588db7)
+18:30:31.513 upgrade from 127.0.0.1
+18:30:31.513 ws open
+18:30:31.514 ws close (role=viewer, id=null)
+18:30:34.520 upgrade from 127.0.0.1
+18:30:34.521 ws open
+18:30:34.522 ws close (role=viewer, id=null)
+18:30:37.538 upgrade from 127.0.0.1
+18:30:37.538 ws open
+18:30:37.539 ws close (role=viewer, id=null)
+18:30:40.545 upgrade from 127.0.0.1
+18:30:40.546 ws open
+18:30:40.547 ws close (role=viewer, id=null)
+18:30:43.549 upgrade from 127.0.0.1
+18:30:43.549 ws open
+18:30:43.550 ws close (role=viewer, id=null)
+18:30:46.554 upgrade from 127.0.0.1
+18:30:46.555 ws open
+18:30:46.556 ws close (role=viewer, id=null)
+18:30:49.572 upgrade from 127.0.0.1
+18:30:49.572 ws open
+18:30:49.573 ws close (role=viewer, id=null)
+18:30:52.579 upgrade from 127.0.0.1
+18:30:52.579 ws open
+18:30:52.580 ws close (role=viewer, id=null)
+18:30:54.417 upgrade from 127.0.0.1
+18:30:54.417 ws open
+18:30:55.592 upgrade from 127.0.0.1
+18:30:55.592 ws open
+18:30:55.593 ws close (role=viewer, id=null)
+18:30:58.596 upgrade from 127.0.0.1
+18:30:58.597 ws open
+18:30:58.597 ws close (role=viewer, id=null)
+18:31:01.603 upgrade from 127.0.0.1
+18:31:01.604 ws open
+18:31:01.605 ws close (role=viewer, id=null)
+18:31:04.610 upgrade from 127.0.0.1
+18:31:04.611 ws open
+18:31:04.611 ws close (role=viewer, id=null)
+18:31:07.614 upgrade from 127.0.0.1
+18:31:07.614 ws open
+18:31:07.615 ws close (role=viewer, id=null)
+18:31:10.627 upgrade from 127.0.0.1
+18:31:10.628 ws open
+18:31:10.629 ws close (role=viewer, id=null)
+18:31:13.646 upgrade from 127.0.0.1
+18:31:13.647 ws open
+18:31:13.647 ws close (role=viewer, id=null)
+18:31:14.428 ws error: write after end
+18:31:14.429 ws close (role=viewer, id=null)
+18:31:16.664 upgrade from 127.0.0.1
+18:31:16.664 ws open
+18:31:16.665 ws close (role=viewer, id=null)
+18:31:19.675 upgrade from 127.0.0.1
+18:31:19.675 ws open
+18:31:19.676 ws close (role=viewer, id=null)
+18:31:22.682 upgrade from 127.0.0.1
+18:31:22.683 ws open
+18:31:22.685 ws close (role=viewer, id=null)
+18:31:25.692 upgrade from 127.0.0.1
+18:31:25.692 ws open
+18:31:25.693 ws close (role=viewer, id=null)
+18:31:28.696 upgrade from 127.0.0.1
+18:31:28.697 ws open
+18:31:28.697 ws close (role=viewer, id=null)
+18:31:31.709 upgrade from 127.0.0.1
+18:31:31.709 ws open
+18:31:31.710 ws close (role=viewer, id=null)
+18:31:34.715 upgrade from 127.0.0.1
+18:31:34.715 ws open
+18:31:34.716 ws close (role=viewer, id=null)
+18:31:37.441 upgrade from 127.0.0.1
+18:31:37.441 ws open
+18:31:37.725 upgrade from 127.0.0.1
+18:31:37.726 ws open
+18:31:37.726 ws close (role=viewer, id=null)
+18:31:40.742 upgrade from 127.0.0.1
+18:31:40.742 ws open
+18:31:40.743 ws close (role=viewer, id=null)
+18:31:43.748 upgrade from 127.0.0.1
+18:31:43.748 ws open
+18:31:43.749 ws close (role=viewer, id=null)
+18:31:46.762 upgrade from 127.0.0.1
+18:31:46.762 ws open
+18:31:46.764 ws close (role=viewer, id=null)
+18:31:49.772 upgrade from 127.0.0.1
+18:31:49.772 ws open
+18:31:49.773 ws close (role=viewer, id=null)
+18:31:52.789 upgrade from 127.0.0.1
+18:31:52.790 ws open
+18:31:52.791 ws close (role=viewer, id=null)
+18:31:55.796 upgrade from 127.0.0.1
+18:31:55.797 ws open
+18:31:55.797 ws close (role=viewer, id=null)
+18:31:57.446 ws error: write after end
+18:31:57.447 ws close (role=viewer, id=null)
+18:31:58.804 upgrade from 127.0.0.1
+18:31:58.804 ws open
+18:31:58.805 ws close (role=viewer, id=null)
+18:32:01.810 upgrade from 127.0.0.1
+18:32:01.810 ws open
+18:32:01.811 ws close (role=viewer, id=null)
+18:32:04.828 upgrade from 127.0.0.1
+18:32:04.829 ws open
+18:32:04.830 ws close (role=viewer, id=null)
+18:32:07.840 upgrade from 127.0.0.1
+18:32:07.841 ws open
+18:32:07.841 ws close (role=viewer, id=null)
+18:32:10.853 upgrade from 127.0.0.1
+18:32:10.853 ws open
+18:32:10.854 ws close (role=viewer, id=null)
+18:32:13.863 upgrade from 127.0.0.1
+18:32:13.864 ws open
+18:32:13.865 ws close (role=viewer, id=null)
+18:32:16.876 upgrade from 127.0.0.1
+18:32:16.877 ws open
+18:32:16.878 ws close (role=viewer, id=null)
+18:32:19.883 upgrade from 127.0.0.1
+18:32:19.884 ws open
+18:32:19.885 ws close (role=viewer, id=null)
+18:32:20.458 upgrade from 127.0.0.1
+18:32:20.459 ws open
+18:32:22.896 upgrade from 127.0.0.1
+18:32:22.896 ws open
+18:32:22.897 ws close (role=viewer, id=null)
+18:32:25.904 upgrade from 127.0.0.1
+18:32:25.904 ws open
+18:32:25.905 ws close (role=viewer, id=null)
+18:32:28.920 upgrade from 127.0.0.1
+18:32:28.921 ws open
+18:32:28.922 ws close (role=viewer, id=null)
+18:32:31.929 upgrade from 127.0.0.1
+18:32:31.930 ws open
+18:32:31.931 ws close (role=viewer, id=null)
+18:32:34.948 upgrade from 127.0.0.1
+18:32:34.949 ws open
+18:32:34.950 ws close (role=viewer, id=null)
+18:32:37.955 upgrade from 127.0.0.1
+18:32:37.956 ws open
+18:32:37.958 ws close (role=viewer, id=null)
+18:32:40.462 ws error: write after end
+18:32:40.463 ws close (role=viewer, id=null)
+18:32:40.972 upgrade from 127.0.0.1
+18:32:40.972 ws open
+18:32:40.973 ws close (role=viewer, id=null)
+18:32:43.978 upgrade from 127.0.0.1
+18:32:43.979 ws open
+18:32:43.979 ws close (role=viewer, id=null)
+18:32:46.991 upgrade from 127.0.0.1
+18:32:46.991 ws open
+18:32:46.992 ws close (role=viewer, id=null)
+18:32:50.002 upgrade from 127.0.0.1
+18:32:50.003 ws open
+18:32:50.004 ws close (role=viewer, id=null)
+18:32:53.010 upgrade from 127.0.0.1
+18:32:53.010 ws open
+18:32:53.011 ws close (role=viewer, id=null)
+18:32:56.014 upgrade from 127.0.0.1
+18:32:56.014 ws open
+18:32:56.017 ws close (role=viewer, id=null)
+18:32:59.022 upgrade from 127.0.0.1
+18:32:59.022 ws open
+18:32:59.023 ws close (role=viewer, id=null)
+18:33:02.036 upgrade from 127.0.0.1
+18:33:02.036 ws open
+18:33:02.037 ws close (role=viewer, id=null)
+18:33:03.475 upgrade from 127.0.0.1
+18:33:03.476 ws open
+18:33:05.043 upgrade from 127.0.0.1
+18:33:05.043 ws open
+18:33:05.044 ws close (role=viewer, id=null)
+18:33:07.645 upgrade from 127.0.0.1
+18:33:07.645 ws open
+18:33:08.051 upgrade from 127.0.0.1
+18:33:08.052 ws open
+18:33:08.052 ws close (role=viewer, id=null)
+18:33:11.061 upgrade from 127.0.0.1
+18:33:11.062 ws open
+18:33:11.063 ws close (role=viewer, id=null)
+18:33:14.079 upgrade from 127.0.0.1
+18:33:14.080 ws open
+18:33:14.080 ws close (role=viewer, id=null)
+18:33:17.088 upgrade from 127.0.0.1
+18:33:17.089 ws open
+18:33:17.089 ws close (role=viewer, id=null)
+18:33:17.968 broadcaster joined room=room1 total=0
+18:33:20.100 upgrade from 127.0.0.1
+18:33:20.100 ws open
+18:33:20.101 viewer vf9b0f230 joined room=room1 total=0
+18:33:20.101 viewer-joined -> broadcaster
+18:33:23.479 ws error: write after end
+18:33:23.480 ws close (role=viewer, id=null)
+18:33:46.487 upgrade from 127.0.0.1
+18:33:46.488 ws open
+18:33:46.491 viewer v2c3bc77b joined room=room1 total=1
+18:33:46.491 viewer-joined -> broadcaster
+18:34:55.492 ws close (role=viewer, id=vf9b0f230)
+18:34:55.493 ws close (role=broadcaster, id=null)
+18:34:58.497 upgrade from 127.0.0.1
+18:34:58.498 ws open
+18:34:58.499 ws close (role=viewer, id=null)
+18:35:01.503 upgrade from 127.0.0.1
+18:35:01.503 ws open
+18:35:01.504 ws close (role=viewer, id=null)
+18:35:04.518 upgrade from 127.0.0.1
+18:35:04.519 ws open
+18:35:04.519 ws close (role=viewer, id=null)
+18:35:07.537 upgrade from 127.0.0.1
+18:35:07.537 ws open
+18:35:07.538 ws close (role=viewer, id=null)
+18:35:10.549 upgrade from 127.0.0.1
+18:35:10.549 ws open
+18:35:10.550 ws close (role=viewer, id=null)
+18:35:13.555 upgrade from 127.0.0.1
+18:35:13.556 ws open
+18:35:13.557 ws close (role=viewer, id=null)
+18:35:16.568 upgrade from 127.0.0.1
+18:35:16.569 ws open
+18:35:16.570 ws close (role=viewer, id=null)
+18:35:19.576 upgrade from 127.0.0.1
+18:35:19.576 ws open
+18:35:19.577 ws close (role=viewer, id=null)
+18:35:22.591 upgrade from 127.0.0.1
+18:35:22.591 ws open
+18:35:22.592 ws close (role=viewer, id=null)
+18:35:25.604 upgrade from 127.0.0.1
+18:35:25.604 ws open
+18:35:25.605 ws close (role=viewer, id=null)
+18:35:26.089 upgrade from 127.0.0.1
+18:35:26.090 ws open
+18:35:26.506 ws error: write after end
+18:35:26.507 ws close (role=viewer, id=v2c3bc77b)
+18:35:28.615 upgrade from 127.0.0.1
+18:35:28.616 ws open
+18:35:28.617 ws close (role=viewer, id=null)
+18:35:31.625 upgrade from 127.0.0.1
+18:35:31.625 ws open
+18:35:31.626 ws close (role=viewer, id=null)
+18:35:34.642 upgrade from 127.0.0.1
+18:35:34.643 ws open
+18:35:34.644 ws close (role=viewer, id=null)
+18:35:37.650 upgrade from 127.0.0.1
+18:35:37.651 ws open
+18:35:37.651 ws close (role=viewer, id=null)
+18:35:38.940 broadcaster joined room=room1 total=0
+18:35:40.667 upgrade from 127.0.0.1
+18:35:40.668 ws open
+18:35:40.669 viewer vdfb02b9d joined room=room1 total=0
+18:35:40.669 viewer-joined -> broadcaster
+18:35:49.519 upgrade from 127.0.0.1
+18:35:49.520 ws open
+18:35:49.523 viewer v16e67ef1 joined room=room1 total=1
+18:35:49.523 viewer-joined -> broadcaster
+18:36:55.083 msg offer from broadcaster conn=null
+18:36:55.084 offer for v2c3bc77b: VIEWER NOT FOUND
+18:36:55.085 msg candidate from broadcaster conn=null
+18:36:55.086 msg candidate from broadcaster conn=null
+18:36:55.086 msg candidate from broadcaster conn=null
+18:36:55.087 msg candidate from broadcaster conn=null
+18:36:55.087 msg candidate from broadcaster conn=null
+18:36:55.087 msg candidate from broadcaster conn=null
+18:36:55.088 msg candidate from broadcaster conn=null
+18:36:55.088 msg candidate from broadcaster conn=null
+18:37:16.323 msg offer from broadcaster conn=null
+18:37:16.323 offer for vdfb02b9d: forwarded
+18:37:16.334 msg answer from viewer conn=vdfb02b9d
+18:37:16.336 msg candidate from viewer conn=vdfb02b9d
+18:37:16.337 msg candidate from viewer conn=vdfb02b9d
+18:37:16.371 msg candidate from viewer conn=vdfb02b9d
+18:37:16.512 msg candidate from viewer conn=vdfb02b9d
+18:37:29.532 ws error: write after end
+18:37:29.533 ws close (role=viewer, id=v16e67ef1)
+18:37:52.546 upgrade from 127.0.0.1
+18:37:52.547 ws open
+18:37:52.549 viewer v8f901830 joined room=room1 total=1
+18:37:52.550 viewer-joined -> broadcaster
+18:38:25.533 ws close (role=broadcaster, id=null)
+18:38:55.533 ws close (role=viewer, id=vdfb02b9d)
+18:38:58.546 upgrade from 127.0.0.1
+18:38:58.546 ws open
+18:38:58.547 ws close (role=viewer, id=null)
+18:39:01.559 upgrade from 127.0.0.1
+18:39:01.559 ws open
+18:39:01.560 ws close (role=viewer, id=null)
+18:39:04.568 upgrade from 127.0.0.1
+18:39:04.568 ws open
+18:39:04.569 ws close (role=viewer, id=null)
+18:39:07.584 upgrade from 127.0.0.1
+18:39:07.585 ws open
+18:39:07.586 ws close (role=viewer, id=null)
+18:39:10.594 upgrade from 127.0.0.1
+18:39:10.594 ws open
+18:39:10.595 ws close (role=viewer, id=null)
+18:39:13.607 upgrade from 127.0.0.1
+18:39:13.608 ws open
+18:39:13.609 ws close (role=viewer, id=null)
+18:39:16.620 upgrade from 127.0.0.1
+18:39:16.620 ws open
+18:39:16.621 ws close (role=viewer, id=null)
+18:39:19.632 upgrade from 127.0.0.1
+18:39:19.633 ws open
+18:39:19.634 ws close (role=viewer, id=null)
+18:39:22.643 upgrade from 127.0.0.1
+18:39:22.644 ws open
+18:39:22.644 ws close (role=viewer, id=null)
+18:39:25.249 upgrade from 127.0.0.1
+18:39:25.250 ws open
+18:39:25.656 upgrade from 127.0.0.1
+18:39:25.656 ws open
+18:39:25.657 ws close (role=viewer, id=null)
+18:39:28.665 upgrade from 127.0.0.1
+18:39:28.666 ws open
+18:39:28.666 ws close (role=viewer, id=null)
+18:39:31.677 upgrade from 127.0.0.1
+18:39:31.677 ws open
+18:39:31.678 ws close (role=viewer, id=null)
+18:39:32.054 broadcaster joined room=room1 total=0
+18:39:32.560 ws error: write after end
+18:39:32.560 ws close (role=viewer, id=v8f901830)
+18:39:34.684 upgrade from 127.0.0.1
+18:39:34.685 ws open
+18:39:34.685 viewer v960f832a joined room=room1 total=0
+18:39:34.686 viewer-joined -> broadcaster
+18:39:55.567 upgrade from 127.0.0.1
+18:39:55.568 ws open
+18:39:55.570 viewer v882ed562 joined room=room1 total=1
+18:39:55.571 viewer-joined -> broadcaster
+18:41:25.568 ws close (role=viewer, id=v960f832a)
+18:41:25.568 ws close (role=broadcaster, id=null)
+18:41:28.578 upgrade from 127.0.0.1
+18:41:28.578 ws open
+18:41:28.579 ws close (role=viewer, id=null)
+18:41:31.586 upgrade from 127.0.0.1
+18:41:31.586 ws open
+18:41:31.587 ws close (role=viewer, id=null)
+18:41:34.593 upgrade from 127.0.0.1
+18:41:34.593 ws open
+18:41:34.594 ws close (role=viewer, id=null)
+18:41:37.599 upgrade from 127.0.0.1
+18:41:37.600 ws open
+18:41:37.600 ws close (role=viewer, id=null)
+18:41:40.608 upgrade from 127.0.0.1
+18:41:40.609 ws open
+18:41:40.610 ws close (role=viewer, id=null)
+18:41:43.615 upgrade from 127.0.0.1
+18:41:43.616 ws open
+18:41:43.616 ws close (role=viewer, id=null)
+18:41:46.619 upgrade from 127.0.0.1
+18:41:46.619 ws open
+18:41:46.620 ws close (role=viewer, id=null)
+18:41:49.625 upgrade from 127.0.0.1
+18:41:49.626 ws open
+18:41:49.627 ws close (role=viewer, id=null)
+18:41:52.638 upgrade from 127.0.0.1
+18:41:52.639 ws open
+18:41:52.640 ws close (role=viewer, id=null)
+18:41:55.584 ws error: write after end
+18:41:55.585 ws close (role=viewer, id=v882ed562)
+18:41:55.643 upgrade from 127.0.0.1
+18:41:55.643 ws open
+18:41:55.644 ws close (role=viewer, id=null)
+18:41:58.655 upgrade from 127.0.0.1
+18:41:58.656 ws open
+18:41:58.657 ws close (role=viewer, id=null)
+18:42:01.667 upgrade from 127.0.0.1
+18:42:01.668 ws open
+18:42:01.669 ws close (role=viewer, id=null)
+18:42:04.684 upgrade from 127.0.0.1
+18:42:04.685 ws open
+18:42:04.686 ws close (role=viewer, id=null)
+18:42:07.695 upgrade from 127.0.0.1
+18:42:07.696 ws open
+18:42:07.697 ws close (role=viewer, id=null)
+18:42:10.701 upgrade from 127.0.0.1
+18:42:10.701 ws open
+18:42:10.702 ws close (role=viewer, id=null)
+18:42:11.845 upgrade from 127.0.0.1
+18:42:11.849 ws open
+18:42:13.713 upgrade from 127.0.0.1
+18:42:13.714 ws open
+18:42:13.715 ws close (role=viewer, id=null)
+18:42:16.726 upgrade from 127.0.0.1
+18:42:16.727 ws open
+18:42:16.727 ws close (role=viewer, id=null)
+18:42:18.596 upgrade from 127.0.0.1
+18:42:18.597 ws open
+18:42:19.741 upgrade from 127.0.0.1
+18:42:19.742 ws open
+18:42:19.742 ws close (role=viewer, id=null)
+18:42:22.748 upgrade from 127.0.0.1
+18:42:22.749 ws open
+18:42:22.750 ws close (role=viewer, id=null)
+18:42:23.079 broadcaster joined room=room1 total=0
+18:42:25.759 upgrade from 127.0.0.1
+18:42:25.759 ws open
+18:42:25.760 viewer v78153f25 joined room=room1 total=0
+18:42:25.760 viewer-joined -> broadcaster
+18:42:38.600 ws error: write after end
+18:42:38.601 ws close (role=viewer, id=null)
+18:43:01.612 upgrade from 127.0.0.1
+18:43:01.613 ws open
+18:43:01.622 viewer v02f41598 joined room=room1 total=1
+18:43:01.623 viewer-joined -> broadcaster
+18:43:27.066 msg offer from broadcaster conn=null
+18:43:27.066 offer for v882ed562: VIEWER NOT FOUND
+18:43:34.747 msg offer from broadcaster conn=null
+18:43:34.747 offer for v78153f25: forwarded
+18:43:34.753 msg answer from viewer conn=v78153f25
+18:43:34.755 msg candidate from viewer conn=v78153f25
+18:43:34.756 msg candidate from viewer conn=v78153f25
+18:43:34.792 msg candidate from viewer conn=v78153f25
+18:43:34.810 msg candidate from viewer conn=v78153f25
+18:43:55.607 ws close (role=broadcaster, id=null)
+18:44:13.656 upgrade from 127.0.0.1
+18:44:13.657 ws open
+18:44:17.606 broadcaster joined room=room1 total=2
+18:45:01.637 ws error: write after end
+18:45:01.638 ws close (role=viewer, id=v02f41598)
+18:45:24.648 upgrade from 127.0.0.1
+18:45:24.649 ws open
+18:45:24.651 viewer v29f10e05 joined room=room1 total=1
+18:45:24.651 viewer-joined -> broadcaster
+18:45:25.639 ws close (role=viewer, id=v78153f25)
+18:45:28.649 upgrade from 127.0.0.1
+18:45:28.650 ws open
+18:45:28.651 viewer veef3a340 joined room=room1 total=1
+18:45:28.651 viewer-joined -> broadcaster
+18:45:55.648 ws close (role=broadcaster, id=null)
+18:46:54.619 upgrade from 127.0.0.1
+18:46:54.620 ws open
+18:47:02.347 broadcaster joined room=room1 total=1
+18:47:04.660 ws error: write after end
+18:47:04.660 ws close (role=viewer, id=v29f10e05)
+18:47:25.663 ws close (role=viewer, id=veef3a340)
+18:47:27.672 upgrade from 127.0.0.1
+18:47:27.673 ws open
+18:47:27.674 viewer v6e7086dc joined room=room1 total=0
+18:47:27.675 viewer-joined -> broadcaster
+18:47:28.667 upgrade from 127.0.0.1
+18:47:28.668 ws open
+18:47:28.670 viewer vda8f1e2b joined room=room1 total=1
+18:47:28.671 viewer-joined -> broadcaster
+18:48:55.681 ws close (role=broadcaster, id=null)
+18:49:20.615 upgrade from 127.0.0.1
+18:49:20.615 ws open
+18:49:25.686 ws close (role=viewer, id=vda8f1e2b)
+18:49:27.686 ws error: write after end
+18:49:27.687 ws close (role=viewer, id=v6e7086dc)
+18:49:28.692 upgrade from 127.0.0.1
+18:49:28.692 ws open
+18:49:28.693 ws close (role=viewer, id=null)
+18:49:29.207 broadcaster joined room=room1 total=0
+18:49:31.697 upgrade from 127.0.0.1
+18:49:31.698 ws open
+18:49:31.698 viewer vc0eb017e joined room=room1 total=0
+18:49:31.699 viewer-joined -> broadcaster
+18:49:50.697 upgrade from 127.0.0.1
+18:49:50.698 ws open
+18:49:50.699 viewer v4d0c4d42 joined room=room1 total=1
+18:49:50.700 viewer-joined -> broadcaster
+18:50:12.733 msg offer from broadcaster conn=null
+18:50:12.733 offer for vc0eb017e: forwarded
+18:50:12.736 msg offer from broadcaster conn=null
+18:50:12.737 offer for v4d0c4d42: forwarded
+18:50:12.738 msg candidate from broadcaster conn=null
+18:50:12.738 msg candidate from broadcaster conn=null
+18:50:12.738 msg candidate from broadcaster conn=null
+18:50:12.739 msg candidate from broadcaster conn=null
+18:50:12.743 msg answer from viewer conn=vc0eb017e
+18:50:12.747 msg candidate from viewer conn=vc0eb017e
+18:50:12.747 msg candidate from viewer conn=vc0eb017e
+18:50:12.770 msg candidate from broadcaster conn=null
+18:50:12.930 msg candidate from broadcaster conn=null
+18:50:13.028 msg answer from viewer conn=v4d0c4d42
+18:50:13.036 msg candidate from viewer conn=v4d0c4d42
+18:50:13.037 msg candidate from viewer conn=v4d0c4d42
+18:51:55.740 ws close (role=viewer, id=vc0eb017e)
+18:51:55.740 ws close (role=broadcaster, id=null)
+18:51:58.748 upgrade from 127.0.0.1
+18:51:58.750 ws open
+18:51:58.751 ws close (role=viewer, id=null)
+18:51:59.240 upgrade from 127.0.0.1
+18:51:59.240 ws open
+18:51:59.250 broadcaster joined room=room1 total=0
+18:52:01.754 upgrade from 127.0.0.1
+18:52:01.754 ws open
+18:52:01.755 viewer vb6adff99 joined room=room1 total=0
+18:52:01.756 viewer-joined -> broadcaster
+18:52:01.779 msg offer from broadcaster conn=null
+18:52:01.779 offer for vb6adff99: forwarded
+18:52:01.780 msg candidate from broadcaster conn=null
+18:52:01.780 msg candidate from broadcaster conn=null
+18:52:01.790 msg answer from viewer conn=vb6adff99
+18:52:01.794 msg candidate from viewer conn=vb6adff99
+18:52:01.794 msg candidate from viewer conn=vb6adff99
+18:52:10.713 ws error: write after end
+18:52:10.714 ws close (role=viewer, id=v4d0c4d42)
+18:52:33.822 upgrade from 127.0.0.1
+18:52:33.822 ws open
+18:52:33.834 viewer vfebb8223 joined room=room1 total=1
+18:52:33.834 viewer-joined -> broadcaster
+18:52:33.861 msg offer from broadcaster conn=null
+18:52:33.861 offer for vfebb8223: forwarded
+18:52:33.862 msg candidate from broadcaster conn=null
+18:52:33.863 msg candidate from broadcaster conn=null
+18:52:33.897 msg candidate from broadcaster conn=null
+18:52:33.914 msg candidate from broadcaster conn=null
+18:52:34.040 msg answer from viewer conn=vfebb8223
+18:52:34.041 msg candidate from viewer conn=vfebb8223
+18:52:34.042 msg candidate from viewer conn=vfebb8223
+18:53:55.780 ws close (role=viewer, id=vb6adff99)
+18:53:58.784 upgrade from 127.0.0.1
+18:53:58.784 ws open
+18:53:58.785 viewer v37f33a11 joined room=room1 total=1
+18:53:58.786 viewer-joined -> broadcaster
+18:53:58.836 msg offer from broadcaster conn=null
+18:53:58.837 offer for v37f33a11: forwarded
+18:53:58.839 msg candidate from broadcaster conn=null
+18:53:58.840 msg candidate from broadcaster conn=null
+18:53:58.854 msg answer from viewer conn=v37f33a11
+18:53:58.856 msg candidate from viewer conn=v37f33a11
+18:53:58.859 msg candidate from viewer conn=v37f33a11
+18:54:33.853 ws error: write after end
+18:54:33.853 ws close (role=viewer, id=vfebb8223)
+18:54:56.923 upgrade from 127.0.0.1
+18:54:56.923 ws open
+18:54:56.955 viewer v63d3c82c joined room=room1 total=1
+18:54:56.955 viewer-joined -> broadcaster
+18:54:56.982 msg offer from broadcaster conn=null
+18:54:56.983 offer for v63d3c82c: forwarded
+18:54:56.983 msg candidate from broadcaster conn=null
+18:54:56.984 msg candidate from broadcaster conn=null
+18:54:57.023 msg candidate from broadcaster conn=null
+18:54:57.173 msg candidate from broadcaster conn=null
+18:54:57.193 msg answer from viewer conn=v63d3c82c
+18:54:57.220 msg candidate from viewer conn=v63d3c82c
+18:54:57.220 msg candidate from viewer conn=v63d3c82c
+18:55:55.821 ws close (role=viewer, id=v37f33a11)
+18:55:58.824 upgrade from 127.0.0.1
+18:55:58.825 ws open
+18:55:58.826 viewer v4ad09c0f joined room=room1 total=1
+18:55:58.826 viewer-joined -> broadcaster
+18:55:58.864 msg offer from broadcaster conn=null
+18:55:58.865 offer for v4ad09c0f: forwarded
+18:55:58.866 msg candidate from broadcaster conn=null
+18:55:58.867 msg candidate from broadcaster conn=null
+18:55:58.880 msg answer from viewer conn=v4ad09c0f
+18:55:58.881 msg candidate from viewer conn=v4ad09c0f
+18:55:58.882 msg candidate from viewer conn=v4ad09c0f
+18:56:57.014 ws error: write after end
+18:56:57.014 ws close (role=viewer, id=v63d3c82c)
+18:57:20.137 upgrade from 127.0.0.1
+18:57:20.138 ws open
+18:57:20.169 viewer v6416ea87 joined room=room1 total=1
+18:57:20.170 viewer-joined -> broadcaster
+18:57:20.196 msg offer from broadcaster conn=null
+18:57:20.197 offer for v6416ea87: forwarded
+18:57:20.197 msg candidate from broadcaster conn=null
+18:57:20.198 msg candidate from broadcaster conn=null
+18:57:20.265 msg candidate from broadcaster conn=null
+18:57:20.376 msg candidate from broadcaster conn=null
+18:57:20.512 msg answer from viewer conn=v6416ea87
+18:57:20.517 msg candidate from viewer conn=v6416ea87
+18:57:20.517 msg candidate from viewer conn=v6416ea87
+18:57:55.839 ws close (role=viewer, id=v4ad09c0f)
+18:57:58.842 upgrade from 127.0.0.1
+18:57:58.842 ws open
+18:57:58.843 viewer vbc763ef0 joined room=room1 total=1
+18:57:58.843 viewer-joined -> broadcaster
+18:57:58.876 msg offer from broadcaster conn=null
+18:57:58.876 offer for vbc763ef0: forwarded
+18:57:58.877 msg candidate from broadcaster conn=null
+18:57:58.878 msg candidate from broadcaster conn=null
+18:57:58.894 msg answer from viewer conn=vbc763ef0
+18:57:58.895 msg candidate from viewer conn=vbc763ef0
+18:57:58.896 msg candidate from viewer conn=vbc763ef0
+18:59:00.204 ws error: write after end
+18:59:00.204 ws close (role=viewer, id=v6416ea87)
+18:59:23.263 upgrade from 127.0.0.1
+18:59:23.264 ws open
+18:59:23.277 viewer v3a0f6f8c joined room=room1 total=1
+18:59:23.278 viewer-joined -> broadcaster
+18:59:55.860 ws close (role=viewer, id=vbc763ef0)
+18:59:55.861 ws close (role=broadcaster, id=null)
+18:59:58.868 upgrade from 127.0.0.1
+18:59:58.869 ws open
+18:59:58.870 ws close (role=viewer, id=null)
+19:00:01.875 upgrade from 127.0.0.1
+19:00:01.876 ws open
+19:00:01.878 ws close (role=viewer, id=null)
+19:00:04.894 upgrade from 127.0.0.1
+19:00:04.895 ws open
+19:00:04.896 ws close (role=viewer, id=null)
+19:00:07.228 upgrade from 127.0.0.1
+19:00:07.229 ws open
+19:00:07.230 broadcaster joined room=room1 total=1
+19:00:07.901 upgrade from 127.0.0.1
+19:00:07.902 ws open
+19:00:07.903 viewer v1343d4bf joined room=room1 total=1
+19:00:07.903 viewer-joined -> broadcaster
+19:00:07.921 msg offer from broadcaster conn=null
+19:00:07.921 offer for v1343d4bf: forwarded
+19:00:07.922 msg candidate from broadcaster conn=null
+19:00:07.923 msg candidate from broadcaster conn=null
+19:00:07.937 msg answer from viewer conn=v1343d4bf
+19:00:07.940 msg candidate from viewer conn=v1343d4bf
+19:00:07.940 msg candidate from viewer conn=v1343d4bf
+19:01:03.512 ws error: write after end
+19:01:03.512 ws close (role=viewer, id=v3a0f6f8c)
+19:01:26.629 upgrade from 127.0.0.1
+19:01:26.629 ws open
+19:01:26.666 viewer v5840fda9 joined room=room1 total=1
+19:01:26.667 viewer-joined -> broadcaster
+19:01:26.685 msg offer from broadcaster conn=null
+19:01:26.685 offer for v5840fda9: forwarded
+19:01:26.687 msg candidate from broadcaster conn=null
+19:01:26.687 msg candidate from broadcaster conn=null
+19:01:26.745 msg candidate from broadcaster conn=null
+19:01:26.932 msg candidate from broadcaster conn=null
+19:01:27.061 msg answer from viewer conn=v5840fda9
+19:01:27.076 msg candidate from viewer conn=v5840fda9
+19:01:27.077 msg candidate from viewer conn=v5840fda9
+19:01:55.891 ws close (role=viewer, id=v1343d4bf)
+19:01:58.895 upgrade from 127.0.0.1
+19:01:58.896 ws open
+19:01:58.897 viewer v8b724f7d joined room=room1 total=1
+19:01:58.898 viewer-joined -> broadcaster
+19:01:58.914 msg offer from broadcaster conn=null
+19:01:58.915 offer for v8b724f7d: forwarded
+19:01:58.916 msg candidate from broadcaster conn=null
+19:01:58.917 msg candidate from broadcaster conn=null
+19:01:58.928 msg answer from viewer conn=v8b724f7d
+19:01:58.932 msg candidate from viewer conn=v8b724f7d
+19:01:58.932 msg candidate from viewer conn=v8b724f7d
+19:03:26.725 ws error: write after end
+19:03:26.725 ws close (role=viewer, id=v5840fda9)
+19:03:49.822 upgrade from 127.0.0.1
+19:03:49.823 ws open
+19:03:49.845 viewer vca5cd50e joined room=room1 total=1
+19:03:49.846 viewer-joined -> broadcaster
+19:03:49.865 msg offer from broadcaster conn=null
+19:03:49.866 offer for vca5cd50e: forwarded
+19:03:49.867 msg candidate from broadcaster conn=null
+19:03:49.868 msg candidate from broadcaster conn=null
+19:03:50.031 msg candidate from broadcaster conn=null
+19:03:50.058 msg candidate from broadcaster conn=null
+19:03:50.174 msg answer from viewer conn=vca5cd50e
+19:03:50.200 msg candidate from viewer conn=vca5cd50e
+19:03:50.201 msg candidate from viewer conn=vca5cd50e
+19:03:55.917 ws close (role=viewer, id=v8b724f7d)
+19:03:58.920 upgrade from 127.0.0.1
+19:03:58.920 ws open
+19:03:58.921 viewer vbe7ca1ef joined room=room1 total=1
+19:03:58.922 viewer-joined -> broadcaster
+19:03:58.940 msg offer from broadcaster conn=null
+19:03:58.940 offer for vbe7ca1ef: forwarded
+19:03:58.941 msg candidate from broadcaster conn=null
+19:03:58.942 msg candidate from broadcaster conn=null
+19:03:58.955 msg answer from viewer conn=vbe7ca1ef
+19:03:58.957 msg candidate from viewer conn=vbe7ca1ef
+19:03:58.958 msg candidate from viewer conn=vbe7ca1ef
+19:05:29.918 ws error: write after end
+19:05:29.918 ws close (role=viewer, id=vca5cd50e)
+19:05:53.022 upgrade from 127.0.0.1
+19:05:53.022 ws open
+19:05:53.065 viewer vfde162ae joined room=room1 total=1
+19:05:53.066 viewer-joined -> broadcaster
+19:05:53.085 msg offer from broadcaster conn=null
+19:05:53.085 offer for vfde162ae: forwarded
+19:05:53.086 msg candidate from broadcaster conn=null
+19:05:53.087 msg candidate from broadcaster conn=null
+19:05:53.148 msg candidate from broadcaster conn=null
+19:05:53.260 msg candidate from broadcaster conn=null
+19:05:55.934 ws close (role=viewer, id=vbe7ca1ef)
+19:05:55.993 msg answer from viewer conn=vfde162ae
+19:05:56.015 msg candidate from viewer conn=vfde162ae
+19:05:56.016 msg candidate from viewer conn=vfde162ae
+19:05:58.944 upgrade from 127.0.0.1
+19:05:58.945 ws open
+19:05:58.946 viewer v6f9481bb joined room=room1 total=1
+19:05:58.946 viewer-joined -> broadcaster
+19:05:58.977 msg offer from broadcaster conn=null
+19:05:58.978 offer for v6f9481bb: forwarded
+19:05:58.978 msg candidate from broadcaster conn=null
+19:05:58.979 msg candidate from broadcaster conn=null
+19:05:58.989 msg answer from viewer conn=v6f9481bb
+19:05:58.990 msg candidate from viewer conn=v6f9481bb
+19:05:58.990 msg candidate from viewer conn=v6f9481bb
+19:07:55.975 ws close (role=viewer, id=v6f9481bb)
+19:07:55.976 ws close (role=broadcaster, id=null)
+19:07:58.981 upgrade from 127.0.0.1
+19:07:58.982 ws open
+19:07:58.983 ws close (role=viewer, id=null)
+19:07:59.228 upgrade from 127.0.0.1
+19:07:59.228 ws open
+19:07:59.230 broadcaster joined room=room1 total=0
+19:08:01.998 upgrade from 127.0.0.1
+19:08:01.999 ws open
+19:08:02.000 viewer ve1041667 joined room=room1 total=0
+19:08:02.001 viewer-joined -> broadcaster
+19:08:02.018 msg offer from broadcaster conn=null
+19:08:02.019 offer for ve1041667: forwarded
+19:08:02.020 msg candidate from broadcaster conn=null
+19:08:02.021 msg candidate from broadcaster conn=null
+19:08:02.031 msg answer from viewer conn=ve1041667
+19:08:02.033 msg candidate from viewer conn=ve1041667
+19:08:02.034 msg candidate from viewer conn=ve1041667
+19:08:13.198 ws error: write after end
+19:08:13.199 ws close (role=viewer, id=vfde162ae)
+19:08:36.376 upgrade from 127.0.0.1
+19:08:36.377 ws open
+19:08:36.417 viewer vef34434d joined room=room1 total=1
+19:08:36.417 viewer-joined -> broadcaster
+19:08:36.438 msg offer from broadcaster conn=null
+19:08:36.438 offer for vef34434d: forwarded
+19:08:36.440 msg candidate from broadcaster conn=null
+19:08:36.441 msg candidate from broadcaster conn=null
+19:08:36.495 msg candidate from broadcaster conn=null
+19:08:36.680 msg candidate from broadcaster conn=null
+19:08:36.884 msg answer from viewer conn=vef34434d
+19:08:36.916 msg candidate from viewer conn=vef34434d
+19:08:36.918 msg candidate from viewer conn=vef34434d
+19:09:56.019 ws close (role=viewer, id=ve1041667)
+19:09:59.022 upgrade from 127.0.0.1
+19:09:59.023 ws open
+19:09:59.024 viewer v405eff64 joined room=room1 total=1
+19:09:59.024 viewer-joined -> broadcaster
+19:09:59.044 msg offer from broadcaster conn=null
+19:09:59.045 offer for v405eff64: forwarded
+19:09:59.046 msg candidate from broadcaster conn=null
+19:09:59.046 msg candidate from broadcaster conn=null
+19:09:59.056 msg answer from viewer conn=v405eff64
+19:09:59.058 msg candidate from viewer conn=v405eff64
+19:09:59.060 msg candidate from viewer conn=v405eff64
+19:10:36.957 ws error: write after end
+19:10:36.958 ws close (role=viewer, id=vef34434d)
+19:11:00.158 upgrade from 127.0.0.1
+19:11:00.158 ws open
+19:11:00.199 viewer va47c0b1f joined room=room1 total=1
+19:11:00.200 viewer-joined -> broadcaster
+19:11:00.219 msg offer from broadcaster conn=null
+19:11:00.220 offer for va47c0b1f: forwarded
+19:11:00.223 msg candidate from broadcaster conn=null
+19:11:00.224 msg candidate from broadcaster conn=null
+19:11:00.255 msg candidate from broadcaster conn=null
+19:11:00.276 msg candidate from broadcaster conn=null
+19:11:02.053 msg answer from viewer conn=va47c0b1f
+19:11:02.174 msg candidate from viewer conn=va47c0b1f
+19:11:02.190 msg candidate from viewer conn=va47c0b1f
+19:11:56.044 ws close (role=viewer, id=v405eff64)
+19:11:59.055 upgrade from 127.0.0.1
+19:11:59.055 ws open
+19:11:59.056 viewer v3ec95366 joined room=room1 total=1
+19:11:59.056 viewer-joined -> broadcaster
+19:11:59.077 msg offer from broadcaster conn=null
+19:11:59.077 offer for v3ec95366: forwarded
+19:11:59.078 msg candidate from broadcaster conn=null
+19:11:59.079 msg candidate from broadcaster conn=null
+19:11:59.091 msg answer from viewer conn=v3ec95366
+19:11:59.093 msg candidate from viewer conn=v3ec95366
+19:11:59.094 msg candidate from viewer conn=v3ec95366
+19:13:00.650 ws error: write after end
+19:13:00.651 ws close (role=viewer, id=va47c0b1f)
+19:13:24.595 upgrade from 127.0.0.1
+19:13:24.596 ws open
+19:13:24.694 viewer vedca201b joined room=room1 total=1
+19:13:24.695 viewer-joined -> broadcaster
+19:13:24.715 msg offer from broadcaster conn=null
+19:13:24.715 offer for vedca201b: forwarded
+19:13:24.717 msg candidate from broadcaster conn=null
+19:13:24.718 msg candidate from broadcaster conn=null
+19:13:24.758 msg candidate from broadcaster conn=null
+19:13:24.782 msg candidate from broadcaster conn=null
+19:13:26.500 msg answer from viewer conn=vedca201b
+19:13:26.555 msg candidate from viewer conn=vedca201b
+19:13:26.556 msg candidate from viewer conn=vedca201b
+19:13:56.086 ws close (role=viewer, id=v3ec95366)
+19:13:59.089 upgrade from 127.0.0.1
+19:13:59.090 ws open
+19:13:59.091 viewer vf65b46fc joined room=room1 total=1
+19:13:59.091 viewer-joined -> broadcaster
+19:13:59.112 msg offer from broadcaster conn=null
+19:13:59.112 offer for vf65b46fc: forwarded
+19:13:59.113 msg candidate from broadcaster conn=null
+19:13:59.114 msg candidate from broadcaster conn=null
+19:13:59.124 msg answer from viewer conn=vf65b46fc
+19:13:59.125 msg candidate from viewer conn=vf65b46fc
+19:13:59.126 msg candidate from viewer conn=vf65b46fc
+19:15:45.449 ws error: write after end
+19:15:45.450 ws close (role=viewer, id=vedca201b)
+19:15:56.117 ws close (role=broadcaster, id=null)
+19:15:56.118 ws close (role=viewer, id=vf65b46fc)
+19:15:59.128 upgrade from 127.0.0.1
+19:15:59.129 ws open
+19:15:59.130 ws close (role=viewer, id=null)
+19:15:59.233 upgrade from 127.0.0.1
+19:15:59.234 ws open
+19:15:59.240 broadcaster joined room=room1 total=0
+19:16:02.134 upgrade from 127.0.0.1
+19:16:02.135 ws open
+19:16:02.135 viewer vfd19cad1 joined room=room1 total=0
+19:16:02.136 viewer-joined -> broadcaster
+19:16:02.156 msg offer from broadcaster conn=null
+19:16:02.157 offer for vfd19cad1: forwarded
+19:16:02.158 msg candidate from broadcaster conn=null
+19:16:02.159 msg candidate from broadcaster conn=null
+19:16:02.169 msg answer from viewer conn=vfd19cad1
+19:16:02.170 msg candidate from viewer conn=vfd19cad1
+19:16:02.170 msg candidate from viewer conn=vfd19cad1
+19:16:09.055 upgrade from 127.0.0.1
+19:16:09.056 ws open
+19:16:09.172 viewer v2a602eb6 joined room=room1 total=1
+19:16:09.173 viewer-joined -> broadcaster
+19:16:09.193 msg offer from broadcaster conn=null
+19:16:09.193 offer for v2a602eb6: forwarded
+19:16:09.194 msg candidate from broadcaster conn=null
+19:16:09.195 msg candidate from broadcaster conn=null
+19:16:09.358 msg candidate from broadcaster conn=null
+19:16:09.389 msg candidate from broadcaster conn=null
+19:16:12.579 msg answer from viewer conn=v2a602eb6
+19:16:12.581 msg candidate from viewer conn=v2a602eb6
+19:16:12.636 msg candidate from viewer conn=v2a602eb6
+19:17:56.148 ws close (role=viewer, id=vfd19cad1)
+19:17:56.149 ws close (role=broadcaster, id=null)
+19:17:59.157 upgrade from 127.0.0.1
+19:17:59.157 ws open
+19:17:59.158 ws close (role=viewer, id=null)
+19:17:59.237 upgrade from 127.0.0.1
+19:17:59.237 ws open
+19:17:59.238 broadcaster joined room=room1 total=0
+19:18:02.167 upgrade from 127.0.0.1
+19:18:02.168 ws open
+19:18:02.169 viewer v9fa2baf8 joined room=room1 total=0
+19:18:02.170 viewer-joined -> broadcaster
+19:18:02.193 msg offer from broadcaster conn=null
+19:18:02.194 offer for v9fa2baf8: forwarded
+19:18:02.196 msg candidate from broadcaster conn=null
+19:18:02.198 msg candidate from broadcaster conn=null
+19:18:02.203 msg answer from viewer conn=v9fa2baf8
+19:18:02.204 msg candidate from viewer conn=v9fa2baf8
+19:18:02.204 msg candidate from viewer conn=v9fa2baf8
+19:18:10.426 ws error: write after end
+19:18:10.426 ws close (role=viewer, id=v2a602eb6)
+19:18:34.385 upgrade from 127.0.0.1
+19:18:34.386 ws open
+19:18:34.464 viewer v28cb4ad7 joined room=room1 total=1
+19:18:34.465 viewer-joined -> broadcaster
+19:18:34.486 msg offer from broadcaster conn=null
+19:18:34.486 offer for v28cb4ad7: forwarded
+19:18:34.488 msg candidate from broadcaster conn=null
+19:18:34.489 msg candidate from broadcaster conn=null
+19:18:34.522 msg candidate from broadcaster conn=null
+19:18:34.540 msg candidate from broadcaster conn=null
+19:18:39.118 msg answer from viewer conn=v28cb4ad7
+19:18:39.119 msg candidate from viewer conn=v28cb4ad7
+19:18:39.120 msg candidate from viewer conn=v28cb4ad7
+19:18:39.135 msg candidate from viewer conn=v28cb4ad7
+19:19:56.161 ws close (role=viewer, id=v9fa2baf8)
+19:19:59.164 upgrade from 127.0.0.1
+19:19:59.164 ws open
+19:19:59.165 viewer v35ad9244 joined room=room1 total=1
+19:19:59.166 viewer-joined -> broadcaster
+19:19:59.190 msg offer from broadcaster conn=null
+19:19:59.190 offer for v35ad9244: forwarded
+19:19:59.193 msg candidate from broadcaster conn=null
+19:19:59.194 msg candidate from broadcaster conn=null
+19:19:59.205 msg answer from viewer conn=v35ad9244
+19:19:59.207 msg candidate from viewer conn=v35ad9244
+19:19:59.207 msg candidate from viewer conn=v35ad9244
+19:20:36.404 ws error: write after end
+19:20:36.405 ws close (role=viewer, id=v28cb4ad7)
+19:21:02.626 upgrade from 127.0.0.1
+19:21:02.626 ws open
+19:21:02.963 viewer v563b85fb joined room=room1 total=1
+19:21:02.964 viewer-joined -> broadcaster
+19:21:02.997 msg offer from broadcaster conn=null
+19:21:02.997 offer for v563b85fb: forwarded
+19:21:02.998 msg candidate from broadcaster conn=null
+19:21:02.998 msg candidate from broadcaster conn=null
+19:21:03.043 msg candidate from broadcaster conn=null
+19:21:03.055 msg candidate from broadcaster conn=null
+19:21:09.652 msg answer from viewer conn=v563b85fb
+19:21:09.749 msg candidate from viewer conn=v563b85fb
+19:21:09.755 msg candidate from viewer conn=v563b85fb
+19:21:09.758 msg candidate from viewer conn=v563b85fb
+19:21:09.758 msg candidate from viewer conn=v563b85fb
+19:21:56.191 ws close (role=viewer, id=v35ad9244)
+19:21:59.193 upgrade from 127.0.0.1
+19:21:59.194 ws open
+19:21:59.195 viewer vd43b8219 joined room=room1 total=1
+19:21:59.195 viewer-joined -> broadcaster
+19:21:59.230 msg offer from broadcaster conn=null
+19:21:59.230 offer for vd43b8219: forwarded
+19:21:59.239 msg answer from viewer conn=vd43b8219
+19:21:59.241 msg candidate from viewer conn=vd43b8219
+19:21:59.241 msg candidate from viewer conn=vd43b8219
+19:21:59.260 msg candidate from broadcaster conn=null
+19:21:59.261 msg candidate from broadcaster conn=null
+19:23:06.751 ws error: write after end
+19:23:06.752 ws close (role=viewer, id=v563b85fb)
+19:23:30.317 upgrade from 127.0.0.1
+19:23:30.318 ws open
+19:23:30.352 viewer vf795c2d6 joined room=room1 total=1
+19:23:30.352 viewer-joined -> broadcaster
+19:23:30.379 msg offer from broadcaster conn=null
+19:23:30.379 offer for vf795c2d6: forwarded
+19:23:30.381 msg candidate from broadcaster conn=null
+19:23:30.382 msg candidate from broadcaster conn=null
+19:23:30.422 msg candidate from broadcaster conn=null
+19:23:30.446 msg candidate from broadcaster conn=null
+19:23:31.592 msg answer from viewer conn=vf795c2d6
+19:23:31.624 msg candidate from viewer conn=vf795c2d6
+19:23:31.629 msg candidate from viewer conn=vf795c2d6
+19:23:56.211 ws close (role=viewer, id=vd43b8219)
+19:23:59.219 upgrade from 127.0.0.1
+19:23:59.219 ws open
+19:23:59.222 viewer v1f52940f joined room=room1 total=1
+19:23:59.222 viewer-joined -> broadcaster
+19:23:59.285 msg offer from broadcaster conn=null
+19:23:59.286 offer for v1f52940f: forwarded
+19:23:59.287 msg candidate from broadcaster conn=null
+19:23:59.287 msg candidate from broadcaster conn=null
+19:23:59.300 msg answer from viewer conn=v1f52940f
+19:23:59.301 msg candidate from viewer conn=v1f52940f
+19:23:59.302 msg candidate from viewer conn=v1f52940f
+19:25:31.319 ws error: write after end
+19:25:31.320 ws close (role=viewer, id=vf795c2d6)
+19:25:54.856 upgrade from 127.0.0.1
+19:25:54.856 ws open
+19:25:54.942 viewer v9e77b5e3 joined room=room1 total=1
+19:25:54.943 viewer-joined -> broadcaster
+19:25:54.974 msg offer from broadcaster conn=null
+19:25:54.974 offer for v9e77b5e3: forwarded
+19:25:54.975 msg candidate from broadcaster conn=null
+19:25:54.976 msg candidate from broadcaster conn=null
+19:25:55.016 msg candidate from broadcaster conn=null
+19:25:55.177 msg candidate from broadcaster conn=null
+19:25:56.244 ws close (role=viewer, id=v1f52940f)
+19:25:56.535 msg answer from viewer conn=v9e77b5e3
+19:25:56.672 msg candidate from viewer conn=v9e77b5e3
+19:25:56.683 msg candidate from viewer conn=v9e77b5e3
+19:25:59.247 upgrade from 127.0.0.1
+19:25:59.248 ws open
+19:25:59.249 viewer v845f73dc joined room=room1 total=1
+19:25:59.249 viewer-joined -> broadcaster
+19:25:59.390 msg offer from broadcaster conn=null
+19:25:59.391 offer for v845f73dc: forwarded
+19:25:59.392 msg candidate from broadcaster conn=null
+19:25:59.392 msg candidate from broadcaster conn=null
+19:25:59.402 msg answer from viewer conn=v845f73dc
+19:25:59.404 msg candidate from viewer conn=v845f73dc
+19:25:59.405 msg candidate from viewer conn=v845f73dc
+19:27:56.277 ws close (role=viewer, id=v845f73dc)
+19:27:56.277 ws close (role=broadcaster, id=null)
+19:27:59.283 upgrade from 127.0.0.1
+19:27:59.284 ws open
+19:27:59.285 ws close (role=viewer, id=null)
+19:28:00.218 upgrade from 127.0.0.1
+19:28:00.219 ws open
+19:28:00.220 broadcaster joined room=room1 total=0
+19:28:02.290 upgrade from 127.0.0.1
+19:28:02.290 ws open
+19:28:02.291 viewer v771477e6 joined room=room1 total=0
+19:28:02.292 viewer-joined -> broadcaster
+19:28:02.314 msg offer from broadcaster conn=null
+19:28:02.314 offer for v771477e6: forwarded
+19:28:02.316 msg candidate from broadcaster conn=null
+19:28:02.318 msg candidate from broadcaster conn=null
+19:28:02.327 msg answer from viewer conn=v771477e6
+19:28:02.329 msg candidate from viewer conn=v771477e6
+19:28:02.329 msg candidate from viewer conn=v771477e6
+19:29:56.291 ws error: read ECONNRESET
+19:29:56.292 ws close (role=viewer, id=v9e77b5e3)
+19:29:56.293 ws close (role=viewer, id=v771477e6)
+19:29:56.293 ws close (role=broadcaster, id=null)
+19:29:59.301 upgrade from 127.0.0.1
+19:29:59.301 ws open
+19:29:59.302 ws close (role=viewer, id=null)
+19:30:00.217 upgrade from 127.0.0.1
+19:30:00.218 ws open
+19:30:00.219 broadcaster joined room=room1 total=0
+19:30:02.318 upgrade from 127.0.0.1
+19:30:02.318 ws open
+19:30:02.319 viewer v3156e2cd joined room=room1 total=0
+19:30:02.320 viewer-joined -> broadcaster
+19:30:02.342 msg offer from broadcaster conn=null
+19:30:02.343 offer for v3156e2cd: forwarded
+19:30:02.345 msg candidate from broadcaster conn=null
+19:30:02.346 msg candidate from broadcaster conn=null
+19:30:02.355 msg answer from viewer conn=v3156e2cd
+19:30:02.356 msg candidate from viewer conn=v3156e2cd
+19:30:02.357 msg candidate from viewer conn=v3156e2cd
+19:31:56.309 ws close (role=viewer, id=v3156e2cd)
+19:31:56.309 ws close (role=broadcaster, id=null)
+19:31:59.315 upgrade from 127.0.0.1
+19:31:59.315 ws open
+19:31:59.316 ws close (role=viewer, id=null)
+19:32:00.223 upgrade from 127.0.0.1
+19:32:00.223 ws open
+19:32:00.224 broadcaster joined room=room1 total=0
+19:32:02.326 upgrade from 127.0.0.1
+19:32:02.326 ws open
+19:32:02.328 viewer v7c29b6fd joined room=room1 total=0
+19:32:02.328 viewer-joined -> broadcaster
+19:32:02.345 msg offer from broadcaster conn=null
+19:32:02.346 offer for v7c29b6fd: forwarded
+19:32:02.347 msg candidate from broadcaster conn=null
+19:32:02.348 msg candidate from broadcaster conn=null
+19:32:02.359 msg answer from viewer conn=v7c29b6fd
+19:32:02.360 msg candidate from viewer conn=v7c29b6fd
+19:32:02.360 msg candidate from viewer conn=v7c29b6fd
+19:33:56.346 ws close (role=viewer, id=v7c29b6fd)
+19:33:56.346 ws close (role=broadcaster, id=null)
+19:33:59.362 upgrade from 127.0.0.1
+19:33:59.363 ws open
+19:33:59.364 ws close (role=viewer, id=null)
+19:34:00.222 upgrade from 127.0.0.1
+19:34:00.222 ws open
+19:34:00.223 broadcaster joined room=room1 total=0
+19:34:02.369 upgrade from 127.0.0.1
+19:34:02.369 ws open
+19:34:02.370 viewer vcdcd2984 joined room=room1 total=0
+19:34:02.371 viewer-joined -> broadcaster
+19:34:02.393 msg offer from broadcaster conn=null
+19:34:02.393 offer for vcdcd2984: forwarded
+19:34:02.394 msg candidate from broadcaster conn=null
+19:34:02.396 msg candidate from broadcaster conn=null
+19:34:02.402 msg answer from viewer conn=vcdcd2984
+19:34:02.403 msg candidate from viewer conn=vcdcd2984
+19:34:02.404 msg candidate from viewer conn=vcdcd2984
+19:35:56.368 ws close (role=viewer, id=vcdcd2984)
+19:35:56.369 ws close (role=broadcaster, id=null)
+19:35:59.373 upgrade from 127.0.0.1
+19:35:59.374 ws open
+19:35:59.375 ws close (role=viewer, id=null)
+19:36:00.223 upgrade from 127.0.0.1
+19:36:00.223 ws open
+19:36:00.225 broadcaster joined room=room1 total=0
+19:36:02.384 upgrade from 127.0.0.1
+19:36:02.385 ws open
+19:36:02.385 viewer vbbde9174 joined room=room1 total=0
+19:36:02.386 viewer-joined -> broadcaster
+19:36:02.404 msg offer from broadcaster conn=null
+19:36:02.404 offer for vbbde9174: forwarded
+19:36:02.406 msg candidate from broadcaster conn=null
+19:36:02.406 msg candidate from broadcaster conn=null
+19:36:02.417 msg answer from viewer conn=vbbde9174
+19:36:02.419 msg candidate from viewer conn=vbbde9174
+19:36:02.419 msg candidate from viewer conn=vbbde9174
+19:37:56.377 ws close (role=viewer, id=vbbde9174)
+19:37:56.378 ws close (role=broadcaster, id=null)
+19:37:59.390 upgrade from 127.0.0.1
+19:37:59.390 ws open
+19:37:59.392 ws close (role=viewer, id=null)
+19:38:00.218 upgrade from 127.0.0.1
+19:38:00.218 ws open
+19:38:00.220 broadcaster joined room=room1 total=0
+19:38:02.395 upgrade from 127.0.0.1
+19:38:02.395 ws open
+19:38:02.396 viewer v8c425bda joined room=room1 total=0
+19:38:02.397 viewer-joined -> broadcaster
+19:38:02.485 msg offer from broadcaster conn=null
+19:38:02.486 offer for v8c425bda: forwarded
+19:38:02.489 msg candidate from broadcaster conn=null
+19:38:02.490 msg candidate from broadcaster conn=null
+19:38:02.495 msg answer from viewer conn=v8c425bda
+19:38:02.496 msg candidate from viewer conn=v8c425bda
+19:38:02.497 msg candidate from viewer conn=v8c425bda
+19:39:56.403 ws close (role=viewer, id=v8c425bda)
+19:39:56.403 ws close (role=broadcaster, id=null)
+19:39:59.411 upgrade from 127.0.0.1
+19:39:59.412 ws open
+19:39:59.413 ws close (role=viewer, id=null)
+19:40:00.224 upgrade from 127.0.0.1
+19:40:00.225 ws open
+19:40:00.226 broadcaster joined room=room1 total=0
+19:40:02.416 upgrade from 127.0.0.1
+19:40:02.417 ws open
+19:40:02.418 viewer vf76792de joined room=room1 total=0
+19:40:02.419 viewer-joined -> broadcaster
+19:40:02.444 msg offer from broadcaster conn=null
+19:40:02.444 offer for vf76792de: forwarded
+19:40:02.446 msg candidate from broadcaster conn=null
+19:40:02.446 msg candidate from broadcaster conn=null
+19:40:02.456 msg answer from viewer conn=vf76792de
+19:40:02.459 msg candidate from viewer conn=vf76792de
+19:40:02.460 msg candidate from viewer conn=vf76792de
+19:41:56.432 ws close (role=viewer, id=vf76792de)
+19:41:56.433 ws close (role=broadcaster, id=null)
+19:41:59.442 upgrade from 127.0.0.1
+19:41:59.442 ws open
+19:41:59.443 ws close (role=viewer, id=null)
+19:42:00.223 upgrade from 127.0.0.1
+19:42:00.230 ws open
+19:42:00.231 broadcaster joined room=room1 total=0
+19:42:02.447 upgrade from 127.0.0.1
+19:42:02.447 ws open
+19:42:02.449 viewer ve8128b89 joined room=room1 total=0
+19:42:02.450 viewer-joined -> broadcaster
+19:42:02.477 msg offer from broadcaster conn=null
+19:42:02.477 offer for ve8128b89: forwarded
+19:42:02.478 msg candidate from broadcaster conn=null
+19:42:02.479 msg candidate from broadcaster conn=null
+19:42:02.486 msg answer from viewer conn=ve8128b89
+19:42:02.499 msg candidate from viewer conn=ve8128b89
+19:42:02.500 msg candidate from viewer conn=ve8128b89
+19:43:56.457 ws close (role=viewer, id=ve8128b89)
+19:43:56.457 ws close (role=broadcaster, id=null)
+19:43:59.467 upgrade from 127.0.0.1
+19:43:59.468 ws open
+19:43:59.469 ws close (role=viewer, id=null)
+19:44:00.218 upgrade from 127.0.0.1
+19:44:00.218 ws open
+19:44:00.219 broadcaster joined room=room1 total=0
+19:44:02.472 upgrade from 127.0.0.1
+19:44:02.473 ws open
+19:44:02.474 viewer vae20f212 joined room=room1 total=0
+19:44:02.474 viewer-joined -> broadcaster
+19:44:02.504 msg offer from broadcaster conn=null
+19:44:02.505 offer for vae20f212: forwarded
+19:44:02.506 msg candidate from broadcaster conn=null
+19:44:02.506 msg candidate from broadcaster conn=null
+19:44:02.517 msg answer from viewer conn=vae20f212
+19:44:02.518 msg candidate from viewer conn=vae20f212
+19:44:02.519 msg candidate from viewer conn=vae20f212
+19:45:56.479 ws close (role=viewer, id=vae20f212)
+19:45:56.480 ws close (role=broadcaster, id=null)
+19:45:59.485 upgrade from 127.0.0.1
+19:45:59.485 ws open
+19:45:59.486 ws close (role=viewer, id=null)
+19:46:00.221 upgrade from 127.0.0.1
+19:46:00.222 ws open
+19:46:00.223 broadcaster joined room=room1 total=0
+19:46:02.488 upgrade from 127.0.0.1
+19:46:02.489 ws open
+19:46:02.490 viewer v1c36e479 joined room=room1 total=0
+19:46:02.490 viewer-joined -> broadcaster
+19:46:02.524 msg offer from broadcaster conn=null
+19:46:02.524 offer for v1c36e479: forwarded
+19:46:02.525 msg candidate from broadcaster conn=null
+19:46:02.526 msg candidate from broadcaster conn=null
+19:46:02.533 msg answer from viewer conn=v1c36e479
+19:46:02.534 msg candidate from viewer conn=v1c36e479
+19:46:02.535 msg candidate from viewer conn=v1c36e479
+19:47:56.521 ws close (role=viewer, id=v1c36e479)
+19:47:56.522 ws close (role=broadcaster, id=null)
+19:47:59.528 upgrade from 127.0.0.1
+19:47:59.529 ws open
+19:47:59.530 ws close (role=viewer, id=null)
+19:48:00.217 upgrade from 127.0.0.1
+19:48:00.217 ws open
+19:48:00.218 broadcaster joined room=room1 total=0
+19:48:02.531 upgrade from 127.0.0.1
+19:48:02.532 ws open
+19:48:02.533 viewer v651ea79c joined room=room1 total=0
+19:48:02.533 viewer-joined -> broadcaster
+19:48:02.565 msg offer from broadcaster conn=null
+19:48:02.566 offer for v651ea79c: forwarded
+19:48:02.567 msg candidate from broadcaster conn=null
+19:48:02.569 msg candidate from broadcaster conn=null
+19:48:02.578 msg answer from viewer conn=v651ea79c
+19:48:02.579 msg candidate from viewer conn=v651ea79c
+19:48:02.580 msg candidate from viewer conn=v651ea79c
+19:49:56.549 ws close (role=viewer, id=v651ea79c)
+19:49:56.550 ws close (role=broadcaster, id=null)
+19:49:59.557 upgrade from 127.0.0.1
+19:49:59.558 ws open
+19:49:59.559 ws close (role=viewer, id=null)
+19:50:00.225 upgrade from 127.0.0.1
+19:50:00.225 ws open
+19:50:00.227 broadcaster joined room=room1 total=0
+19:50:02.561 upgrade from 127.0.0.1
+19:50:02.561 ws open
+19:50:02.562 viewer v1595a899 joined room=room1 total=0
+19:50:02.563 viewer-joined -> broadcaster
+19:50:02.601 msg offer from broadcaster conn=null
+19:50:02.601 offer for v1595a899: forwarded
+19:50:02.602 msg candidate from broadcaster conn=null
+19:50:02.603 msg candidate from broadcaster conn=null
+19:50:02.609 msg answer from viewer conn=v1595a899
+19:50:02.611 msg candidate from viewer conn=v1595a899
+19:50:02.611 msg candidate from viewer conn=v1595a899
+19:51:56.587 ws close (role=viewer, id=v1595a899)
+19:51:56.588 ws close (role=broadcaster, id=null)
+19:51:59.608 upgrade from 127.0.0.1
+19:51:59.608 ws open
+19:51:59.609 ws close (role=viewer, id=null)
+19:52:00.215 upgrade from 127.0.0.1
+19:52:00.216 ws open
+19:52:00.217 broadcaster joined room=room1 total=0
+19:52:02.611 upgrade from 127.0.0.1
+19:52:02.612 ws open
+19:52:02.613 viewer vdeb881e1 joined room=room1 total=0
+19:52:02.613 viewer-joined -> broadcaster
+19:52:02.649 msg offer from broadcaster conn=null
+19:52:02.649 offer for vdeb881e1: forwarded
+19:52:02.651 msg candidate from broadcaster conn=null
+19:52:02.652 msg candidate from broadcaster conn=null
+19:52:02.662 msg answer from viewer conn=vdeb881e1
+19:52:02.663 msg candidate from viewer conn=vdeb881e1
+19:52:02.664 msg candidate from viewer conn=vdeb881e1
+19:53:56.622 ws close (role=viewer, id=vdeb881e1)
+19:53:56.623 ws close (role=broadcaster, id=null)
+19:53:59.628 upgrade from 127.0.0.1
+19:53:59.628 ws open
+19:53:59.629 ws close (role=viewer, id=null)
+19:54:00.225 upgrade from 127.0.0.1
+19:54:00.226 ws open
+19:54:00.226 broadcaster joined room=room1 total=0
+19:54:02.631 upgrade from 127.0.0.1
+19:54:02.632 ws open
+19:54:02.632 viewer v42acf072 joined room=room1 total=0
+19:54:02.633 viewer-joined -> broadcaster
+19:54:02.664 msg offer from broadcaster conn=null
+19:54:02.665 offer for v42acf072: forwarded
+19:54:02.666 msg candidate from broadcaster conn=null
+19:54:02.670 msg candidate from broadcaster conn=null
+19:54:02.674 msg answer from viewer conn=v42acf072
+19:54:02.675 msg candidate from viewer conn=v42acf072
+19:54:02.676 msg candidate from viewer conn=v42acf072
+19:55:56.660 ws close (role=viewer, id=v42acf072)
+19:55:56.660 ws close (role=broadcaster, id=null)
+19:55:59.667 upgrade from 127.0.0.1
+19:55:59.667 ws open
+19:55:59.669 ws close (role=viewer, id=null)
+19:56:00.222 upgrade from 127.0.0.1
+19:56:00.223 ws open
+19:56:00.224 broadcaster joined room=room1 total=0
+19:56:02.684 upgrade from 127.0.0.1
+19:56:02.684 ws open
+19:56:02.685 viewer vc6eca4fd joined room=room1 total=0
+19:56:02.686 viewer-joined -> broadcaster
+19:56:02.731 msg offer from broadcaster conn=null
+19:56:02.732 offer for vc6eca4fd: forwarded
+19:56:02.733 msg candidate from broadcaster conn=null
+19:56:02.733 msg candidate from broadcaster conn=null
+19:56:02.743 msg answer from viewer conn=vc6eca4fd
+19:56:02.744 msg candidate from viewer conn=vc6eca4fd
+19:56:02.744 msg candidate from viewer conn=vc6eca4fd
+19:57:56.699 ws close (role=viewer, id=vc6eca4fd)
+19:57:56.699 ws close (role=broadcaster, id=null)
+19:57:59.703 upgrade from 127.0.0.1
+19:57:59.703 ws open
+19:57:59.704 ws close (role=viewer, id=null)
+19:58:00.222 upgrade from 127.0.0.1
+19:58:00.223 ws open
+19:58:00.223 broadcaster joined room=room1 total=0
+19:58:02.708 upgrade from 127.0.0.1
+19:58:02.708 ws open
+19:58:02.709 viewer v0272c210 joined room=room1 total=0
+19:58:02.710 viewer-joined -> broadcaster
+19:58:02.754 msg offer from broadcaster conn=null
+19:58:02.754 offer for v0272c210: forwarded
+19:58:02.755 msg candidate from broadcaster conn=null
+19:58:02.755 msg candidate from broadcaster conn=null
+19:58:02.763 msg answer from viewer conn=v0272c210
+19:58:02.764 msg candidate from viewer conn=v0272c210
+19:58:02.765 msg candidate from viewer conn=v0272c210
+19:59:56.727 ws close (role=viewer, id=v0272c210)
+19:59:56.728 ws close (role=broadcaster, id=null)
+19:59:59.740 upgrade from 127.0.0.1
+19:59:59.740 ws open
+19:59:59.741 ws close (role=viewer, id=null)
+20:00:00.223 upgrade from 127.0.0.1
+20:00:00.223 ws open
+20:00:00.225 broadcaster joined room=room1 total=0
+20:00:02.744 upgrade from 127.0.0.1
+20:00:02.744 ws open
+20:00:02.745 viewer v68bf71b8 joined room=room1 total=0
+20:00:02.746 viewer-joined -> broadcaster
+20:00:02.787 msg offer from broadcaster conn=null
+20:00:02.787 offer for v68bf71b8: forwarded
+20:00:02.788 msg candidate from broadcaster conn=null
+20:00:02.789 msg candidate from broadcaster conn=null
+20:00:02.801 msg answer from viewer conn=v68bf71b8
+20:00:02.802 msg candidate from viewer conn=v68bf71b8
+20:00:02.803 msg candidate from viewer conn=v68bf71b8
+20:01:56.756 ws close (role=viewer, id=v68bf71b8)
+20:01:56.756 ws close (role=broadcaster, id=null)
+20:01:59.770 upgrade from 127.0.0.1
+20:01:59.770 ws open
+20:01:59.771 ws close (role=viewer, id=null)
+20:02:02.773 upgrade from 127.0.0.1
+20:02:02.774 ws open
+20:02:02.775 ws close (role=viewer, id=null)
+20:02:05.562 upgrade from 127.0.0.1
+20:02:05.562 ws open
+20:02:05.563 broadcaster joined room=room1 total=0
+20:02:05.793 upgrade from 127.0.0.1
+20:02:05.793 ws open
+20:02:05.794 viewer v4b2990e3 joined room=room1 total=0
+20:02:05.795 viewer-joined -> broadcaster
+20:02:46.533 msg offer from broadcaster conn=null
+20:02:46.534 offer for v4b2990e3: forwarded
+20:02:46.541 msg answer from viewer conn=v4b2990e3
+20:02:46.542 msg candidate from viewer conn=v4b2990e3
+20:02:46.543 msg candidate from viewer conn=v4b2990e3
+20:02:46.578 msg candidate from viewer conn=v4b2990e3
+20:02:46.782 msg candidate from viewer conn=v4b2990e3
+20:03:17.952 msg candidate from broadcaster conn=null
+20:03:17.952 msg candidate from broadcaster conn=null
+20:03:24.611 msg candidate from broadcaster conn=null
+20:04:26.812 ws close (role=viewer, id=v4b2990e3)
+20:04:29.813 upgrade from 127.0.0.1
+20:04:29.814 ws open
+20:04:29.815 viewer v95cd680d joined room=room1 total=0
+20:04:29.815 viewer-joined -> broadcaster
+20:04:56.817 ws close (role=broadcaster, id=null)
+20:05:33.040 upgrade from 127.0.0.1
+20:05:33.041 ws open
+20:05:35.507 broadcaster joined room=room1 total=1
+20:05:58.404 msg candidate from broadcaster conn=null
+20:05:58.405 msg candidate from broadcaster conn=null
+20:06:01.499 msg candidate from broadcaster conn=null
+20:06:06.623 msg candidate from broadcaster conn=null
+20:06:26.839 ws close (role=viewer, id=v95cd680d)
+20:06:29.847 upgrade from 127.0.0.1
+20:06:29.848 ws open
+20:06:29.848 viewer v93f1af7a joined room=room1 total=0
+20:06:29.849 viewer-joined -> broadcaster
